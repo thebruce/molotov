@@ -26,3 +26,11 @@ test('validateMolotovSettingsFalseAgain', async (t) => {
   t.context.data = await superMixologist.validateMolotovSettings();
   t.false(t.context.data);
 });
+
+test('getSupersHasSupers', async (t) => {
+  const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovTwo');
+  superMixologist.setSupers({superKeyName: 'thing'});
+  t.context.data = await superMixologist.getSupers();
+  t.deepEqual(t.context.data, {superKeyName: 'thing'});
+});
+

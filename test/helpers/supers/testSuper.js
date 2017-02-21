@@ -1,10 +1,12 @@
-'use strict';
-
 /**
  * Test SuperClass
  *
  */
 module.exports = class testSuper {
+  constructor() {
+    this.value = 'test';
+  }
+
   /**
    * Function to tranform a value, mixins should call super.tranform to keep
    * composition in play.
@@ -12,7 +14,7 @@ module.exports = class testSuper {
    * @param value
    *  A value to perform a transformation upon.
    */
-  testFunction(value) {
-    return value;
+  testFunction(otherValue) {
+    return String.concat(this.value, otherValue);
   }
 };
