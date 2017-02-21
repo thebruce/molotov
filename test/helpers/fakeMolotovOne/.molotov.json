@@ -1,0 +1,8 @@
+{
+  "molotov": {
+    "providers": {
+      "test-package": {
+      }
+    }
+  }
+}
