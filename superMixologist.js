@@ -53,21 +53,17 @@ const superMixologist = class {
     return molotovSetPromise.then(() => {
       let validator = false;
       const molotov = this.getMolotovSettings();
-      if (_.has(molotov, 'molotov.providers')) {
-        Object.keys(molotov.molotov.providers).forEach((key) => {
+
+      if ((Object.keys(molotov).length > 0 && molotov.constructor === Object)) {
+        Object.keys(molotov).forEach((key) => {
           // We must have superNameSpacePaths in atleast one of the provider
           // name spaces.
           if (
             _.has(
-              molotov.molotov.providers[key],
+              molotov[key],
               'supersNameSpacePaths'
-            )
-            &&
-            _.has(
-              molotov.molotov.providers[key],
-              'configNameSpace'
             )) {
-            this.setMolotovNameSpace(_.get(molotov.molotov.providers[key], 'configNameSPace'));
+            this.setMolotovNameSpace(key);
             validator = true;
           }
         });
@@ -145,7 +141,7 @@ const superMixologist = class {
    *
    * @returns {string}
    */
-  getMolotovNameSpaces() {
+  getMolotovNameSpace() {
     return this.molotovNameSpace;
   }
 
@@ -160,32 +156,23 @@ const superMixologist = class {
    *  Returns an object bearing promise of config overrides.
    */
   fetchOverrides() {
-    return new Promise((res, rej) => {
-      try {
-        // get nameSpace from molotov.
-        const nameSpace = this.getMolotvNameSpaces();
-        const configTemp = {};
-        // get Supers.
-        const superConfig = _.cloneDeep(this.getSupers());
-        // We will now look in config for any overides.
-        Object.keys(superConfig).forEach((currentValue) => {
-          if (_.has(config, `${nameSpace}.${currentValue}.superOverride`)) {
-            // We do have an overide, we will set the path.
-            const override = config[nameSpace][currentValue].superOverride;
-            // Now let's try and require it.
-            // eslint-disable-next-line import/no-dynamic-require
-            configTemp[currentValue] = tryRequire(path.join(__dirname, override));
-          }
-        }, this);
-        res(configTemp);
-      }
-      catch (error) {
-        rej(error);
-      }
-    })
-    .then((result) => {
+    const configTemp = {};
+    const nameSpace = this.getMolotovNameSpace();
+    this.getSupers()
+    .then((results) => {
+      const superConfig = _.cloneDeep(results);
+      Object.keys(superConfig).forEach((currentValue) => {
+        if (_.has(config, `${nameSpace}.${currentValue}.superOverride`)) {
+          // We do have an overide, we will set the path.
+          const override = config[nameSpace][currentValue].superOverride;
+          // Now let's try and require it.
+          // eslint-disable-next-line import/no-dynamic-require
+          configTemp[currentValue] = require(path.join(__dirname, override));
+        }
+      }, this);
       this.overridesFetched = true;
-      this.setOverrides(result);
+      this.setOverrides(configTemp);
+      return configTemp;
     });
   }
 
@@ -219,12 +206,12 @@ const superMixologist = class {
    *    with any user provided config overrides of those supers.
    */
   mergeConfig() {
-    return new Promise((res) => {
-      // Merge supers and overrides.
-      const superTemp = _.cloneDeep(this.getSupers());
+    const mergeConfigPromise = this.getSupers();
+    return mergeConfigPromise.then((results) => {
+      const superTemp = _.cloneDeep(results);
       const tmpConfig = Object.assign(superTemp, this.getOverrides());
       this.setSupers(tmpConfig);
-      res(tmpConfig);
+      return tmpConfig;
     });
   }
 
@@ -237,20 +224,20 @@ const superMixologist = class {
    *    super namespaces.
    */
   requireSupers() {
-    const superRequires = this.validateMolotovSettings();
-    return superRequires.then(() => {
+    return this.validateMolotovSettings()
+    .then(() => {
       try {
         // Get nameSpace.
-        const nameSpace = this.getMolotvNameSpaces();
+        const nameSpace = this.getMolotovNameSpace();
         const supers = {};
         // require items in this name space.
         Object.keys(
-          this.getMolotovSettings().providers[nameSpace].supersNameSpacePaths
+          this.getMolotovSettings()[nameSpace].supersNameSpacePaths
         ).forEach((key) => {
           // For each super in molotov settings attempt to require item.
           // eslint-disable-next-line import/no-dynamic-require
           supers[key] = require(
-            this.getMolotovSettings().providers[nameSpace].supersNameSpacePaths[key]
+            path.join(__dirname, this.getMolotovSettings()[nameSpace].supersNameSpacePaths[key])
           );
         });
         this.setSupers(supers);
@@ -302,16 +289,19 @@ const superMixologist = class {
    *    with any user provided config overrides of those supers.
    */
   resolveSupers() {
-    const superResolver = this.requireSupers()
-    .then(() => {
-      // Supers have been populated.
-      const overridePromise = this.fetchOverrides();
-      // Do we have overrides?
-      return overridePromise.then(() => this.getOverrides());
-    })
-    .then(overrides => this.mergeConfig(overrides));
-    // Return mergedConfig.
-    return superResolver.then(mergedConfig => mergedConfig);
+    return new Promise((res, rej) => {
+       this.requireSupers()
+       .then((value) => {
+         return this.fetchOverrides();
+       })
+       .then(() => {
+         return this.mergeConfig();
+       })
+       .then((tmpConfig) => {
+         res(tmpConfig);
+        });
+    });
+
   }
 };
 

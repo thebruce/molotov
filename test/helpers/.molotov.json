@@ -1,12 +1,7 @@
 {
-  "molotov": {
-    "providers": {
-      "test-package": {
-        "configNameSpace": "testPackage",
-        "supersNameSpacePaths": {
-          "testSuper": "/test/helpers/supers/testSuper"
-        }
-      }
+  "testPackage" : {
+    "supersNameSpacePaths": {
+      "testSuper": "/test/helpers/supers/testSuper"
     }
   }
 }
