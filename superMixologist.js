@@ -175,7 +175,6 @@ const superMixologist = class {
   fetchOverrides() {
     const nameSpace = this.getMolotovNameSpace();
     const fetcher = new Promise((res) => {
-
       const configTemp = {};
       const superConfig = _.cloneDeep(this.getSupers());
 
@@ -313,7 +312,7 @@ const superMixologist = class {
     let superResolver;
     if (_.has(this, 'supers')) {
       // If we have supers take them from getSupers();
-      superResolver = new Promise((res, rej) => res(this.getSupers()))
+      superResolver = new Promise(res => res(this.getSupers()))
       .then(() => this.validateMolotovSettings());
     }
     else {
@@ -323,9 +322,7 @@ const superMixologist = class {
     }
 
     const superNext = superResolver.then(() => this.fetchOverrides());
-    return superNext.then((configOverrides) => {
-      return this.mergeConfig();
-    });
+    return superNext.then(() => this.mergeConfig());
   }
 
   // eslint-disable-next-line class-methods-use-this

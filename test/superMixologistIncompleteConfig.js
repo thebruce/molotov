@@ -6,6 +6,7 @@ Object.keys(require.cache).forEach((key) => {
   delete require.cache[key];
 });
 // Need to set up a different fake config with no overrides for coverage.
+// This config has no super Overrides.
 process.env.NODE_CONFIG_DIR = path.join(__dirname, '/helpers', 'configTests', 'two');
 // And require here so that later requires will use this cached version.
 const config = require('config'); // eslint-disable-line no-unused-vars
@@ -21,5 +22,3 @@ test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line n
       resolve(result);
     });
 }));
-
-
