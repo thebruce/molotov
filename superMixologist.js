@@ -17,7 +17,6 @@
 process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
 // User overrides are stored in config.
 const config = require('config');
-const tryRequire = require('try-require');
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
@@ -283,25 +282,23 @@ const superMixologist = class {
 
   /**
    * resolveSupers()
+   *   Gets supers by requiring them. Then checks and merges in overrides.
    *
    * @returns Promise.obj
    *   A object bearing the molotov super classes keyed by super name space
    *    with any user provided config overrides of those supers.
    */
   resolveSupers() {
-    return new Promise((res, rej) => {
-       this.requireSupers()
-       .then((value) => {
-         return this.fetchOverrides();
-       })
-       .then(() => {
-         return this.mergeConfig();
-       })
-       .then((tmpConfig) => {
-         res(tmpConfig);
-        });
-    });
+    return new Promise((res) => {
+      // Get supers by requiring them.
 
+      this.requireSupers()
+      .then(() => this.fetchOverrides())
+      .then(() => this.mergeConfig())
+      .then((tmpConfig) => {
+        res(tmpConfig);
+      });
+    });
   }
 };
 

@@ -72,7 +72,7 @@ test('mergeConfig', async (t) => {
   t.deepEqual(t.context.data, {superKeyName: 'thingTwo'});
 });
 
-test('fetchOverrides', t => new Promise((resolve, reject) => {
+test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers/');
   superMixologist.requireSupers()
     .then(() => superMixologist.fetchOverrides())

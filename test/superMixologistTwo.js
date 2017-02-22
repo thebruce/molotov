@@ -12,7 +12,7 @@ const config = require('config'); // eslint-disable-line no-unused-vars
 const SuperMixologist = require('../superMixologist');
 
 
-test('fetchOverrides', t => new Promise((resolve, reject) => {
+test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers');
   superMixologist.requireSupers()
     .then(() => superMixologist.fetchOverrides())
