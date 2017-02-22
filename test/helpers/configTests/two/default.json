@@ -1,7 +1,6 @@
 {
   "testPackage": {
     "testSuper": {
-      "superOverride": "../test/helpers/testSuperOverideNotThere.js"
     },
     "molotov": {
       "cocktailPluginLoaders": [
