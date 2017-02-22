@@ -1,0 +1,13 @@
+{
+  "testPackage": {
+    "testSuper": {
+      "superOverride": "/test/helpers/testSuperOverride"
+    },
+    "molotov": {
+      "cocktailPluginLoaders": [
+        "path/to/mixinStylePluginLoader/implementing/cocktailClass",
+        "anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides"
+      ]
+    }
+  }
+}

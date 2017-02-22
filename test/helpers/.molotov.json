@@ -1,0 +1,7 @@
+{
+  "testPackage" : {
+    "supersNameSpacePaths": {
+      "testSuper": "/test/helpers/supers/testSuper"
+    }
+  }
+}
