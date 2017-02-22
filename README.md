@@ -1,16 +1,23 @@
 # Molotov: (Mix/Plug)-in loader for explosive composeability
 
-Molotov is a plug in loader and/or interface for use with modules providing mixin styled plugins and modules that are implementing overrides on mixin style provider modules.
+## Install
 
-## To Provide molotov style plugin capabilities:
-Modules providing molotov style plugin capabilities should implement molotov by:
-1) Extend or implement superMixologist to provide molotov with nameSpaced supers.
-2) Extend or implement molotov.js with a custom Molotov implementation OR call molotov.js and pass the appropriate parameters.
-3) Add a molotov.json file (see Example) to the root of your project and fill in the relevant details.
+`npm install --save molotov`
 
-### Example: A .molotov.json file
-An example of the .molotov.json file for the scheme-punk project.
-```
+## Description
+
+Molotov provides a series of tools that help modules with a uniform way to provide super classes and mixins for ["Real Mixins"](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/). Molotov also provides the ability to override mixin and supers via [config](https://www.npmjs.com/package/config) and the cocktail class from Molotov.
+
+
+## Usage
+
+### To provide molotov style plugin supers and mixins to others (3 steps):
+
+#### 1) Add a `.molotov.json` file to their module root to configure and document their molotov provider choices.
+
+```js
+// An example of the .molotov.json file for the scheme-punk project.
+
 {
   "molotov": {
     "providers": {
@@ -27,7 +34,39 @@ An example of the .molotov.json file for the scheme-punk project.
 }
 ```
 
-## To have your modules override molotov provider modules through config and the molotov/cocktail class.
+#### 2) Implement (or extend) superMixologist to provide super classes for your module.
+
+#### Implement SuperMixologist Example:
+
+```js
+// Require the superMixologist Class.
+const SuperMixologist = require('molotov/superMixologist');
+
+// Create an instance of that class.
+const superMixologist = new SuperMixologist(pathFolderContainingMolotovConfig);
+
+// Populate your supers from your molotov config and integrate any user overrides of your supers.
+const providerSupers = superMixologist.resolveSupers();
+
+/* If we use the example .molotov.json file above provideSupers will be
+ *  an object keyed by superNameSpace as designated in the molotov config
+ * with a value of the required super class:
+ *  {
+ *    "transform": FUNCTION [schemePunkTransform],
+ *    "source": FUNCTION [schemePunkSource],
+ *    "destination": FUNCTION [schemePunkDestination]
+ *  }
+ */
+```
+
+#### 3) Implement (or extend) molotov.js with a custom Molotov implementation OR call molotov.js and pass the appropriate parameters.
+```
+
+```
+
+
+## To override a molotov provider module through config and the molotov/cocktail class in your own module
+
 
 ### Example: Overriding a provider's super class:
 * Set config in that molotov provider's namespace with a path to your super override class. 
@@ -62,5 +101,22 @@ Implementing modules can override existing cocktail mixin plugin definitions or 
     }
   }
 }
+```
+## Advanced Usage:
+
+### Extending Classes vs Implementing
+
+#### SuperMixologist
+
+How to Choose: When to implement and when to extend superMixologist?
+
+Implement
+> If you want a simple uniform interface that will allow you to provide super classes for your modules mixins and your modules users. The simplicity of this route comes at the cost of dynamically requiring your superClasses however, so just be aware.
+
+Extend
+> If you would rather exchange the simplicity of the superMixologist interface for more control around how and where your super classes are required then extend the superMixologist class.
+
+Extending SuperMixologist Example:
+```
 
 ```

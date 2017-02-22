@@ -37,21 +37,24 @@ test('validateMolotovSettingsFalseAgain', async (t) => {
   t.false(t.context.data);
 });
 
-test('getSupersHasSupers', async (t) => {
+test('getSupersHasSupers', (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovTwo');
   superMixologist.setSupers({superKeyName: 'thing'});
-  t.context.data = await superMixologist.getSupers();
+
+  t.context.data = superMixologist.getSupers();
   t.deepEqual(t.context.data, {superKeyName: 'thing'});
 });
 
 test('requireSupers', async (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/');
+  superMixologist.overridesFetched = true;
   t.context.data = await superMixologist.requireSupers();
   t.deepEqual(Object.keys(t.context.data), ['testSuper']);
 });
 
 test('requireSupersError', (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovOne');
+  superMixologist.overridesFetched = true;
   t.throws(
     superMixologist.requireSupers()
   );
@@ -64,18 +67,33 @@ test('setOverrides', async (t) => {
   t.deepEqual(t.context.data, {superKeyName: 'thing'});
 });
 
-test('mergeConfig', async (t) => {
+test('mergeConfig', (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/');
   superMixologist.setSupers({superKeyName: 'thingOne'});
   superMixologist.setOverrides({superKeyName: 'thingTwo'});
-  t.context.data = await superMixologist.mergeConfig();
+  t.context.data = superMixologist.mergeConfig();
   t.deepEqual(t.context.data, {superKeyName: 'thingTwo'});
 });
 
 test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers/');
   superMixologist.requireSupers()
-    .then(() => superMixologist.fetchOverrides())
+    .then(() => {
+      superMixologist.setConfig({
+        testPackage: {
+          testSuper: {
+            superOverride: '/helpers/testSuperOverride'
+          },
+          molotov: {
+            cocktailPluginLoaders: [
+              'path/to/mixinStylePluginLoader/implementing/cocktailClass',
+              'anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides'
+            ]
+          }
+        }
+      });
+      return superMixologist.fetchOverrides();
+    })
     .then((result) => {
       resolve(result);
     });
@@ -91,11 +109,22 @@ test('resolveSupers', async (t) => {
 });
 
 
-test('getSupers', async (t) => {
+test('getSupers', (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/');
-  t.context.data = await superMixologist.getSupers();
-  t.deepEqual(
-    t.context.data.testSuper.name,
-    'testSuperOverride',
+  superMixologist.setSupers('test');
+  t.context.data = superMixologist.getSupers();
+  t.is(
+    t.context.data,
+    'test',
     'Resolve Supers is not functioning as expected.');
+});
+
+
+test('getTraceIndex', (t) => {
+  const superMixologist = new SuperMixologist('./test/helpers/');
+  t.context.data = superMixologist.getTraceIndex(2);
+  t.is(
+    t.context.data,
+    1,
+    'Get Trace Index is not functioning as expected.');
 });

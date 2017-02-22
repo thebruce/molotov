@@ -20,6 +20,7 @@ const config = require('config');
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
+const stack = require('callsite');
 
 // Users instantiate superMixologist.
 // superMixologist = new SuperMixologist(pathToProviderModule);
@@ -34,11 +35,28 @@ const superMixologist = class {
    *   The base path of the molotovConfig file for the provider module
    *     for these super classes.
    */
-  constructor(molotovConfigpath) {
+  constructor(molotovConfigpath, supers) {
+    if (typeof supers !== 'undefined') {
+      this.setSupers(supers);
+    }
     this.molotovNameSpace = [];
     this.setMolotovSettingsPath(molotovConfigpath);
+
+    this.setConfig({});
+
+    if (config.util.getConfigSources().length) {
+      this.setConfig(config);
+    }
   }
 
+
+  setConfig(userConfig) {
+    this.config = userConfig;
+  }
+
+  getConfig() {
+    return this.config;
+  }
   /**
    * validateMolotovSettings()
    *   Validates and creates Molotov settings.
@@ -155,24 +173,37 @@ const superMixologist = class {
    *  Returns an object bearing promise of config overrides.
    */
   fetchOverrides() {
-    const configTemp = {};
     const nameSpace = this.getMolotovNameSpace();
-    this.getSupers()
-    .then((results) => {
-      const superConfig = _.cloneDeep(results);
+    const fetcher = new Promise((res) => {
+
+      const configTemp = {};
+      const superConfig = _.cloneDeep(this.getSupers());
+
+      // Get overrides for declared supers name spaces.
       Object.keys(superConfig).forEach((currentValue) => {
-        if (_.has(config, `${nameSpace}.${currentValue}.superOverride`)) {
+        if (_.has(this.getConfig(), `${nameSpace}.${currentValue}.superOverride`)) {
           // We do have an overide, we will set the path.
-          const override = config[nameSpace][currentValue].superOverride;
-          // Now let's try and require it.
+          const override = this.getConfig()[nameSpace][currentValue].superOverride;
+          // base is our resolve path to this module.
+          const base = require.resolve('./');
+          const stackTrace = stack().reverse();
+          let traceIndex = stackTrace.findIndex(
+            trace => trace.getFileName() === base
+          );
+          traceIndex = this.getTraceIndex(traceIndex);
           // eslint-disable-next-line import/no-dynamic-require
-          configTemp[currentValue] = require(path.join(__dirname, override));
+          configTemp[currentValue] = require(
+              path.join(path.resolve(path.dirname(stackTrace[traceIndex].getFileName())),
+              override
+            ));
         }
       }, this);
       this.overridesFetched = true;
       this.setOverrides(configTemp);
-      return configTemp;
+
+      res(configTemp);
     });
+    return fetcher.then(overriddenSupers => overriddenSupers);
   }
 
   /**
@@ -205,18 +236,16 @@ const superMixologist = class {
    *    with any user provided config overrides of those supers.
    */
   mergeConfig() {
-    const mergeConfigPromise = this.getSupers();
-    return mergeConfigPromise.then((results) => {
-      const superTemp = _.cloneDeep(results);
-      const tmpConfig = Object.assign(superTemp, this.getOverrides());
-      this.setSupers(tmpConfig);
-      return tmpConfig;
-    });
+    const results = this.getSupers();
+    const tmpConfig = Object.assign(_.cloneDeep(results), this.getOverrides());
+    this.setSupers(tmpConfig);
+    return tmpConfig;
   }
 
   /**
    * requireSupers
    *  Populates molotov provider indicated supers by requiring their classes.
+   *
    * @returns {Promise.object}
    *   An object bearing promise of super class values keyed by molotov
    *   indicated
@@ -269,15 +298,7 @@ const superMixologist = class {
    *       EX: superNameSpace: class
    */
   getSupers() {
-    return new Promise((res) => {
-      if (_.has(this, 'supers')) {
-        res(this.supers);
-      }
-      else {
-        this.resolveSupers()
-        .then(result => res(result));
-      }
-    });
+    return this.supers;
   }
 
   /**
@@ -289,16 +310,31 @@ const superMixologist = class {
    *    with any user provided config overrides of those supers.
    */
   resolveSupers() {
-    return new Promise((res) => {
-      // Get supers by requiring them.
+    let superResolver;
+    if (_.has(this, 'supers')) {
+      // If we have supers take them from getSupers();
+      superResolver = new Promise((res, rej) => res(this.getSupers()))
+      .then(() => this.validateMolotovSettings());
+    }
+    else {
+      // If we don't have supers yet, require them dynamically
+      // from molotov config.
+      superResolver = this.requireSupers();
+    }
 
-      this.requireSupers()
-      .then(() => this.fetchOverrides())
-      .then(() => this.mergeConfig())
-      .then((tmpConfig) => {
-        res(tmpConfig);
-      });
+    const superNext = superResolver.then(() => this.fetchOverrides());
+    return superNext.then((configOverrides) => {
+      return this.mergeConfig();
     });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getTraceIndex(index) {
+    if (index > 0) {
+      return index - 1;
+    }
+
+    return 0;
   }
 };
 
