@@ -34,16 +34,47 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 }
 ```
 
-#### 2) Implement (or extend) superMixologist to provide super classes for your module.
+#### 2) Implement superMixologist to provide super classes for your module.
 
 #### Implement SuperMixologist Example:
 
 ```js
+// This approach will load up your super classes from your molotov config.
 // Require the superMixologist Class.
 const SuperMixologist = require('molotov/superMixologist');
 
 // Create an instance of that class.
 const superMixologist = new SuperMixologist(pathFolderContainingMolotovConfig);
+
+// Populate your supers from your molotov config and integrate any user overrides of your supers.
+const providerSupers = superMixologist.resolveSupers();
+
+/* If we use the example .molotov.json file above provideSupers will be
+ *  an object keyed by superNameSpace as designated in the molotov config
+ * with a value of the required super class:
+ *  {
+ *    "transform": FUNCTION [schemePunkTransform],
+ *    "source": FUNCTION [schemePunkSource],
+ *    "destination": FUNCTION [schemePunkDestination]
+ *  }
+ */
+```
+
+#### Implement SuperMixologist Example 2:
+```js
+// This approach requires your supers ahead of time and passes them in.
+// You might choose to do this to keep your requires declarative and at require time.
+const supers = {
+  transform: require('./transform/schemePunkTransform'),
+  source: require('./source/schemePunkSource'),
+  destination: require('./destination/schemePunkDestination')
+}
+
+// Require the superMixologist Class.
+const SuperMixologist = require('molotov/superMixologist', supers);
+
+// Create an instance of that class.
+const superMixologist = new SuperMixologist(pathFolderContainingMolotovConfig, supers);
 
 // Populate your supers from your molotov config and integrate any user overrides of your supers.
 const providerSupers = superMixologist.resolveSupers();
@@ -101,22 +132,4 @@ Implementing modules can override existing cocktail mixin plugin definitions or 
     }
   }
 }
-```
-## Advanced Usage:
-
-### Extending Classes vs Implementing
-
-#### SuperMixologist
-
-How to Choose: When to implement and when to extend superMixologist?
-
-Implement
-> If you want a simple uniform interface that will allow you to provide super classes for your modules mixins and your modules users. The simplicity of this route comes at the cost of dynamically requiring your superClasses however, so just be aware.
-
-Extend
-> If you would rather exchange the simplicity of the superMixologist interface for more control around how and where your super classes are required then extend the superMixologist class.
-
-Extending SuperMixologist Example:
-```
-
 ```
