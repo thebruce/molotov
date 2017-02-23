@@ -33,7 +33,7 @@ test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line n
       superMixologist.setConfig({
         testPackage: {
           testSuper: {
-            superOverride: '/helpers/testSuperOverride'
+            supersOverride: '/helpers/testSuperOverride'
           },
           molotov: {
             cocktailPluginLoaders: [

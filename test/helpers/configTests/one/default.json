@@ -1,7 +1,7 @@
 {
   "testPackage": {
     "testSuper": {
-      "superOverride": "/test/helpers/testSuperOverride"
+      "supersOverride": "/test/helpers/testSuperOverride"
     },
     "molotov": {
       "cocktailPluginLoaders": [

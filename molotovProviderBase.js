@@ -49,8 +49,8 @@ const molotovProviderBase = class {
    * mergeConfig
    *
    * @returns {Promise.obj}
-   *   A object bearing the molotov super classes keyed by super name space
-   *    with any user provided config overrides of those supers.
+   *   A object bearing the molotov target classes keyed by target name space
+   *    with any user provided config overrides of those target.
    */
   mergeConfig(mergeTarget) {
     const results = this[`get${mergeTarget}`]();
@@ -166,9 +166,9 @@ const molotovProviderBase = class {
 
   /**
    * fetchOverrides
-   *   Gets super override paths from config, requires and assigns them to
-   *   this.overrides as well as marking a sentinel value
-   *   this.overridesFetched.
+   *   Gets target namespace override paths from config,
+   *   requires and assigns them to this.overrides as well as
+   *   marking a sentinel value this.overridesFetched.
    *
    * @returns {Promise.obj}
    *  Returns an object bearing promise of config overrides.
@@ -179,11 +179,11 @@ const molotovProviderBase = class {
       const configTemp = {};
       const superConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
 
-      // Get overrides for declared supers name spaces.
+      // Get overrides for declared target name spaces.
       Object.keys(superConfig).forEach((currentValue) => {
-        if (_.has(this.getConfig(), `${nameSpace}.${currentValue}.superOverride`)) {
+        if (_.has(this.getConfig(), `${nameSpace}.${currentValue}.${this.getDynamicRequiresType().toLowerCase()}Override`)) {
           // We do have an overide, we will set the path.
-          const override = this.getConfig()[nameSpace][currentValue].superOverride;
+          const override = this.getConfig()[nameSpace][currentValue][`${this.getDynamicRequiresType().toLowerCase()}Override`];
           // base is our resolve path to this module.
           const base = require.resolve('./');
           const stackTrace = stack().reverse();
@@ -208,10 +208,10 @@ const molotovProviderBase = class {
 
   /**
    * setOverrides
-   *   Sets user config defined super overrides.
+   *   Sets user config defined target namespace overrides.
    *
    * @param {object} overrides
-   *   An object of user suplied super overrides keyed by the supers nameSpace
+   *   An object of user suplied overrides keyed by the target nameSpace
    *     with a value of their class.
    */
   setOverrides(overrides) {
@@ -220,7 +220,7 @@ const molotovProviderBase = class {
 
   /**
    * getOverrides
-   *   Get this.overrides, user config defined super overrides.x
+   *   Get this.overrides, user config defined target name space overrides.
    *
    * @returns {obj} this.overrides
    */
@@ -252,37 +252,70 @@ const molotovProviderBase = class {
     return this.supers;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getTraceIndex(index) {
+  /**
+   * getTraceIndex
+   *
+   * @param {int} index
+   *   A stack trace index.
+   *
+   * @returns {int}
+   */
+  getTraceIndex(index) {  // eslint-disable-line class-methods-use-this
     if (index > 0) {
       return index - 1;
     }
     return 0;
   }
 
+  /**
+   * setDynamicRequiresType
+   *
+   * @param {string} type
+   *   A dynamicRequiresType i.e. Supers, or Plugins
+   */
   setDynamicRequiresType(type) {
     this.dynamicRequiresType = type;
   }
 
+  /**
+   * getDynamicRequiresType
+   *
+   * @returns {string}
+   *   returns a dynamic requires type i.e. Supers or Plugins.
+   */
   getDynamicRequiresType() {
     return this.dynamicRequiresType;
   }
 
+  /**
+   * setValidateTarget
+   *
+   * @param {string} target
+   *   A target namespace.
+   */
   setValidateTarget(target) {
     this.validateTarget = target;
   }
 
+  /**
+   * getValidateTarget()
+   *   Gets the namesapce target for this molotov class.
+   *
+   * @returns {string}
+   *   The nameSpace target.
+   */
   getValidateTarget() {
     return this.validateTarget;
   }
 
   /**
    * dynamicRequires
-   *  Populates molotov provider indicated supers by requiring their classes.
+   *  Populates molotov provider indicated molotov Targets
+   *  by requiring their classes.
    *
    * @returns {Promise.object}
-   *   An object bearing promise of super class values keyed by molotov
-   *   indicated super namespaces.
+   *   An object bearing promise of target class values keyed by molotov
+   *   indicated target namespaces.
    */
   dynamicRequires() {
     return this.validateMolotovSettings(this.getValidateTarget())
@@ -313,27 +346,33 @@ const molotovProviderBase = class {
   }
 
   /**
-   * resolveSupers()
-   *   Gets supers by requiring them. Then checks and merges in overrides.
+   * resolve()
+   *   If we do not already have the molotov item in this scope
+   *   (i.e. supers, or plugins) then we dynamically require them.
+   *   Once we have a target item we then look for user provided overrides.
+   *   We merge any overrides and return the merged object.
    *
    * @returns Promise.obj
-   *   A object bearing the molotov super classes keyed by super name space
-   *    with any user provided config overrides of those supers.
+   *   A object bearing the molotov target classes keyed by target name space
+   *    with any user provided config overrides of those target name spaces.
    */
   resolve() {
     let resolver;
     if (_.has(this, this.getDynamicRequiresType().toLowerCase())) {
-      // If we have supers take them from getSupers();
+      // If we have our target items in 'this' scope take them
+      // from target getter, i.e. getSupers();
+      // After that run validate, in case it hasn't been run.
       resolver = new Promise(res => res(this[`get${this.getDynamicRequiresType()}`]()))
       .then(() => this.validateMolotovSettings(this.getValidateTarget()));
     }
     else {
-      // If we don't have supers yet, require them dynamically
+      // If we don't have our target items, require them dynamically
       // from molotov config.
       resolver = this.dynamicRequires();
     }
-
+    // At this point we are ready to see if we have user provided overrides.
     const nextStep = resolver.then(() => this.fetchOverrides());
+    // And finally we can return our merged config.
     return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
   }
 };
