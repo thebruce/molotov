@@ -11,73 +11,24 @@ process.env.NODE_CONFIG_DIR = path.join(__dirname, '/helpers', 'configTests', 'o
 const config = require('config'); // eslint-disable-line no-unused-vars
 const SuperMixologist = require('../superMixologist');
 
-
-test('validateMolotovSettings', async (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/');
-  t.context.data = await superMixologist.validateMolotovSettings();
-  t.true(t.context.data);
-});
-
-test('molotovConfigDoesntExist', (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/baba');
-  t.throws(
-    superMixologist.setMolotovSettings()
-  );
-});
-
-test('validateMolotovSettingsFalse', async (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovOne');
-  t.context.data = await superMixologist.validateMolotovSettings();
-  t.false(t.context.data);
-});
-
-test('validateMolotovSettingsFalseAgain', async (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovTwo');
-  t.context.data = await superMixologist.validateMolotovSettings();
-  t.false(t.context.data);
-});
-
-test('getSupersHasSupers', (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovTwo');
-  superMixologist.setSupers({superKeyName: 'thing'});
-
-  t.context.data = superMixologist.getSupers();
-  t.deepEqual(t.context.data, {superKeyName: 'thing'});
-});
-
-test('requireSupers', async (t) => {
+test('dynamicRequires', async (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/');
   superMixologist.overridesFetched = true;
-  t.context.data = await superMixologist.requireSupers();
+  t.context.data = await superMixologist.dynamicRequires();
   t.deepEqual(Object.keys(t.context.data), ['testSuper']);
 });
 
-test('requireSupersError', (t) => {
+test('dynamicRequiresError', (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/fakeMolotovOne');
   superMixologist.overridesFetched = true;
   t.throws(
-    superMixologist.requireSupers()
+    superMixologist.dynamicRequires()
   );
-});
-
-test('setOverrides', async (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/');
-  superMixologist.setOverrides({superKeyName: 'thing'});
-  t.context.data = await superMixologist.getOverrides();
-  t.deepEqual(t.context.data, {superKeyName: 'thing'});
-});
-
-test('mergeConfig', (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/');
-  superMixologist.setSupers({superKeyName: 'thingOne'});
-  superMixologist.setOverrides({superKeyName: 'thingTwo'});
-  t.context.data = superMixologist.mergeConfig();
-  t.deepEqual(t.context.data, {superKeyName: 'thingTwo'});
 });
 
 test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers/');
-  superMixologist.requireSupers()
+  superMixologist.dynamicRequires()
     .then(() => {
       superMixologist.setConfig({
         testPackage: {
@@ -99,32 +50,11 @@ test('fetchOverrides', t => new Promise((resolve) => {  // eslint-disable-line n
     });
 }));
 
-test('resolveSupers', async (t) => {
+test('resolve', async (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/');
-  t.context.data = await superMixologist.resolveSupers();
+  t.context.data = await superMixologist.resolve();
   t.deepEqual(
     t.context.data.testSuper.name,
     'testSuperOverride',
     'Resolve Supers is not functioning as expected.');
-});
-
-
-test('getSupers', (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/');
-  superMixologist.setSupers('test');
-  t.context.data = superMixologist.getSupers();
-  t.is(
-    t.context.data,
-    'test',
-    'Resolve Supers is not functioning as expected.');
-});
-
-
-test('getTraceIndex', (t) => {
-  const superMixologist = new SuperMixologist('./test/helpers/');
-  t.context.data = superMixologist.getTraceIndex(2);
-  t.is(
-    t.context.data,
-    1,
-    'Get Trace Index is not functioning as expected.');
 });
