@@ -11,9 +11,12 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
 const config = require('config');
+const stack = require('callsite');
 
 const molotovProviderBase = class {
-  constructor(molotovConfigpath) {
+  constructor(molotovConfigpath, type, target) {
+    this.setDynamicRequiresType(type);
+    this.setValidateTarget(target);
     this.molotovNameSpace = [];
     this.setMolotovSettingsPath(molotovConfigpath);
 
@@ -162,6 +165,48 @@ const molotovProviderBase = class {
   }
 
   /**
+   * fetchOverrides
+   *   Gets super override paths from config, requires and assigns them to
+   *   this.overrides as well as marking a sentinel value
+   *   this.overridesFetched.
+   *
+   * @returns {Promise.obj}
+   *  Returns an object bearing promise of config overrides.
+   */
+  fetchOverrides() {
+    const nameSpace = this.getMolotovNameSpace();
+    const fetcher = new Promise((res) => {
+      const configTemp = {};
+      const superConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
+
+      // Get overrides for declared supers name spaces.
+      Object.keys(superConfig).forEach((currentValue) => {
+        if (_.has(this.getConfig(), `${nameSpace}.${currentValue}.superOverride`)) {
+          // We do have an overide, we will set the path.
+          const override = this.getConfig()[nameSpace][currentValue].superOverride;
+          // base is our resolve path to this module.
+          const base = require.resolve('./');
+          const stackTrace = stack().reverse();
+          let traceIndex = stackTrace.findIndex(
+            trace => trace.getFileName() === base
+          );
+          traceIndex = this.getTraceIndex(traceIndex);
+          // eslint-disable-next-line import/no-dynamic-require
+          configTemp[currentValue] = require(
+              path.join(path.resolve(path.dirname(stackTrace[traceIndex].getFileName())),
+              override
+            ));
+        }
+      }, this);
+      this.overridesFetched = true;
+      this.setOverrides(configTemp);
+
+      res(configTemp);
+    });
+    return fetcher.then(overriddenValues => overriddenValues);
+  }
+
+  /**
    * setOverrides
    *   Sets user config defined super overrides.
    *
@@ -213,6 +258,83 @@ const molotovProviderBase = class {
       return index - 1;
     }
     return 0;
+  }
+
+  setDynamicRequiresType(type) {
+    this.dynamicRequiresType = type;
+  }
+
+  getDynamicRequiresType() {
+    return this.dynamicRequiresType;
+  }
+
+  setValidateTarget(target) {
+    this.validateTarget = target;
+  }
+
+  getValidateTarget() {
+    return this.validateTarget;
+  }
+
+  /**
+   * dynamicRequires
+   *  Populates molotov provider indicated supers by requiring their classes.
+   *
+   * @returns {Promise.object}
+   *   An object bearing promise of super class values keyed by molotov
+   *   indicated super namespaces.
+   */
+  dynamicRequires() {
+    return this.validateMolotovSettings(this.getValidateTarget())
+    .then(() => {
+      try {
+        // Get nameSpace.
+        const nameSpace = this.getMolotovNameSpace();
+        const items = {};
+        // require items in this name space.
+        Object.keys(
+          this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
+        ).forEach((key) => {
+          // For each super in molotov settings attempt to require item.
+          // eslint-disable-next-line import/no-dynamic-require
+          items[key] = require(
+            path.join(
+              __dirname,
+              this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key])
+          );
+        });
+        this[`set${this.getDynamicRequiresType()}`](items);
+        return items;
+      }
+      catch (err) {
+        throw new Error(err);
+      }
+    });
+  }
+
+  /**
+   * resolveSupers()
+   *   Gets supers by requiring them. Then checks and merges in overrides.
+   *
+   * @returns Promise.obj
+   *   A object bearing the molotov super classes keyed by super name space
+   *    with any user provided config overrides of those supers.
+   */
+  resolve() {
+    let resolver;
+    if (_.has(this, this.getDynamicRequiresType().toLowerCase())) {
+      // If we have supers take them from getSupers();
+      resolver = new Promise(res => res(this[`get${this.getDynamicRequiresType()}`]()))
+      .then(() => this.validateMolotovSettings(this.getValidateTarget()));
+    }
+    else {
+      // If we don't have supers yet, require them dynamically
+      // from molotov config.
+      resolver = this.dynamicRequires();
+    }
+
+    const nextStep = resolver.then(() => this.fetchOverrides());
+    return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
   }
 };
 

@@ -17,7 +17,7 @@ const supers = {
 
 test('resolveSupers', async (t) => {
   const superMixologist = new SuperMixologist('./test/helpers/', supers);
-  t.context.data = await superMixologist.resolveSupers();
+  t.context.data = await superMixologist.resolve();
   t.deepEqual(
     t.context.data.testSuper.name,
     'testSuperOverride',
