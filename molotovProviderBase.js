@@ -176,34 +176,62 @@ const molotovProviderBase = class {
   fetchOverrides() {
     const nameSpace = this.getMolotovNameSpace();
     const fetcher = new Promise((res) => {
-      const configTemp = {};
-      const superConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
+      let configTemp;
+      const targetConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
 
-      // Get overrides for declared target name spaces.
-      Object.keys(superConfig).forEach((currentValue) => {
-        if (_.has(this.getConfig(), `${nameSpace}.${currentValue}.${this.getDynamicRequiresType().toLowerCase()}Override`)) {
+      if (_.isArray(targetConfig)) {
+        // For arrays we push the value to the array.
+        configTemp = [];
+        this.getConfig().molotov[this.getValidateTarget()].forEach((currentValue) => {
           // We do have an overide, we will set the path.
-          const override = this.getConfig()[nameSpace][currentValue][`${this.getDynamicRequiresType().toLowerCase()}Override`];
-          // base is our resolve path to this module.
-          const base = require.resolve('./');
-          const stackTrace = stack().reverse();
-          let traceIndex = stackTrace.findIndex(
-            trace => trace.getFileName() === base
-          );
-          traceIndex = this.getTraceIndex(traceIndex);
-          // eslint-disable-next-line import/no-dynamic-require
-          configTemp[currentValue] = require(
-              path.join(path.resolve(path.dirname(stackTrace[traceIndex].getFileName())),
-              override
-            ));
-        }
-      }, this);
+          configTemp.push(this.getItem(currentValue));
+        }, this);
+      }
+      else {
+        // For objects we allow for namespaces.
+        configTemp = {};
+        Object.keys(targetConfig).forEach((currentValue) => {
+          if (
+            _.has(this.getConfig(),
+            `${nameSpace}.${currentValue}.${this.getDynamicRequiresType().toLowerCase()}Override`
+            )) {
+            // We do have an overide, we will set the path.
+            const override = this.getConfig()[nameSpace][currentValue][`${this.getDynamicRequiresType().toLowerCase()}Override`];
+            // eslint-disable-next-line import/no-dynamic-require
+            configTemp[currentValue] = this.getItem(override);
+          }
+        }, this);
+      }
+
       this.overridesFetched = true;
       this.setOverrides(configTemp);
 
       res(configTemp);
     });
     return fetcher.then(overriddenValues => overriddenValues);
+  }
+
+  /**
+   * getItem.
+   *
+   * @param {string} itemPath
+   *   A path to an item we should require.
+   *
+   * @returns a required item.
+   */
+  getItem(itemPath) {
+    const base = require.resolve('./');
+    const stackTrace = stack().reverse();
+    let traceIndex = stackTrace.findIndex(
+      trace => trace.getFileName() === base
+    );
+    traceIndex = this.getTraceIndex(traceIndex);
+    // eslint-disable-next-line import/no-dynamic-require
+    const requiredItem = require(
+      path.join(path.resolve(path.dirname(stackTrace[traceIndex].getFileName())),
+      itemPath
+    ));
+    return requiredItem;
   }
 
   /**
@@ -323,20 +351,28 @@ const molotovProviderBase = class {
       try {
         // Get nameSpace.
         const nameSpace = this.getMolotovNameSpace();
-        const items = {};
-        // require items in this name space.
-        Object.keys(
-          this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
-        ).forEach((key) => {
-          // For each super in molotov settings attempt to require item.
-          // eslint-disable-next-line import/no-dynamic-require
-          items[key] = require(
-            path.join(
-              __dirname,
-              this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key])
-          );
-        });
-        this[`set${this.getDynamicRequiresType()}`](items);
+        let items;
+        // for object or array this is different.
+
+        if (_.isArray(this.getMolotovSettings()[nameSpace][this.getValidateTarget()])) {
+          items = [];
+          this.getMolotovSettings()[nameSpace][this.getValidateTarget()].forEach((value) => {
+            items.push = this.getItem(value);
+          });
+          items.push();
+        }
+        else {
+          items = {};
+          // require items in this name space.
+          Object.keys(
+            this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
+          ).forEach((key) => {
+            // For each super in molotov settings attempt to require item.
+            // eslint-disable-next-line import/no-dynamic-require
+            items[key] = this.getItem(this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]);
+          });
+          this[`set${this.getDynamicRequiresType()}`](items);
+        }
         return items;
       }
       catch (err) {
