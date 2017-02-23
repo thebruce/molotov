@@ -195,9 +195,8 @@ const molotovProviderBase = class {
             _.has(this.getConfig(),
             `${nameSpace}.${currentValue}.${this.getDynamicRequiresType().toLowerCase()}Override`
             )) {
-            // We do have an overide, we will set the path.
+            // eslint-disable-next-line max-len
             const override = this.getConfig()[nameSpace][currentValue][`${this.getDynamicRequiresType().toLowerCase()}Override`];
-            // eslint-disable-next-line import/no-dynamic-require
             configTemp[currentValue] = this.getItem(override);
           }
         }, this);
@@ -369,7 +368,9 @@ const molotovProviderBase = class {
           ).forEach((key) => {
             // For each super in molotov settings attempt to require item.
             // eslint-disable-next-line import/no-dynamic-require
-            items[key] = this.getItem(this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]);
+            items[key] = this.getItem(
+              this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]
+            );
           });
           this[`set${this.getDynamicRequiresType()}`](items);
         }
