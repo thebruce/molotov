@@ -76,10 +76,10 @@ const supers = requireDirectory(module, './supersDirectory');
 // require the directory with all of your mixins.
 // THe directory will be organized with directories representing super name spaces
 // and those directories will hold your mixins
-//  |-- plugins
-//  |-- | -- exampleSupersNameSpace
-//  |-- | -- |  mixinOne.js
-//  |-- | -- |  mixinTwo.js
+//  plugins
+//  |-- exampleSupersNameSpace
+//  |-- | -- mixinOne.js
+//  |-- | -- mixinTwo.js
 const plugins = requireDirectory(module, './plugins');
 
 // set the path to your .molotov.json molotov config file (see above)
@@ -105,18 +105,18 @@ const requireDirectory = require('require-directory');
 // require the directory with all of your supers classes.
 // THe directory will be organized with directories representing super name spaces
 // and those directories will hold your supers classes. 
-//  |-- supersDirectory
-//  |-- | -- exampleSupersNameSpace
-//  |-- | -- |  exampleSuperNameSpace.js
+//  supersDirectory
+//  |-- exampleSupersNameSpace
+//  |-- | -- exampleSuperNameSpace.js
 const supers = requireDirectory(module, './supersDirectory');
 
 // require the directory with all of your mixins.
 // THe directory will be organized with directories representing super name spaces
 // and those directories will hold your mixins
-//  |-- plugins
-//  |-- | -- exampleSupersNameSpace
-//  |-- | -- |  mixinOne.js
-//  |-- | -- |  mixinTwo.js
+//  plugins
+//  |-- exampleSupersNameSpace
+//  |-- | -- mixinOne.js
+//  |-- | -- mixinTwo.js
 const plugins = requireDirectory(module, './plugins');
 
 // set the path to your .molotov.json molotov config file (see above)
@@ -144,7 +144,7 @@ module.exports = function implementFactory(superNameSpace, pluginName) {
         testFunction(value) {
           // Calls to your first mixin and up the chain
           // if they also implement super.
-          this.value = super.transform(value);
+          this.value = super.testFunction(value);
         }
     });
 };
