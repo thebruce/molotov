@@ -24,28 +24,30 @@ const _ = require('lodash');
  *   Returns an object keyed by superNameSpaces and then by pluginName
  *   with mixin class values.
  */
-module.exports = function pluginMaker(pluginsDirectoryObject, supers) {
+module.exports = function pluginMaker(pluginsDefinitions, pluginsDirectoryObject, supers) {
   const plugins = {};
+
   // Plugin directories are structured in folders named
   // after the super namespaces.
-  Object.keys(pluginsDirectoryObject).forEach((directoryKey) => {
+  Object.keys(pluginsDefinitions).forEach((directoryKey) => {
     // Each key below the superNameSpace directory key will be a plugin file.
-    Object.keys(pluginsDirectoryObject[directoryKey]).forEach((pluginKey) => {
+    Object.keys(pluginsDefinitions[directoryKey]).forEach((pluginKey) => {
       const tmpPluginArray = _.reverse(
         _.cloneDeep(
-          pluginsDirectoryObject[directoryKey][pluginKey]
+          pluginsDefinitions[directoryKey][pluginKey]
         )
       );
       const superClass = supers[directoryKey];
 
       // Mixins follow a pattern like this: Mixin2(Mixin3(superclass));
-      tmpPluginArray.reduce(
+      const dumpy = tmpPluginArray.reduce(
         (mixClass, mixin) => pluginsDirectoryObject[directoryKey][mixin](mixClass),
         superClass
       );
-
-      _.set(`plugins.${directoryKey}.${pluginKey}`,
-        tmpPluginArray
+      _.set(
+        plugins,
+        `${directoryKey}.${pluginKey}`,
+        dumpy
       );
     });
   });

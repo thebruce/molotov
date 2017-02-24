@@ -26,25 +26,41 @@ const polttopullo = class extends molotovProviderBase {
   constructor(molotovConfigPath, supers, plugins) {
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(molotovConfigPath, type, target, supers);
-
-    if (typeof plugins !== 'undefined') {
-      this.setPlugins(plugins);
-    }
+    super(molotovConfigPath, type, target);
+    this.setSupers(supers);
+    this.setPluginsDirectory(plugins);
   }
 
-  setPlugins(pluginsDirectoryObject) {
-    // Set up the plugin using required plugin setup.
-    // Call the plugin maker to create a plugin object
-    // keyed by supers name space and plugin name.
-    const plugins = pluginMaker(pluginsDirectoryObject, this.getSupers());
+  setPluginsDirectory(pluginsDir) {
+    this.pluginsDirectory = pluginsDir;
+  }
 
-    // supers are keyed namespaced.
+  getPluginsDirectory() {
+    return this.pluginsDirectory;
+  }
+
+  setPlugins(plugins) {
     this.plugins = plugins;
   }
 
   getPlugins() {
     return this.plugins;
+  }
+
+  resolve() {
+    const resolver = this.validateMolotovSettings(this.getValidateTarget())
+    .then(() => {
+      const plugins = pluginMaker(
+        this.getMolotovSettings()[this.getMolotovNameSpace()].molotovPlugins,
+        this.getPluginsDirectory(),
+        this.getSupers()
+      );
+      this.setPlugins(plugins);
+      return plugins;
+    });
+
+    const nextStep = resolver.then(() => this.fetchOverrides());
+    return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
   }
 };
 

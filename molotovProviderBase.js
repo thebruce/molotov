@@ -147,8 +147,9 @@ const molotovProviderBase = class {
 
   /**
    * addMolotovNameSpaces
+   *
    *  Add a molotovNameSpace.
-   * @param string nameSpace
+   * @param {string} nameSpace
    */
   setMolotovNameSpace(nameSpace) {
     this.molotovNameSpace = nameSpace;
@@ -204,7 +205,6 @@ const molotovProviderBase = class {
 
       this.overridesFetched = true;
       this.setOverrides(configTemp);
-
       res(configTemp);
     });
     return fetcher.then(overriddenValues => overriddenValues);
@@ -350,30 +350,18 @@ const molotovProviderBase = class {
       try {
         // Get nameSpace.
         const nameSpace = this.getMolotovNameSpace();
-        let items;
-        // for object or array this is different.
-
-        if (_.isArray(this.getMolotovSettings()[nameSpace][this.getValidateTarget()])) {
-          items = [];
-          this.getMolotovSettings()[nameSpace][this.getValidateTarget()].forEach((value) => {
-            items.push = this.getItem(value);
-          });
-          items.push();
-        }
-        else {
-          items = {};
-          // require items in this name space.
-          Object.keys(
-            this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
-          ).forEach((key) => {
-            // For each super in molotov settings attempt to require item.
-            // eslint-disable-next-line import/no-dynamic-require
-            items[key] = this.getItem(
-              this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]
-            );
-          });
-          this[`set${this.getDynamicRequiresType()}`](items);
-        }
+        const items = {};
+        // require items in this name space.
+        Object.keys(
+          this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
+        ).forEach((key) => {
+          // For each super in molotov settings attempt to require item.
+          // eslint-disable-next-line import/no-dynamic-require
+          items[key] = this.getItem(
+            this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]
+          );
+        });
+        this[`set${this.getDynamicRequiresType()}`](items);
         return items;
       }
       catch (err) {
@@ -409,6 +397,7 @@ const molotovProviderBase = class {
     }
     // At this point we are ready to see if we have user provided overrides.
     const nextStep = resolver.then(() => this.fetchOverrides());
+
     // And finally we can return our merged config.
     return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
   }
