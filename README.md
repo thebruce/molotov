@@ -20,13 +20,18 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 
 {
   "molotov": {
-    "providers": {
-      "scheme-punk": {
-        "configNameSpace": "schemePunk",
-        "supersNameSpacePaths": {
-          "transform": "./transform/schemePunkTransform'",
-          "source": "./source/schemePunkSource",
-          "destination": "./destination/schemePunkDestination"
+    "scheme-punk": {
+      "supersNameSpacePaths": {
+        "transform": "./transform/schemePunkTransform'",
+        "source": "./source/schemePunkSource",
+        "destination": "./destination/schemePunkDestination"
+      },
+      "molotovPlugins": {
+        "transform": {
+          "tokenTemplateValuesMulti": [
+            "typeAdapter",
+            "tokenTemplateValues"
+          ]
         }
       }
     }
