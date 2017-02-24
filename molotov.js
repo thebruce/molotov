@@ -35,5 +35,5 @@ const Polttopullo = require('./polttopullo');
 module.exports = function getMolotov(molotovPath, supers, plugins) {
   const superMixologist = new SuperMixologist(molotovPath, supers);
   return superMixologist.resolveSupers()
-    .then(resolvedSupers => new Polttopullo(resolvedSupers, plugins));
+    .then(resolvedSupers => new Polttopullo(molotovPath, resolvedSupers, plugins));
 };

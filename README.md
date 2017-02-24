@@ -17,29 +17,139 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 
 ```js
 // An example of the .molotov.json file for the scheme-punk project.
+/**
+ *  {
+ *    "schemePunk": { // An arbitrary name for your module's molotov name space.
+ *      "supersNameSpacePaths": {  // SupersNameSpacePaths holds any number of super name spaces.
+ *        "transform": "./transform/schemePunkTransform'", // transform is the name space. the value is the path to the transform super class.
+ *        "source": "./source/schemePunkSource", // source is the name space, the value is the path to the source super class.
+ *        "destination": "./destination/schemePunkDestination" // destination is the name space, the value is the path to the destination super class.
+ *      },
+ *      "molotovPlugins": { // molotov Plugins holds any number of super name spaces holding any number of plugins.
+ *        "transform": { // this is a super name space that correlates to a super in the superNameSpacePaths.
+ *          "tokenTemplateValuesMulti": // An descriptive arbitrary name chosen for this plugin.
+ *            [  // Plugins will be chained in order Mixin2(Mixin3(superclass));
+ *              "typeAdapter", // A file name of a mixin class .
+ *              "tokenTemplateValues" // A file name of a mixin class.
+ *            ]
+ *        }
+ *      }
+ *    }
+ *  }
+ */
 
 {
-  "molotov": {
-    "scheme-punk": {
-      "supersNameSpacePaths": {
-        "transform": "./transform/schemePunkTransform'",
-        "source": "./source/schemePunkSource",
-        "destination": "./destination/schemePunkDestination"
-      },
-      "molotovPlugins": {
-        "transform": {
-          "tokenTemplateValuesMulti": [
-            "typeAdapter",
-            "tokenTemplateValues"
-          ]
-        }
+  "schemePunk": {
+    "supersNameSpacePaths": {
+      "transform": "./transform/schemePunkTransform'",
+      "source": "./source/schemePunkSource",
+      "destination": "./destination/schemePunkDestination"
+    },
+    "molotovPlugins": {
+      "transform": {
+        "tokenTemplateValuesMulti": [
+          "typeAdapter",
+          "tokenTemplateValues"
+        ]
       }
     }
   }
 }
 ```
 
-#### 2) Implement superMixologist to provide super classes for your module.
+#### 2) Implement Molotov in your module's classes.
+
+
+Example 1:
+```js
+// Using config module with this module's default config.
+const requireDirectory = require('require-directory');
+
+// require the directory with all of your supers classes.
+// THe directory will be organized with directories representing super name spaces
+// and those directories will hold your supers classes. 
+//  |-- supersDirectory
+//  |-- | -- exampleSupersNameSpace
+//  |-- | -- |  exampleSuperNameSpace.js
+const supers = requireDirectory(module, './supersDirectory');
+
+// require the directory with all of your mixins.
+// THe directory will be organized with directories representing super name spaces
+// and those directories will hold your mixins
+//  |-- plugins
+//  |-- | -- exampleSupersNameSpace
+//  |-- | -- |  mixinOne.js
+//  |-- | -- |  mixinTwo.js
+const plugins = requireDirectory(module, './plugins');
+
+// set the path to your .molotov.json molotov config file (see above)
+const molotovPath = './.molotov.json';
+
+// Require molotov and pass path, super directory object and plugins.
+const molotov = require('../../molotov')(molotovPath, supers, plugins);
+
+// Now access your molotov plugins like so:
+ const example = molotov.getMolotov().then((newMolotov) => {
+    // Get all of the molotov plugins for our module.
+    const molotovPlugins = newMolotov.resolve();
+    return molotovPlugins;
+  });
+```
+
+Example 2: Your class as a factory that can accept plugins by name:
+
+```js
+// Using config module with this module's default config.
+const requireDirectory = require('require-directory');
+
+// require the directory with all of your supers classes.
+// THe directory will be organized with directories representing super name spaces
+// and those directories will hold your supers classes. 
+//  |-- supersDirectory
+//  |-- | -- exampleSupersNameSpace
+//  |-- | -- |  exampleSuperNameSpace.js
+const supers = requireDirectory(module, './supersDirectory');
+
+// require the directory with all of your mixins.
+// THe directory will be organized with directories representing super name spaces
+// and those directories will hold your mixins
+//  |-- plugins
+//  |-- | -- exampleSupersNameSpace
+//  |-- | -- |  mixinOne.js
+//  |-- | -- |  mixinTwo.js
+const plugins = requireDirectory(module, './plugins');
+
+// set the path to your .molotov.json molotov config file (see above)
+const molotovPath = './.molotov.json';
+
+// Require molotov and pass path, super directory object and plugins.
+const molotov = require('../../molotov')(molotovPath, supers, plugins);
+
+module.exports = function implementFactory(superNameSpace, pluginName) {
+  molotov.getMolotov().then((newMolotov) => {
+    // Get all of the molotov plugins for our module.
+    const molotovPlugins = newMolotov.resolve();
+    return molotovPlugins;
+  })
+  .then(
+    returnedPlugins =>
+      class exampleClassBase extends returnedPlugins[superNameSpace][pluginName] {
+    /**
+      * Function to tranform a value, this is an implementing class and thus
+      * calls super.testFunction() like a mixin.
+      *
+      * @param value
+      *  A value to perform a transformation upon.
+      */
+        testFunction(value) {
+          // Calls to your first mixin and up the chain
+          // if they also implement super.
+          this.value = super.transform(value);
+        }
+    });
+};
+```
+
 
 #### Implement SuperMixologist Example:
 
@@ -65,44 +175,8 @@ const providerSupers = superMixologist.resolveSupers();
  */
 ```
 
-#### Implement SuperMixologist Example 2:
-```js
-// This approach requires your supers ahead of time and passes them in.
-// You might choose to do this to keep your requires declarative and at require time.
-const supers = {
-  transform: require('./transform/schemePunkTransform'),
-  source: require('./source/schemePunkSource'),
-  destination: require('./destination/schemePunkDestination')
-}
-
-// Require the superMixologist Class.
-const SuperMixologist = require('molotov/superMixologist', supers);
-
-// Create an instance of that class.
-const superMixologist = new SuperMixologist(pathFolderContainingMolotovConfig, supers);
-
-// Populate your supers from your molotov config and integrate any user overrides of your supers.
-const providerSupers = superMixologist.resolveSupers();
-
-/* If we use the example .molotov.json file above provideSupers will be
- *  an object keyed by superNameSpace as designated in the molotov config
- * with a value of the required super class:
- *  {
- *    "transform": FUNCTION [schemePunkTransform],
- *    "source": FUNCTION [schemePunkSource],
- *    "destination": FUNCTION [schemePunkDestination]
- *  }
- */
-```
-
-#### 3) Implement (or extend) molotov.js with a custom Molotov implementation OR call molotov.js and pass the appropriate parameters.
-```
-
-```
-
 
 ## To override a molotov provider module through config and the molotov/cocktail class in your own module
-
 
 ### Example: Overriding a provider's super class:
 * Set config in that molotov provider's namespace with a path to your super override class. 
