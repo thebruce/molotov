@@ -1,10 +1,16 @@
 // Using config module with this module's default config.
+const requireDirectory = require('require-directory');
 
-// require supers.
+// require Supers directory.
+const supers = requireDirectory(module, './helpers/supers');
 
-// require plugins.
+// Require pluginDirs.
+const plugins = requireDirectory(module, './helpers/plugins');
 
-const molotov = require('../../molotov');
+const molotovPath = './.molotov.json';
+
+// Require molotov and pass path, super directory object and plugins.
+const molotov = require('../../molotov')(molotovPath, supers, plugins);
 
 /**
  * SchemePunkTransformBase function returns a class object that when supplied
@@ -15,15 +21,15 @@ const molotov = require('../../molotov');
  * @return object
  *   A schemePunkTransformBase class.
  */
-module.exports = function implementFactory(plugins, superNameSpace, pluginName) {
+module.exports = function implementFactory(superNameSpace, pluginName) {
   molotov.getMolotov().then((newMolotov) => {
     // Get all of the molotov plugins for our module.
-    const molotovPlugins = newMolotov.exportPlugins();
+    const molotovPlugins = newMolotov.resolve();
     return molotovPlugins;
   })
   .then(
     returnedPlugins =>
-      class schemePunkTransformBase extends returnedPlugins[superNameSpace][pluginName] {
+      class exampleClassBase extends returnedPlugins[superNameSpace][pluginName] {
     /**
       * Function to tranform a value, this is an implementing class and thus
       * calls super.transform() like a mixin.
@@ -36,4 +42,3 @@ module.exports = function implementFactory(plugins, superNameSpace, pluginName) 
         }
     });
 };
-
