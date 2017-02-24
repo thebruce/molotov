@@ -2,6 +2,22 @@
   "testPackage" : {
     "supersNameSpacePaths": {
       "testSuper": "/test/helpers/supers/testSuper"
+    },
+    "molotovPlugins": {
+      "testSuper":{
+        "onlyPluginOne": [
+          "pluginOne"
+        ],
+        "pluginOneTwo": [
+          "pluginOne",
+          "pluginTwo"
+        ],
+        "pluginAll": [
+          "pluginThree",
+          "pluginTwo",
+          "pluginOne"
+        ]
+      }
     }
   }
 }

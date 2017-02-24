@@ -1,6 +1,7 @@
 'use strict';
 
 const molotovProviderBase = require('./molotovProviderBase');
+const pluginMaker = require('./mixinPluginMaker');
 
 /**
  * Molotov class for modules implementing molotov mixin loading.
@@ -23,12 +24,19 @@ const molotovProviderBase = require('./molotovProviderBase');
  */
 const polttopullo = class extends molotovProviderBase {
   constructor(molotovConfigPath, supers, plugins) {
-    super(molotovConfigPath);
+    const type = 'Plugins';
+    const target = 'molotovPlugins';
+    super(molotovConfigPath, type, target);
     this.setSupers(supers);
+    this.setPluginsDirectory(plugins);
+  }
 
-    if (typeof supers !== 'undefined') {
-      this.setPlugins(plugins);
-    }
+  setPluginsDirectory(pluginsDir) {
+    this.pluginsDirectory = pluginsDir;
+  }
+
+  getPluginsDirectory() {
+    return this.pluginsDirectory;
   }
 
   setPlugins(plugins) {
@@ -39,15 +47,20 @@ const polttopullo = class extends molotovProviderBase {
     return this.plugins;
   }
 
-  exportPlugins() {
-    // Ensure that we have supers.
-    // Ensure that we have plugins or load them.
+  resolve() {
+    const resolver = this.validateMolotovSettings(this.getValidateTarget())
+    .then(() => {
+      const plugins = pluginMaker(
+        this.getMolotovSettings()[this.getMolotovNameSpace()].molotovPlugins,
+        this.getPluginsDirectory(),
+        this.getSupers()
+      );
+      this.setPlugins(plugins);
+      return plugins;
+    });
 
-    // attempt to load up overrides for plugins.
-
-    // based on the molotov config definitions of plugins create a
-    // plugin structure like we did in scheme punk
-    // and export.
+    const nextStep = resolver.then(() => this.fetchOverrides());
+    return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
   }
 };
 
