@@ -33,7 +33,16 @@ const Polttopullo = require('./polttopullo');
 // })
 
 module.exports = function getMolotov(molotovPath, supers, plugins) {
+  if ((!molotovPath) || (typeof molotovPath !== 'string')) {
+    throw new Error('molotovPath is required and must be a string.');
+  }
+  if ((typeof supers !== 'object')) {
+    throw new Error('supers is required and must be an object');
+  }
+  if ((Object.keys(plugins).length === 0) || (typeof plugins !== 'object')) {
+    throw new Error('plugins is required and must be an object');
+  }
   const superMixologist = new SuperMixologist(molotovPath, supers);
-  return superMixologist.resolveSupers()
+  return superMixologist.resolve()
     .then(resolvedSupers => new Polttopullo(molotovPath, resolvedSupers, plugins));
 };

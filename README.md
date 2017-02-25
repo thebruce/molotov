@@ -89,7 +89,7 @@ const molotovPath = './.molotov.json';
 const molotov = require('../../molotov')(molotovPath, supers, plugins);
 
 // Now access your molotov plugins like so:
- const example = molotov.getMolotov().then((newMolotov) => {
+ const example = molotov.then((newMolotov) => {
     // Get all of the molotov plugins for our module.
     const molotovPlugins = newMolotov.resolve();
     return molotovPlugins;
@@ -126,7 +126,7 @@ const molotovPath = './.molotov.json';
 const molotov = require('../../molotov')(molotovPath, supers, plugins);
 
 module.exports = function implementFactory(superNameSpace, pluginName) {
-  molotov.getMolotov().then((newMolotov) => {
+  molotov.then((newMolotov) => {
     // Get all of the molotov plugins for our module.
     const molotovPlugins = newMolotov.resolve();
     return molotovPlugins;
@@ -175,7 +175,7 @@ const molotovPath = './.molotov.json';
 const molotov = require('../../molotov')(molotovPath, supers, plugins);
 
 // Now access your molotov plugins like so:
- const example = molotov.getMolotov().then((newMolotov) => {
+ const example = molotov.then((newMolotov) => {
     // Get all of the molotov plugins for our module.
     const molotovPlugins = newMolotov.resolve();
     return molotovPlugins;
@@ -210,7 +210,7 @@ Implementing modules can override existing cocktail mixin plugin definitions or 
 ```
 {
   "schemePunk": {
-    "molotov": {
+    "molotovPlugins": {
       "cocktailLoaders": [
         "path/to/mixinStylePluginLoader/implementing/cocktailClass"
       ]
