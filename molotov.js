@@ -32,17 +32,60 @@ const Polttopullo = require('./polttopullo');
 //   const molotovPlugins = molotov.exportPlugins();
 // })
 
-module.exports = function getMolotov(molotovPath, supers, plugins) {
-  if ((!molotovPath) || (typeof molotovPath !== 'string')) {
-    throw new Error('molotovPath is required and must be a string.');
+const molotov = class {
+  constructor(molotovPath, supersDirectory, pluginDirectory) {
+    if ((!molotovPath) || (typeof molotovPath !== 'string')) {
+      throw new Error('molotovPath is required and must be a string.');
+    }
+    if ((typeof supersDirectory !== 'object')) {
+      throw new Error('supers is required and must be an object');
+    }
+    if ((Object.keys(pluginDirectory).length === 0) || (typeof pluginDirectory !== 'object')) {
+      throw new Error('plugins is required and must be an object');
+    }
+    this.setMolotovPath(molotovPath);
+    this.setSupersDirectory(supersDirectory);
+    this.setPluginDirectory(pluginDirectory);
   }
-  if ((typeof supers !== 'object')) {
-    throw new Error('supers is required and must be an object');
+
+  setPluginDirectory(pluginDirectory) {
+    this.pluginDirectory = pluginDirectory;
   }
-  if ((Object.keys(plugins).length === 0) || (typeof plugins !== 'object')) {
-    throw new Error('plugins is required and must be an object');
+
+  getPluginDirectory() {
+    return this.pluginDirectory;
   }
-  const superMixologist = new SuperMixologist(molotovPath, supers);
-  return superMixologist.resolve()
-    .then(resolvedSupers => new Polttopullo(molotovPath, resolvedSupers, plugins));
+
+  getSupers() {
+    const superMixologist = new SuperMixologist(this.getMolotovPath(), this.getSupersDirectory());
+    return superMixologist.resolve();
+  }
+
+  setMolotovPath(molotovPath) {
+    this.molotovPath = molotovPath;
+  }
+
+  getMolotovPath() {
+    return this.molotovPath;
+  }
+
+  setSupersDirectory(supersDirectory) {
+    this.supersDirectory = supersDirectory;
+  }
+
+  getSupersDirectory() {
+    return this.supersDirectory;
+  }
+
+  getMolotov() {
+    return this.getSupers()
+    .then(resolvedSupers => new Polttopullo(
+      this.getMolotovPath(),
+      resolvedSupers,
+      this.getPluginDirectory())
+    );
+  }
 };
+
+
+module.exports = molotov;

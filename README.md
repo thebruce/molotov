@@ -19,6 +19,7 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 // An example of the .molotov.json file for the scheme-punk project.
 /**
  *  {
+ *    "molotovPath": 'lib/molotov.js',  // The module path to your molotov.js implementing class.
  *    "schemePunk": { // An arbitrary name for your module's molotov name space.
  *      "supersNameSpacePaths": {  // SupersNameSpacePaths holds any number of super name spaces.
  *        "transform": "./transform/schemePunkTransform'", // transform is the name space. the value is the path to the transform super class.
@@ -39,6 +40,7 @@ Molotov provides a series of tools that help modules with a uniform way to provi
  */
 
 {
+  "molotovPath": 'lib/molotov.js',
   "schemePunk": {
     "supersNameSpacePaths": {
       "transform": "./transform/schemePunkTransform'",
@@ -57,48 +59,14 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 }
 ```
 
-#### 2) Implement Molotov in your module's classes.
+#### 2) Write a Molotov implementing class in your module's classes.
 
 
-Example 1:
-```js
-// Using config module with this module's default config.
-const requireDirectory = require('require-directory');
-
-// require the directory with all of your supers classes.
-// THe directory will be organized with directories representing super name spaces
-// and those directories will hold your supers classes. 
-//  |-- supersDirectory
-//  |-- | -- exampleSupersNameSpace
-//  |-- | -- |  exampleSuperNameSpace.js
-const supers = requireDirectory(module, './supersDirectory');
-
-// require the directory with all of your mixins.
-// THe directory will be organized with directories representing super name spaces
-// and those directories will hold your mixins
-//  plugins
-//  |-- exampleSupersNameSpace
-//  |-- | -- mixinOne.js
-//  |-- | -- mixinTwo.js
-const plugins = requireDirectory(module, './plugins');
-
-// set the path to your .molotov.json molotov config file (see above)
-const molotovPath = './.molotov.json';
-
-// Require molotov and pass path, super directory object and plugins.
-const molotov = require('../../molotov')(molotovPath, supers, plugins);
-
-// Now access your molotov plugins like so:
- const example = molotov.then((newMolotov) => {
-    // Get all of the molotov plugins for our module.
-    const molotovPlugins = newMolotov.resolve();
-    return molotovPlugins;
-  });
-```
-
-Example 2: Your class as a factory that can accept plugins by name:
+Example: Write a molotov.js file at the path you indicated in `.molotov.json` at `molotovPath`
 
 ```js
+// Contents of your molotov.js at lib/molotov.js
+
 // Using config module with this module's default config.
 const requireDirectory = require('require-directory');
 
@@ -122,13 +90,40 @@ const plugins = requireDirectory(module, './plugins');
 // set the path to your .molotov.json molotov config file (see above)
 const molotovPath = './.molotov.json';
 
-// Require molotov and pass path, super directory object and plugins.
-const molotov = require('../../molotov')(molotovPath, supers, plugins);
+// Require the molotov file from the molotov module.
+// You will be extending this class.
+const Molotov = require('molotov/molotov');
+
+// By extending the molotov class you use the common molotov
+// interface and provide your super and requires at require time.
+// ensuring require caching.
+
+// Also, by extending the molotov class and indicating the path
+// in your .molotov.json file you allow other module writers
+// to use or extend your plugins with their cocktail classes.
+
+module.exports = const molotov = class extends Molotov {
+  constructor(molotovPath, supers, plugins) {
+    super(molotovPath, supers, plugins);
+  }
+}
+//
+```
+
+Step 3: Use your molotov class in your Mixin Implementing classes.
+
+```js
+// example implementing factory class that returns an implementing class with a
+// passed in superNameSPace and pluginName.
+
+const Molotov = require('./lib/molotov'); // Path to your molotov class implementation.
 
 module.exports = function implementFactory(superNameSpace, pluginName) {
-  molotov.then((newMolotov) => {
-    // Get all of the molotov plugins for our module.
-    const molotovPlugins = newMolotov.resolve();
+const molotov = new Molotov();
+  molotov.getMolotov()  // Ensures we get any superOverrides from config.
+  .then((pluginMaker) => {
+    // Get all of the molotov plugins for our module and any overrides from config.
+    const molotovPlugins = pluginMaker.resolve();
     return molotovPlugins;
   })
   .then(
@@ -148,38 +143,6 @@ module.exports = function implementFactory(superNameSpace, pluginName) {
         }
     });
 };
-```
-
-Example 3: Rely on molotov/superMixologist and .molotov.json to load your supers for you dynamically.
-```js
-// Using config module with this module's default config.
-const requireDirectory = require('require-directory');
-
-// Supers are not required, which is an exchange in require time for dynamic requires.
-// It will follow whatever structure you have in your .molotov.json for supers.
-// Just be sure you structure your plugins directory with those superNameSpaces.
-
-// require the directory with all of your mixins.
-// THe directory will be organized with directories representing super name spaces
-// and those directories will hold your mixins
-//  plugins
-//  |-- exampleSupersNameSpace
-//  |-- | -- mixinOne.js
-//  |-- | -- mixinTwo.js
-const plugins = requireDirectory(module, './plugins');
-
-// set the path to your modules .molotov.json molotov config file (see above)
-const molotovPath = './.molotov.json';
-
-// Require molotov and pass path, super directory object and plugins.
-const molotov = require('../../molotov')(molotovPath, supers, plugins);
-
-// Now access your molotov plugins like so:
- const example = molotov.then((newMolotov) => {
-    // Get all of the molotov plugins for our module.
-    const molotovPlugins = newMolotov.resolve();
-    return molotovPlugins;
-  });
 ```
 
 ## How to override a molotov provider module through config and the molotov/cocktail class in your own module

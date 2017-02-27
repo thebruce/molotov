@@ -11,7 +11,7 @@ Object.keys(require.cache).forEach((key) => {
 process.env.NODE_CONFIG_DIR = path.join(__dirname, '/helpers', 'configTests', 'one');
 // And require here so that later requires will use this cached version.
 const config = require('config'); // eslint-disable-line no-unused-vars
-const molotov = require('../molotov');
+const Molotov = require('../molotov');
 
 const plugins = requireDirectory(module, './helpers/plugins');
 const supers = {
@@ -20,7 +20,8 @@ const supers = {
 
 // Test for bad path rejection.
 test('molotov', async (t) => {
-  t.context.data = await molotov('./test/helpers/', supers, plugins)
+  const molotov = new Molotov('./test/helpers/', supers, plugins);
+  t.context.data = await molotov.getMolotov()
   .then((newMolotov) => {
     // Get all of the molotov plugins for our module.
     const molotovPlugins = newMolotov.resolve();
