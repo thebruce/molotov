@@ -79,7 +79,11 @@ const molotov = class {
 
   getMolotov() {
     return this.getSupers()
-    .then(resolvedSupers => new Polttopullo(this.getMolotovPath(), resolvedSupers, this.getPluginDirectory()));
+    .then(resolvedSupers => new Polttopullo(
+      this.getMolotovPath(),
+      resolvedSupers,
+      this.getPluginDirectory())
+    );
   }
 };
 

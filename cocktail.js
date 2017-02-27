@@ -11,12 +11,14 @@ module.exports = class {
    * @params {obj} molotovProvider
    *   The Molotov class implemented by a molotov provider module.
    * @params {obj} optional cocktailPluginDefinitions
-   *   An object of plugin definitions. If not provided will be extracted from config. Config must come from one of the two places.
+   *   An object of plugin definitions. If not provided will be extracted
+   * from config. Config must come from one of the two places.
    * @params {obj} optional modulesPluginDirectory
-   *   If the cocktail implementing module is providing its own plugins, please require and supply them here.
+   *   If the cocktail implementing module is providing its own plugins,
+   *     please require and supply them here.
    * @params {obj} optional modulesSupers
-   *   If the cocktail implementing module is providing its own supers please require them and supply them here.
-   *
+   *   If the cocktail implementing module is providing its own supers
+   *    please require them and supply them here.
    */
   constructor(molotovProvider, cocktailPluginDefinitions, modulesPluginDirectory, modulesSupers) {
     // Get their supers, and plugins.
@@ -97,52 +99,123 @@ module.exports = class {
     return this.mergedSupers;
   }
 
+  /**
+   *  Merges molotov plugins and cocktail plugins (if provided).
+   *
+   */
   mergePlugins() {
     const mergePlugins = _.merge(this.getMolotovPlugins(), this.getCocktailPlugins());
     this.setMergedPlugins(mergePlugins);
   }
 
+  /**
+   * setMergedPlugins
+   *
+   * @param {obj} mergedPlugins
+   *   Merged molotov and cocktail plugins.
+   */
   setMergedPlugins(mergedPlugins) {
     // Merge Plugins.
     this.mergedPlugins = mergedPlugins;
   }
 
+  /**
+   * getMergedPlugins
+   *
+   * @returns {obj}
+   *   Merged molotov and cocktail plugins.
+   */
   getMergedPlugins() {
     return this.mergedPlugins;
   }
 
+  /**
+   * setCocktailSupers
+   *
+   * @param {obj} cocktailSupers
+   *   A supers cocktail object.
+   */
   setCocktailSupers(cocktailSupers) {
     this.cocktailSupers = cocktailSupers;
   }
 
+
+  /**
+   * getCocktailSupers
+   *
+   * @returns {obj}
+   *   A cocktailSupers object.
+   */
   getCocktailSupers() {
     return this.cocktailSupers;
   }
 
+  /**
+   * setMolotovSupers
+   *
+   * @param {obj} molotovSupers
+   *   A supers object.
+   */
   setMolotovSupers(molotovSupers) {
     this.molotovSupers = molotovSupers;
   }
 
+  /**
+   * getMolotovSupers().
+   *
+   * @returns {obj}
+   *   A supers object.
+   */
   getMolotovSupers() {
     return this.molotovSupers;
   }
 
+  /**
+   * getMolotovPlugins.
+   *
+   * @returns {obj}
+   *   A plugins object.
+   */
   getMolotovPlugins() {
     return this.molotovPlugins;
   }
 
+  /**
+   * setMolotovPlugins
+   *
+   * @param {obj} molotovPlugins
+   *   A plugins object.
+   */
   setMolotovPlugins(molotovPlugins) {
     this.molotovPlugins(molotovPlugins);
   }
 
+  /**
+   * setCocktailPlugins
+   *
+   * @param {obj} cocktailPlugins
+   *   A plugin object.
+   */
   setCocktailPlugins(cocktailPlugins) {
     this.cocktailPlugins = cocktailPlugins;
   }
 
+  /**
+   * getCocktailPlugins
+   *
+   * @returns {obj}
+   *   A plugin object.
+   */
   getCocktailPlugins() {
     return this.cocktailPlugins;
   }
 
+  /**
+   * resolve
+   *
+   * @returns {obj}
+   *   A resolved plugin object.
+   */
   resolve() {
     const plugins = pluginMaker(
       this.getCocktailPluginDefinitions(),
