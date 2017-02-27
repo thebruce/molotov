@@ -24,6 +24,7 @@ module.exports = class {
     // Get their supers, and plugins.
     this.setMolotovSupers(molotovProvider.getSupersDirectory());
     this.setMolotovPlugins(molotovProvider.getPluginDirectory());
+    this.setMolotovNameSpace(molotovProvider.getNameSpace());
     // if our plugins - set our plugins
     this.setCocktailPluginDefinitions({});
     this.setCocktailSupers({});
@@ -31,11 +32,11 @@ module.exports = class {
     if (typeof cocktailPluginDefinitions === 'object' && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
-    else if (!_.has(config, 'molotov.cocktailPlugins')) {
+    else if (!_.has(config, `molotov[${this.getMolotovNameSpace()}].cocktailPlugins`)) {
       throw new Error('Cocktail must declare plugins.');
     }
     else {
-      this.setCocktailPluginDefinitions(config.molotov.cocktailPlugins);
+      this.setCocktailPluginDefinitions(config.molotov[this.getMolotovNameSpace()].cocktailPlugins);
     }
     // If we have cocktail provided supers set them.
     if (modulesSupers) {

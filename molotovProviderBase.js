@@ -183,7 +183,7 @@ const molotovProviderBase = class {
       if (_.isArray(targetConfig)) {
         // For arrays we push the value to the array.
         configTemp = [];
-        this.getConfig().molotov[this.getValidateTarget()].forEach((currentValue) => {
+        this.getConfig()[nameSpace].molotov[this.getValidateTarget()].forEach((currentValue) => {
           // We do have an overide, we will set the path.
           configTemp.push(this.getItem(currentValue));
         }, this);

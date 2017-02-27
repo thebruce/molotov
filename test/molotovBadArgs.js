@@ -19,27 +19,27 @@ test('molotovBadPath', (t) => {
 // Test for bad supers rejection.
 test('molotovSupers', (t) => {
   t.throws(() => {
-    const molotov = new Molotov('./test/helpers/baba', {}, {}); // eslint-disable-line no-unused-vars
+    const molotov = new Molotov('./test/helpers/baba', 'testPackage', {}, {}); // eslint-disable-line no-unused-vars
   });
 });
 
 // Test for bad supers rejection.
 test('molotovSupersNotObject', (t) => {
   t.throws(() => {
-    const molotov = new Molotov('./test/helpers/baba', 'not object', {}); // eslint-disable-line no-unused-vars
+    const molotov = new Molotov('./test/helpers/baba', 'testPackage', 'not object', {}); // eslint-disable-line no-unused-vars
   });
 });
 
 // Test for bad plugin rejection.
 test('molotovBadPlugins', (t) => {
   t.throws(() => {
-    const molotov = new Molotov('./test/helpers/baba', {item: 'thing'}, {}); // eslint-disable-line no-unused-vars
+    const molotov = new Molotov('./test/helpers/baba', 'testPackage', {item: 'thing'}, {}); // eslint-disable-line no-unused-vars
   });
 });
 
 // Test for bad plugin type rejection.
 test('molotovPluginsNotObject', (t) => {
   t.throws(() => {
-    const molotov = new Molotov('./test/helpers/baba', {item: 'thing'}, 'not an object'); // eslint-disable-line no-unused-vars
+    const molotov = new Molotov('./test/helpers/baba', 'testPackage', {item: 'thing'}, 'not an object'); // eslint-disable-line no-unused-vars
   });
 });

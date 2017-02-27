@@ -21,7 +21,7 @@ const molotovSupers = {
   testSuper: require('./helpers/supers/testSuper')
 };
 
-const molotov = new Molotov('./test/helpers/', molotovSupers, molotovPlugins);
+const molotov = new Molotov('./test/helpers/', 'testPackage', molotovSupers, molotovPlugins);
 
 // Now require cocktail and its classes.
 const Cocktail = require('../cocktail');

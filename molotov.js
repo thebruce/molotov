@@ -33,7 +33,7 @@ const Polttopullo = require('./polttopullo');
 // })
 
 const molotov = class {
-  constructor(molotovPath, supersDirectory, pluginDirectory) {
+  constructor(molotovPath, molotovNameSpace, supersDirectory, pluginDirectory) {
     if ((!molotovPath) || (typeof molotovPath !== 'string')) {
       throw new Error('molotovPath is required and must be a string.');
     }
@@ -43,6 +43,7 @@ const molotov = class {
     if ((Object.keys(pluginDirectory).length === 0) || (typeof pluginDirectory !== 'object')) {
       throw new Error('plugins is required and must be an object');
     }
+    this.setMolotovNameSpace(molotovNameSpace);
     this.setMolotovPath(molotovPath);
     this.setSupersDirectory(supersDirectory);
     this.setPluginDirectory(pluginDirectory);
@@ -84,6 +85,14 @@ const molotov = class {
       resolvedSupers,
       this.getPluginDirectory())
     );
+  }
+
+  setMolotovNameSpace(nameSpace) {
+    this.molotovNameSpace = nameSpace;
+  }
+
+  getMolotovNameSpace() {
+    return this.molotovNameSpace;
   }
 };
 

@@ -20,7 +20,7 @@ const supers = {
 
 // Test for bad path rejection.
 test('molotov', async (t) => {
-  const molotov = new Molotov('./test/helpers/', supers, plugins);
+  const molotov = new Molotov('./test/helpers/', 'testPackage', supers, plugins);
   t.context.data = await molotov.getMolotov()
   .then((newMolotov) => {
     // Get all of the molotov plugins for our module.
