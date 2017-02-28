@@ -233,7 +233,7 @@ const molotov = new SchemePunkMolotov();
 const Cocktail = require('../cocktail');
 
 module.exports = class extends Cocktail {
-  constructor(molotov) {
+  constructor() {
     super(molotov);
   }
 }
@@ -280,7 +280,7 @@ const pluginDefinitions = {
 const Cocktail = require('../cocktail');
 
 module.exports = class extends Cocktail {
-  constructor(molotov, pluginDefinitions) {
+  constructor() {
     super(molotov, pluginDefinitions);
   };
 }
@@ -365,7 +365,7 @@ const myModulePluginsDirectory = requireDirectory('./plugins');
 const Cocktail = require('../cocktail');
 
 module.exports = class extends Cocktail {
-  constructor(molotov, '', myModulePluginsDirectory) {
+  constructor() {
     super(molotov, '', myModulePluginsDirectory);
   }
 }
@@ -460,7 +460,7 @@ const myModulePluginsDirectory = requireDirectory('./plugins');
 const Cocktail = require('../cocktail');
 
 module.exports = class extends Cocktail {
-  constructor(molotov, '', myModulePluginsDirectory, myModuleSupersOverrides) {
+  constructor() {
     super(molotov, '', myModulePluginsDirectory, myModuleSupersOverrides);
   }
 }

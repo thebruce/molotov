@@ -43,7 +43,7 @@ const molotov = class {
     if ((Object.keys(pluginDirectory).length === 0) || (typeof pluginDirectory !== 'object')) {
       throw new Error('plugins is required and must be an object');
     }
-    this.setMolotovNameSpace(molotovNameSpace);
+    this.setNameSpace(molotovNameSpace);
     this.setMolotovPath(molotovPath);
     this.setSupersDirectory(supersDirectory);
     this.setPluginDirectory(pluginDirectory);
@@ -87,11 +87,11 @@ const molotov = class {
     );
   }
 
-  setMolotovNameSpace(nameSpace) {
+  setNameSpace(nameSpace) {
     this.molotovNameSpace = nameSpace;
   }
 
-  getMolotovNameSpace() {
+  getNameSpace() {
     return this.molotovNameSpace;
   }
 };

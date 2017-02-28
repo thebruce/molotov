@@ -26,36 +26,26 @@ const molotov = new Molotov('./test/helpers/', 'testPackage', molotovSupers, mol
 // Now require cocktail and its classes.
 const Cocktail = require('../cocktail');
 
-const cocktailPlugins = requireDirectory(module, './helpers/cocktailPlugins');
-const cocktailSupers = requireDirectory(module, './helpers/cocktailPlugins');
+const cocktailManualPluginDefinitions = {
+  testSuper: {
+    pluginNumbus: [
+      'pluginThree'
+    ]
+  }
+};
 
 // Test for bad path rejection.
 test('cocktailInvocation', (t) => {
-  const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins);
+  const cocktail = new Cocktail(molotov, cocktailManualPluginDefinitions);
 
   t.context.data = cocktail.resolve();
 
   t.deepEqual(
     Object.keys(t.context.data.testSuper).sort(),
     [
-      'pluginNumbus',
-      'pluginOneTwo'
+      'pluginNumbus'
     ]
   );
 });
 
-// Test for bad path rejection.
-test('cocktailGetPlugins', (t) => {
-  const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins);
-
-  t.context.data = cocktail.resolve();
-
-  t.deepEqual(
-    Object.keys(cocktail.getPlugins().testSuper).sort(),
-    [
-      'pluginNumbus',
-      'pluginOneTwo'
-    ]
-  );
-});
 

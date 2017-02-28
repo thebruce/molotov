@@ -32,11 +32,11 @@ module.exports = class {
     if (typeof cocktailPluginDefinitions === 'object' && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
-    else if (!_.has(config, `molotov[${this.getMolotovNameSpace()}].cocktailPlugins`)) {
-      throw new Error('Cocktail must declare plugins.');
+    else if (_.has(config, `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`)) {
+      this.setCocktailPluginDefinitions(config.molotov.cocktailPlugins[this.getMolotovNameSpace()]);
     }
     else {
-      this.setCocktailPluginDefinitions(config.molotov[this.getMolotovNameSpace()].cocktailPlugins);
+      throw new Error('Cocktail must declare plugins.');
     }
     // If we have cocktail provided supers set them.
     if (modulesSupers) {
@@ -217,6 +217,14 @@ module.exports = class {
 
   getPlugins() {
     return this.plugins;
+  }
+
+  setMolotovNameSpace(nameSpace) {
+    this.molotovNameSpace = nameSpace;
+  }
+
+  getMolotovNameSpace() {
+    return this.molotovNameSpace;
   }
 
   /**

@@ -54,7 +54,7 @@ const molotovProviderBase = class {
    */
   mergeConfig(mergeTarget) {
     const results = this[`get${mergeTarget}`]();
-    const tmpConfig = Object.assign(_.cloneDeep(results), this.getOverrides());
+    const tmpConfig = _.merge(results, this.getOverrides());
     this[`set${mergeTarget}`](tmpConfig);
     return tmpConfig;
   }
@@ -180,13 +180,17 @@ const molotovProviderBase = class {
       let configTemp;
       const targetConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
 
-      if (_.isArray(targetConfig)) {
+      if (this.getDynamicRequiresType() === 'Plugins') {
         // For arrays we push the value to the array.
-        configTemp = [];
-        this.getConfig()[nameSpace].molotov[this.getValidateTarget()].forEach((currentValue) => {
-          // We do have an overide, we will set the path.
-          configTemp.push(this.getItem(currentValue));
-        }, this);
+        configTemp = {};
+        if (_.has(this.getConfig(), `${nameSpace}.${this.getValidateTarget()}`)) {
+          this.getConfig()[nameSpace][`${this.getValidateTarget()}`].forEach((currentValue) => {
+            // We do have an overide, we will set the path.
+            const Tempers = this.getItem(currentValue);
+            const tempers = new Tempers();
+            _.merge(configTemp, tempers.resolve());
+          }, this);
+        }
       }
       else {
         // For objects we allow for namespaces.
