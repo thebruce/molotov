@@ -105,7 +105,7 @@ const molotovNameSpace = 'schemePunk';
 // to use or extend your plugins with their cocktail classes.
 
 module.exports = const molotov = class extends Molotov {
-  constructor(molotovPath, molotovNameSpace, supers, plugins) {
+  constructor() {
     super(molotovPath, molotovNameSpace, supers, plugins);
   }
 }
