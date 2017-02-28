@@ -24,18 +24,20 @@ module.exports = class {
     // Get their supers, and plugins.
     this.setMolotovSupers(molotovProvider.getSupersDirectory());
     this.setMolotovPlugins(molotovProvider.getPluginDirectory());
+    this.setMolotovNameSpace(molotovProvider.getNameSpace());
     // if our plugins - set our plugins
     this.setCocktailPluginDefinitions({});
     this.setCocktailSupers({});
 
-    if (cocktailPluginDefinitions) {
+    if (typeof cocktailPluginDefinitions === 'object'
+      && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
+    else if (_.has(config, `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`)) {
+      this.setCocktailPluginDefinitions(config.molotov.cocktailPlugins[this.getMolotovNameSpace()]);
+    }
     else {
-      if (!config.molotov.cocktailPlugins) {
-        throw new Error('Cocktail must declare plugins.');
-      }
-      this.setCocktailPluginDefinitions(config.molotov.cocktailPlugins);
+      throw new Error('Cocktail must declare plugins.');
     }
     // If we have cocktail provided supers set them.
     if (modulesSupers) {
@@ -187,7 +189,7 @@ module.exports = class {
    *   A plugins object.
    */
   setMolotovPlugins(molotovPlugins) {
-    this.molotovPlugins(molotovPlugins);
+    this.molotovPlugins = molotovPlugins;
   }
 
   /**
@@ -208,6 +210,22 @@ module.exports = class {
    */
   getCocktailPlugins() {
     return this.cocktailPlugins;
+  }
+
+  setPlugins(plugins) {
+    this.plugins = plugins;
+  }
+
+  getPlugins() {
+    return this.plugins;
+  }
+
+  setMolotovNameSpace(nameSpace) {
+    this.molotovNameSpace = nameSpace;
+  }
+
+  getMolotovNameSpace() {
+    return this.molotovNameSpace;
   }
 
   /**
