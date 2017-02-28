@@ -88,7 +88,7 @@ const supers = requireDirectory(module, './supersDirectory');
 const plugins = requireDirectory(module, './plugins');
 
 // set the path to your .molotov.json molotov config file (see above)
-const molotovPath = './.molotov.json';
+const molotovPath = './';
 
 // Require the molotov file from the molotov module.
 // You will be extending this class.
