@@ -39,7 +39,12 @@ const cocktailManualPluginDefinitions = {
 
 // Test for bad path rejection.
 test('cocktailInvocation', (t) => {
-  const cocktail = new Cocktail(molotov, cocktailManualPluginDefinitions, cocktailSupers, cocktailPlugins);
+  const cocktail = new Cocktail(
+    molotov,
+    cocktailManualPluginDefinitions,
+    cocktailSupers,
+    cocktailPlugins
+  );
 
   t.context.data = cocktail.resolve();
 

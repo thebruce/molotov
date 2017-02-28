@@ -40,6 +40,11 @@ test('molotovBadPlugins', (t) => {
 // Test for bad plugin type rejection.
 test('molotovPluginsNotObject', (t) => {
   t.throws(() => {
-    const molotov = new Molotov('./test/helpers/baba', 'testPackage', {item: 'thing'}, 'not an object'); // eslint-disable-line no-unused-vars
+    const molotov = new Molotov( // eslint-disable-line no-unused-vars
+      './test/helpers/baba',
+      'testPackage',
+      {item: 'thing'},
+      'not an object'
+    );
   });
 });

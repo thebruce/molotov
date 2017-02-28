@@ -32,6 +32,6 @@ const cocktailSupers = requireDirectory(module, './helpers/cocktailPlugins');
 // Test for bad plugin type rejection.
 test('cocktailNoDefinitions', (t) => {
   t.throws(() => {
-      const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins);
+    const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins); // eslint-disable-line no-unused-vars
   });
 });

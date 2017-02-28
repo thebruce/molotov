@@ -29,7 +29,8 @@ module.exports = class {
     this.setCocktailPluginDefinitions({});
     this.setCocktailSupers({});
 
-    if (typeof cocktailPluginDefinitions === 'object' && Object.keys(cocktailPluginDefinitions).length > 0) {
+    if (typeof cocktailPluginDefinitions === 'object'
+      && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
     else if (_.has(config, `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`)) {
