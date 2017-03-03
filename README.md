@@ -72,7 +72,7 @@ const requireDirectory = require('require-directory');
 
 // require the directory with all of your supers classes.
 // THe directory will be organized with directories representing super name spaces
-// and those directories will hold your supers classes. 
+// and those directories will hold your supers classes.
 //  supersDirectory
 //  |-- exampleSupersNameSpace
 //  |-- | -- exampleSuperNameSpace.js
@@ -88,7 +88,7 @@ const supers = requireDirectory(module, './supersDirectory');
 const plugins = requireDirectory(module, './plugins');
 
 // set the path to your .molotov.json molotov config file (see above)
-const molotovPath = './.molotov.json';
+const molotovPath = './';
 
 // Require the molotov file from the molotov module.
 // You will be extending this class.
@@ -104,8 +104,8 @@ const molotovNameSpace = 'schemePunk';
 // in your .molotov.json file you allow other module writers
 // to use or extend your plugins with their cocktail classes.
 
-module.exports = const molotov = class extends Molotov {
-  constructor(molotovPath, molotovNameSpace, supers, plugins) {
+module.exports = class extends Molotov {
+  constructor() {
     super(molotovPath, molotovNameSpace, supers, plugins);
   }
 }

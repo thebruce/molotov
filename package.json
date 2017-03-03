@@ -1,6 +1,5 @@
 {
   "name": "molotov",
-  "version": "0.0.0-development",
   "description": "Molotov: (Mix/Plug)-in loader for explosive composeability",
   "main": "molotov.js",
   "directories": {
@@ -23,13 +22,17 @@
     "eslint-plugin-ava": "^4.2.0",
     "eslint-plugin-import": "^2.0.1",
     "husky": "^0.13.1",
+    "npm-run-all": "^4.0.1",
     "nyc": "^10.1.2",
     "semantic-release": "^6.3.2"
   },
   "scripts": {
     "lint": "eslint .",
     "test": "nyc ava && nyc report --reporter=html",
+    "precommit": "npm run lint",
+    "prepush": "npm test",
     "coverage": "nyc check-coverage --statements 100 --lines 100 --branches 100 --functions 100",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -41,16 +44,13 @@
     "plugins",
     "molotov"
   ],
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
-    }
-  },
   "author": "David Diers",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/thebruce/molotov/issues"
   },
-  "homepage": "https://github.com/thebruce/molotov#readme"
+  "homepage": "https://github.com/thebruce/molotov#readme",
+  "engines": {
+    "node": ">=4"
+  }
 }
