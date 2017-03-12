@@ -1,12 +1,6 @@
 # Molotov: (Mix/Plug)-in loader for explosive composeability
 
-[![Build Status](https://travis-ci.org/thebruce/molotov.svg?branch=master)](https://travis-ci.org/thebruce/molotov)
-
-[![Coverage Status](https://coveralls.io/repos/github/thebruce/molotov/badge.svg)](https://coveralls.io/github/thebruce/molotov)
-
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/thebruce/molotov.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/thebruce/molotov.svg?branch=master)](https://travis-ci.org/thebruce/molotov) [![Coverage Status](https://coveralls.io/repos/github/thebruce/molotov/badge.svg)](https://coveralls.io/github/thebruce/molotov) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/thebruce/molotov.svg)](https://greenkeeper.io/)
 
 ## Install
 
@@ -27,19 +21,36 @@ Molotov provides a series of tools that help modules with a uniform way to provi
 // An example of the .molotov.json file for the scheme-punk project.
 /**
  *  {
- *    "molotovPath": 'lib/molotov.js',  // The module path to your molotov.js implementing class.
- *    "schemePunk": { // An arbitrary name for your module's molotov name space.
- *      "supersNameSpacePaths": {  // SupersNameSpacePaths holds any number of super name spaces.
- *        "transform": "./transform/schemePunkTransform'", // transform is the name space. the value is the path to the transform super class.
- *        "source": "./source/schemePunkSource", // source is the name space, the value is the path to the source super class.
- *        "destination": "./destination/schemePunkDestination" // destination is the name space, the value is the path to the destination super class.
+ **** The module path to your molotov.js implementing class.
+ *    "molotovPath": 'lib/molotov.js',
+ **** An arbitrary name for your module's molotov name space.
+ *    "schemePunk": {
+ ****** SupersNameSpacePaths holds any number of super name spaces.
+ *      "supersNameSpacePaths": {
+ ******** transform is the name space. the value is the path to the
+ ********** transform super class.
+ *        "transform": "./transform/schemePunkTransform'",
+ ******** source is the name space, the value is the path to the
+ ********** source super class
+ *        "source": "./source/schemePunkSource",
+ ******** destination is the name space, the value is the path to
+ ********** the destination super class
+ *        "destination": "./destination/schemePunkDestination" .
  *      },
- *      "molotovPlugins": { // molotov Plugins holds any number of super name spaces holding any number of plugins.
- *        "transform": { // this is a super name space that correlates to a super in the superNameSpacePaths.
- *          "tokenTemplateValuesMulti": // An descriptive arbitrary name chosen for this plugin.
- *            [  // Plugins will be chained in order Mixin2(Mixin3(superclass));
- *              "typeAdapter", // A file name of a mixin class .
- *              "tokenTemplateValues" // A file name of a mixin class.
+ ******* molotov Plugins holds any number of super name spaces holding
+ ********** any number of plugins.
+ *      "molotovPlugins": {
+ ******** this is a super name space that correlates to a super in the
+ ********** superNameSpacePaths.
+ *        "transform": {
+ ********** this is a super name space that correlates to a super in the superNameSpacePaths.
+ *          "tokenTemplateValuesMulti":
+ ************ Plugins will be chained in order Mixin2(Mixin3(superclass));
+ *            [
+ ************** A file name of a mixin class.
+ *              "typeAdapter",
+ *************  A file name of a mixin class.
+ *              "tokenTemplateValues"
  *            ]
  *        }
  *      }
@@ -79,14 +90,16 @@ Example: Write a molotov.js file at the path you indicated in `.molotov.json` at
 const requireDirectory = require('require-directory');
 
 // require the directory with all of your supers classes.
-// THe directory will be organized with directories representing super name spaces
+// THe directory will be organized with directories representing
+// super name spaces
 // and those directories will hold your supers classes.
 //  supersDirectory
 //  |-- exampleSuperNameSpace.js
 const supers = requireDirectory(module, './supersDirectory');
 
 // require the directory with all of your mixins.
-// THe directory will be organized with directories representing super name spaces
+// THe directory will be organized with directories representing
+// super name spaces
 // and those directories will hold your mixins
 //  plugins
 //  |-- exampleSupersNameSpace
@@ -94,7 +107,8 @@ const supers = requireDirectory(module, './supersDirectory');
 //  |-- | -- mixinTwo.js
 const plugins = requireDirectory(module, './plugins');
 
-// set the path to your .molotov.json molotov config file (see above) from your
+// set the path to your .molotov.json molotov config file
+// (see above) from your
 // modules root.
 const molotovPath = './';
 
@@ -123,16 +137,20 @@ module.exports = class extends Molotov {
 Step 3: Use your molotov class in your Mixin Implementing classes.
 
 ```js
-// example implementing factory class that returns an implementing class with a
-// passed in superNameSPace and pluginName.
+// example implementing factory class that returns an
+// implementing class with a passed in superNameSPace and
+// pluginName.
 
-const Molotov = require('./lib/molotov'); // Path to your molotov class implementation.
+// Path to your molotov class implementation.
+const Molotov = require('./lib/molotov');
 
 module.exports = function implementFactory(superNameSpace, pluginName) {
 const molotov = new Molotov();
-  molotov.getMolotov()  // Ensures we get any superOverrides from config.
+  // Ensures we get any superOverrides from config.
+  molotov.getMolotov()
   .then((pluginMaker) => {
-    // Get all of the molotov plugins for our module and any overrides from config.
+    // Get all of the molotov plugins for our module and
+    // any overrides from config.
     const molotovPlugins = pluginMaker.resolve();
     return molotovPlugins;
   })
@@ -140,7 +158,8 @@ const molotov = new Molotov();
     returnedPlugins =>
       class exampleClassBase extends returnedPlugins[superNameSpace][pluginName] {
     /**
-      * Function to tranform a value, this is an implementing class and thus
+      * Function to tranform a value, this is an implementing
+      * class and thus
       * calls super.testFunction() like a mixin.
       *
       * @param value
@@ -161,7 +180,10 @@ const molotov = new Molotov();
 1)  Set config in that molotov provider's namespace with a path to your super override class. 
 
 ```js
-// For example to override the molotov provider module `scheme-punk`'s transform super class with my own custom transform super class I would modify the "scheme-punk" attribute inside of config/default to the following:
+// For example to override the molotov provider module
+// `scheme-punk`'s transform super class with my own custom
+// transform super class I would modify the "scheme-punk" attribute inside of
+// config/default to the following:
 
 {
   "schemePunk": {
@@ -172,10 +194,11 @@ const molotov = new Molotov();
 }
 
 
-// Where, `schemePunk` is the molotov namespace for the scheme-punk module declared
-// in the provider module's .molotov.json file and `transform` is one of the
-// supersNameSpacePaths keys also in the .molotov.json and the value above corresponds
-// to the .js super class that I want to override the one defined in .molotov.json
+// Where, `schemePunk` is the molotov namespace for the
+// scheme-punk module declared in the provider module's .molotov.json
+// file and `transform` is one of the supersNameSpacePaths keys also
+// in the .molotov.json and the value above corresponds to the .js super
+// class that I want to override the one defined in .molotov.json
 // in the provider.
 
 ```
@@ -203,8 +226,9 @@ const molotov = new Molotov();
 // The molotov.cocktailPlugins below defines an override for:
 // Provider Name Space: schemePunk
 // SupersnameSpace: transform
-// plugin Name: tokenTemplateValues -> in this case, an existing plugin in scheme punk
-//   that we want to override by adding an additional mixin to the plugin.
+// plugin Name: tokenTemplateValues -> in this case, an
+// existing plugin in scheme punk
+// that we want to override by adding an additional mixin to the plugin.
 {
   "schemePunk": {
     "molotovPlugins": [
@@ -246,7 +270,8 @@ module.exports = class extends Cocktail {
   }
 }
 
-// Now the molotov provider module you have overriden will use your plugin definition overrides on its plugin offerings.
+// Now the molotov provider module you have overriden
+// will use your plugin definition overrides on its plugin offerings.
 ```
 
 
@@ -273,7 +298,8 @@ const config = require('config');
 const SchemePunkMolotov = require('scheme-punk/molotov');
 const molotov = new SchemePunkMolotov();
 
-// Define you plugin object keyed by supersNameSpace for the molotov object you have.
+// Define you plugin object keyed by supersNameSpace
+// for the molotov object you have.
 // And then by plugin name with mixin file names as values.
 const pluginDefinitions = {
   transform:{
@@ -293,7 +319,8 @@ module.exports = class extends Cocktail {
   };
 }
 
-// Now the molotov provider module you have overriden will use your plugin definition overrides on its plugin offerings.
+// Now the molotov provider module you have overriden will
+// use your plugin definition overrides on its plugin offerings.
 ```
 
 ### How to add additional plugins and plugin definitions to a molotov provider with Cocktail.
@@ -317,9 +344,11 @@ module.exports = class extends Cocktail {
 // The molotov.cocktailPlugins below defines an override for:
 // Provider Name Space: schemePunk
 // SupersnameSpace: transform
-// plugin Name[0]: tokenTemplateValues -> in this case, an existing plugin in scheme punk
-//   that we want to override by adding an additional mixin to the plugin..
-// plugin Name[1]: tokenTemplatesMultiFromObject -> a new plugin created from existing mixins
+// plugin Name[0]: tokenTemplateValues -> in this case,
+// an existing plugin in scheme punk
+// that we want to override by adding an additional mixin to the plugin..
+// plugin Name[1]: tokenTemplatesMultiFromObject -> a new plugin
+// created from existing mixins
 // plugin Name[0]: magicSnap -> a new plugin created from a new mixin.
 {
   "schemePunk": {
@@ -361,8 +390,9 @@ const SchemePunkMolotov = require('scheme-punk/molotov');
 const molotov = new SchemePunkMolotov();
 
 // require the directory with all of my cocktail plugins
-// THe directory will be organized with directories representing super name spaces
-// and those directories will hold your mixins. For the above config it would follow:
+// THe directory will be organized with directories representing
+// super name spaces and those directories will hold your mixins.
+// For the above config it would follow:
 //  ./plugins
 //  |-- transform
 //  |-- | -- magicSnap.js
@@ -402,9 +432,12 @@ module.exports = class extends Cocktail {
 // The molotov.cocktailPlugins below defines an override for:
 // Provider Name Space: schemePunk
 // SupersnameSpace: transform
-// plugin Name[0]: tokenTemplateValues -> in this case, an existing plugin in scheme punk
-//   that we want to override by adding an additional mixin to the plugin..
-// plugin Name[1]: tokenTemplatesMultiFromObject -> a new plugin created from existing mixins
+// plugin Name[0]: tokenTemplateValues -> in this case,
+// an existing plugin in scheme punk
+//   that we want to override by adding an additional mixin
+// to the plugin..
+// plugin Name[1]: tokenTemplatesMultiFromObject -> a
+// new plugin created from existing mixins
 // plugin Name[0]: magicSnap -> a new plugin created from a new mixin.
 {
   "schemePunk": {
@@ -449,15 +482,18 @@ const SchemePunkMolotov = require('scheme-punk/molotov');
 const molotov = new SchemePunkMolotov();
 
 // To ensure we have a speedy supers loadup we will require it here,
-//  even though it is in config. For that we will needs a valid supers object.
+//  even though it is in config. For that we will needs a
+// valid supers object.
 const myModuleSupersOverrides = {
   transform: require('/path/to/superNameSpaceItem/yourSuperClassOverride');
 };
 
 
 // require the directory with all of my cocktail plugins
-// THe directory will be organized with directories representing super name spaces
-// and those directories will hold your mixins. For the above config it would follow:
+// THe directory will be organized with directories representing
+// super name spaces
+// and those directories will hold your mixins. For the above
+// config it would follow:
 //  ./plugins
 //  |-- transform
 //  |-- | -- magicSnap.js
