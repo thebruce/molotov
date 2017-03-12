@@ -74,8 +74,7 @@ const requireDirectory = require('require-directory');
 // THe directory will be organized with directories representing super name spaces
 // and those directories will hold your supers classes.
 //  supersDirectory
-//  |-- exampleSupersNameSpace
-//  |-- | -- exampleSuperNameSpace.js
+//  |-- exampleSuperNameSpace.js
 const supers = requireDirectory(module, './supersDirectory');
 
 // require the directory with all of your mixins.
@@ -87,7 +86,8 @@ const supers = requireDirectory(module, './supersDirectory');
 //  |-- | -- mixinTwo.js
 const plugins = requireDirectory(module, './plugins');
 
-// set the path to your .molotov.json molotov config file (see above)
+// set the path to your .molotov.json molotov config file (see above) from your
+// modules root.
 const molotovPath = './';
 
 // Require the molotov file from the molotov module.
