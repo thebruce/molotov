@@ -28,7 +28,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "nyc ava && nyc report --reporter=html",
+    "test": "nyc ava && nyc report --reporter=html --reporter=lcov",
     "precommit": "npm run lint",
     "prepush": "npm test",
     "coverage": "nyc --reporter=lcov --reporter=html check-coverage --statements 100 --lines 100 --branches 100 --functions 100",
