@@ -1,11 +1,12 @@
 # Molotov: (Mix/Plug)-in loader for explosive composeability
 
-[![travis](https://travis-ci.org/thebruce/molotov.svg?branch=master)]
-(https://travis-ci.org/thebruce/molotov.svg?branch=master)
+[![Build Status](https://travis-ci.org/thebruce/molotov.svg?branch=master)](https://travis-ci.org/thebruce/molotov)
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 [![Coverage Status](https://coveralls.io/repos/github/thebruce/molotov/badge.svg)](https://coveralls.io/github/thebruce/molotov)
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/thebruce/molotov.svg)](https://greenkeeper.io/)
 
 ## Install
 
