@@ -1,5 +1,7 @@
 # Molotov: (Mix/Plug)-in loader for explosive composeability
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/thebruce/molotov.svg)](https://greenkeeper.io/)
+
 ## Install
 
 `npm install --save molotov`
