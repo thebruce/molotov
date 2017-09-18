@@ -1,6 +1,5 @@
 import test from 'ava';
 
-const path = require('path');
 // Need to get clean versions to test with env variables.
 Object.keys(require.cache).forEach((key) => {
   delete require.cache[key];

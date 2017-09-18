@@ -1,7 +1,5 @@
-
 import test from 'ava';
 
-const path = require('path');
 const requireDirectory = require('require-directory');
 
 // Need to get clean versions to test with env variables.

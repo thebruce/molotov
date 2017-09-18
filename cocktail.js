@@ -31,8 +31,13 @@ module.exports = class {
       && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
-    else if (_.has(molotovProvider.getConfig(), `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`)) {
-      this.setCocktailPluginDefinitions(molotovProvider.getConfig().molotov.cocktailPlugins[this.getMolotovNameSpace()]);
+    else if (_.has(
+      molotovProvider.getConfig(),
+      `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`
+    )) {
+      this.setCocktailPluginDefinitions(
+        molotovProvider.getConfig().molotov.cocktailPlugins[this.getMolotovNameSpace()]
+      );
     }
     else {
       throw new Error('Cocktail must declare plugins.');

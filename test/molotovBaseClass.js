@@ -1,7 +1,5 @@
 import test from 'ava';
 
-const path = require('path');
-
 const type = 'Supers';
 const target = 'supersNameSpacePaths';
 // Need to get clean versions to test with env variables.

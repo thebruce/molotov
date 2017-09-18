@@ -1,6 +1,5 @@
 import test from 'ava';
 
-const path = require('path');
 const requireDirectory = require('require-directory');
 
 // Need to get clean versions to test with env variables.
@@ -47,7 +46,13 @@ const molotovSupers = {
   testSuper: require('./helpers/supers/testSuper')
 };
 
-const molotov = new Molotov('./test/helpers/', 'testPackage', molotovSupers, molotovPlugins, config);
+const molotov = new Molotov(
+  './test/helpers/',
+  'testPackage',
+  molotovSupers,
+  molotovPlugins,
+  config
+);
 
 // Now require cocktail and its classes.
 const Cocktail = require('../cocktail');

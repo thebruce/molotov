@@ -1,6 +1,6 @@
 import test from 'ava';
 
-const path = require('path');
+const path = require('path'); // eslint-disable-line no-unused-vars
 const requireDirectory = require('require-directory');
 
 // Need to get clean versions to test with env variables.
