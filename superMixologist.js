@@ -25,10 +25,14 @@ const superMixologist = class extends molotovProviderBase {
    *   The base path of the molotovConfig file for the provider module
    *     for these super classes.
    */
-  constructor(molotovConfigpath, supers, config = {}) {
+  constructor(molotovConfigpath, supers, config) {
+    let tmpConfig = config;
+    if (!config) {
+      tmpConfig = {};
+    }
     const type = 'Supers';
     const target = 'supersNameSpacePaths';
-    super(molotovConfigpath, type, target, config);
+    super(molotovConfigpath, type, target, tmpConfig);
     if (typeof supers === 'object') {
       this.setSupers(supers);
     }
