@@ -23,10 +23,14 @@ const pluginMaker = require('./mixinPluginMaker');
  * modules are to be included that will need to happen in the app config.
  */
 const polttopullo = class extends molotovProviderBase {
-  constructor(molotovConfigPath, supers, plugins, config = {}) {
+  constructor(molotovConfigPath, supers, plugins, config) {
+    let tmpConfig = config;
+    if (!config) {
+      tmpConfig = {};
+    }
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(molotovConfigPath, type, target, config);
+    super(molotovConfigPath, type, target, tmpConfig);
     this.setSupers(supers);
     this.setPluginsDirectory(plugins);
   }
