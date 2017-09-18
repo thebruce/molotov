@@ -9,8 +9,6 @@
  * for mixin construction.
  */
 
-// Prevent config warnings if this module is the only use of config.
-process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
 // User overrides are stored in config.
 const molotovProviderBase = require('./molotovProviderBase');
 
@@ -27,11 +25,11 @@ const superMixologist = class extends molotovProviderBase {
    *   The base path of the molotovConfig file for the provider module
    *     for these super classes.
    */
-  constructor(molotovConfigpath, supers) {
+  constructor(molotovConfigpath, supers, config = {}) {
     const type = 'Supers';
     const target = 'supersNameSpacePaths';
-    super(molotovConfigpath, type, target);
-    if (typeof supers !== 'undefined') {
+    super(molotovConfigpath, type, target, config);
+    if (typeof supers === 'object') {
       this.setSupers(supers);
     }
   }

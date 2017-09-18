@@ -6,16 +6,16 @@ const pluginMaker = require('./mixinPluginMaker');
 /**
  * Molotov class for modules implementing molotov mixin loading.
  * Attempts to provide the module with its default plugins
- * and incorporate any overrides from config.  Modules will extend this class
- * and provide setConfig values, but may also provide declared specific requires
+ * and incorporate any overrides from passed in configuration.
+ * Modules will extend this class and provide setConfig values,
+ * but may also provide declared specific requires
  * to avoid dynamic requires below.
  *
  * Molotov, assumes a few things:
  *  1) Supers s
- *  attempts to merge in configuration entities for
- * schemePunk tranformations, sources, and destinations if they exist in
- * a npm module config compatible configuration. It then attempts to merge
- * those overrides over default configuration for this module and its plugins.
+ *  attempts to merge passed in configuration entities. It then
+ *    attempts to merge those overrides over default configuration for
+ *       this module and its plugins.
  *
  * This happens in require time. It also sets up the pattern that any
  * configuration override behavior will belong in the application
@@ -23,10 +23,10 @@ const pluginMaker = require('./mixinPluginMaker');
  * modules are to be included that will need to happen in the app config.
  */
 const polttopullo = class extends molotovProviderBase {
-  constructor(molotovConfigPath, supers, plugins) {
+  constructor(molotovConfigPath, supers, plugins, config = {}) {
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(molotovConfigPath, type, target);
+    super(molotovConfigPath, type, target, config);
     this.setSupers(supers);
     this.setPluginsDirectory(plugins);
   }

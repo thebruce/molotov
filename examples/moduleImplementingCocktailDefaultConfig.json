@@ -1,0 +1,13 @@
+{
+  "schemePunk": {
+    "superNameSpaceItem": {
+      "superOverride": "/path/to/superNameSpaceItem/Override"
+    },
+    "molotov": {
+      "molotovPlugins": [
+        "path/to/mixinStylePluginLoader/implementing/cocktailClass",
+        "anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides"
+      ]
+    }
+  }
+}

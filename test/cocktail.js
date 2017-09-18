@@ -7,10 +7,35 @@ const requireDirectory = require('require-directory');
 Object.keys(require.cache).forEach((key) => {
   delete require.cache[key];
 });
-// set up test config dirs.
-process.env.NODE_CONFIG_DIR = path.join(__dirname, '/helpers', 'configTests', 'four');
-// And require here so that later requires will use this cached version.
-const config = require('config'); // eslint-disable-line no-unused-vars
+
+// Config is now
+const config = {
+  testPackage: {
+    testSuper: {
+      supersOverride: '/test/helpers/testSuperOverride'
+    },
+    molotovPlugins: [
+      '/test/helpers/cocktailHelper'
+    ]
+  },
+  molotov: {
+    cocktailPlugins: {
+      testPackage: {
+        testSuper: {
+          pluginOneTwo: [
+            'pluginOne',
+            'pluginTwo',
+            'pluginFour'
+          ],
+          pluginNumbus: [
+            'pluginThree'
+          ]
+        }
+      }
+    }
+  }
+};
+
 
 // Need to mock a molotov providing module to pass along to cocktail.
 // As cocktail would be overriding that module.
@@ -21,7 +46,13 @@ const molotovSupers = {
   testSuper: require('./helpers/supers/testSuper')
 };
 
-const molotov = new Molotov('./test/helpers/', 'testPackage', molotovSupers, molotovPlugins);
+const molotov = new Molotov(
+  './test/helpers/',
+  'testPackage',
+  molotovSupers,
+  molotovPlugins,
+  config
+);
 
 // Now require cocktail and its classes.
 const Cocktail = require('../cocktail');

@@ -33,7 +33,7 @@ const Polttopullo = require('./polttopullo');
 // })
 
 const molotov = class {
-  constructor(molotovPath, molotovNameSpace, supersDirectory, pluginDirectory) {
+  constructor(molotovPath, molotovNameSpace, supersDirectory, pluginDirectory, config = {}) {
     if ((!molotovPath) || (typeof molotovPath !== 'string')) {
       throw new Error('molotovPath is required and must be a string.');
     }
@@ -47,6 +47,15 @@ const molotov = class {
     this.setMolotovPath(molotovPath);
     this.setSupersDirectory(supersDirectory);
     this.setPluginDirectory(pluginDirectory);
+    this.setConfig(config);
+  }
+
+  setConfig(config) {
+    this.config = config;
+  }
+
+  getConfig() {
+    return this.config;
   }
 
   setPluginDirectory(pluginDirectory) {
@@ -58,7 +67,12 @@ const molotov = class {
   }
 
   getSupers() {
-    const superMixologist = new SuperMixologist(this.getMolotovPath(), this.getSupersDirectory());
+    const superMixologist = new SuperMixologist(
+      this.getMolotovPath(),
+      this.getSupersDirectory(),
+      '',
+      this.getConfig()
+    );
     return superMixologist.resolve();
   }
 
@@ -83,7 +97,9 @@ const molotov = class {
     .then(resolvedSupers => new Polttopullo(
       this.getMolotovPath(),
       resolvedSupers,
-      this.getPluginDirectory())
+      this.getPluginDirectory(),
+      this.getConfig()
+    )
     );
   }
 
