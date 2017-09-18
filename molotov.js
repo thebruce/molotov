@@ -33,7 +33,11 @@ const Polttopullo = require('./polttopullo');
 // })
 
 const molotov = class {
-  constructor(molotovPath, molotovNameSpace, supersDirectory, pluginDirectory, config = {}) {
+  constructor(molotovPath, molotovNameSpace, supersDirectory, pluginDirectory, config) {
+    let tmpConfig = config;
+    if (!config) {
+      tmpConfig = {};
+    }
     if ((!molotovPath) || (typeof molotovPath !== 'string')) {
       throw new Error('molotovPath is required and must be a string.');
     }
@@ -47,7 +51,7 @@ const molotov = class {
     this.setMolotovPath(molotovPath);
     this.setSupersDirectory(supersDirectory);
     this.setPluginDirectory(pluginDirectory);
-    this.setConfig(config);
+    this.setConfig(tmpConfig);
   }
 
   setConfig(config) {
