@@ -1,5 +1,6 @@
 {
   "name": "molotov",
+  "version": "1.1.0",
   "description": "Molotov: (Mix/Plug)-in loader for explosive composeability",
   "main": "molotov.js",
   "directories": {
