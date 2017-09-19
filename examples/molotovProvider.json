@@ -1,0 +1,18 @@
+{
+  "examplePackageNameSpace": {
+    "supersNameSpacePaths": {
+      "aSuperNameSpace": "pathToThisSuperNameSpace",
+      "aSecondSuperNameSpace": "pathToTheSecondSuperNameSpace",
+      "aThirdSuperNameSpace": "pathToTheThirdSuperNameSpace"
+    },
+    "molotovPlugins": {
+      "aSuperNameSpace":{
+        "aPluginName": [
+          "pluginNameOne",
+          "pluginNameTwo",
+          "pluginNameThree"
+        ]
+      }
+    }
+  }
+}

@@ -2,7 +2,6 @@
 
 const _ = require('lodash');
 const pluginMaker = require('./mixinPluginMaker');
-const config = require('config');
 
 module.exports = class {
   /**
@@ -11,8 +10,7 @@ module.exports = class {
    * @params {obj} molotovProvider
    *   The Molotov class implemented by a molotov provider module.
    * @params {obj} optional cocktailPluginDefinitions
-   *   An object of plugin definitions. If not provided will be extracted
-   * from config. Config must come from one of the two places.
+   *   An object of plugin definitions.
    * @params {obj} optional modulesPluginDirectory
    *   If the cocktail implementing module is providing its own plugins,
    *     please require and supply them here.
@@ -33,8 +31,13 @@ module.exports = class {
       && Object.keys(cocktailPluginDefinitions).length > 0) {
       this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
     }
-    else if (_.has(config, `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`)) {
-      this.setCocktailPluginDefinitions(config.molotov.cocktailPlugins[this.getMolotovNameSpace()]);
+    else if (_.has(
+      molotovProvider.getConfig(),
+      `molotov.cocktailPlugins[${this.getMolotovNameSpace()}]`
+    )) {
+      this.setCocktailPluginDefinitions(
+        molotovProvider.getConfig().molotov.cocktailPlugins[this.getMolotovNameSpace()]
+      );
     }
     else {
       throw new Error('Cocktail must declare plugins.');

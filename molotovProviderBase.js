@@ -4,27 +4,20 @@
  * This class is a base class with shared methods for molotovClasses.
  */
 
-// Prevent config warnings if this module is the only use of config.
-process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
-// User overrides are stored in config.
+// User overrides are passed in targeted to a hierarchical namespace.
 const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra');
-const config = require('config');
 const stack = require('callsite');
 
 const molotovProviderBase = class {
-  constructor(molotovConfigpath, type, target) {
+  constructor(molotovConfigpath, type, target, config) {
     this.setDynamicRequiresType(type);
     this.setValidateTarget(target);
     this.molotovNameSpace = [];
     this.setMolotovSettingsPath(molotovConfigpath);
-
-    this.setConfig({});
-
-    if (config.util.getConfigSources().length) {
-      this.setConfig(config);
-    }
+    const tmpConfig = _.isEmpty(config) ? {} : config;
+    this.setConfig(tmpConfig);
   }
 
   /**
@@ -99,6 +92,9 @@ const molotovProviderBase = class {
    *   The base path to the molotov settings file for this provider module.
    */
   setMolotovSettingsPath(molotovBasePath) {
+    if (!molotovBasePath) {
+      throw new Error('No molotovBasePath provided.');
+    }
     this.molotovSettingsPath = path.join(molotovBasePath, '.molotov.json');
   }
 
