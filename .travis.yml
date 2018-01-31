@@ -6,7 +6,6 @@ cache:
 notifications:
   email: false
 node_js:
-  - '4'
   - '6'
 before_install:
   - npm i -g npm@^2.0.0
@@ -15,7 +14,8 @@ before_script:
 script:
   - npm test && npm run coverage
 after_success:
-  - npm run semantic-release
+  - npm install -g travis-deploy-once semantic-release
+  - travis-deploy-once "npm run semantic-release"
   - npm run coveralls
 branches:
   except:
