@@ -2,7 +2,6 @@
   "name": "molotov",
   "description": "Molotov: (Mix/Plug)-in loader for explosive composeability",
   "main": "molotov.js",
-  "version": "0.0.0-development",
   "directories": {
     "example": "examples"
   },
@@ -25,7 +24,8 @@
     "husky": "^0.14.0",
     "npm-run-all": "^4.0.1",
     "nyc": "^11.0.3",
-    "semantic-release": "^12.4.1"
+    "semantic-release": "^6.3.2",
+    "semantic-release-conventional-commits": "^1.0.2"
   },
   "scripts": {
     "lint": "eslint .",
@@ -34,7 +34,7 @@
     "prepush": "npm test",
     "coverage": "nyc --reporter=lcov --reporter=html check-coverage --statements 100 --lines 100 --branches 100 --functions 100",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -50,11 +50,8 @@
   "bugs": {
     "url": "https://github.com/thebruce/molotov/issues"
   },
-  "release": {
-    "branch": "next"
-  },
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
-    "node": ">=6"
+    "node": ">=4"
   }
 }
