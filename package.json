@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "coveralls": "^2.11.16",
+    "coveralls": "^3.0.0",
     "eslint": "^3.16.0",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-find-rules": "^1.13.0",
