@@ -8,6 +8,10 @@ const _ = require('lodash');
  *   object keyed by pluginName containing the plugin class with
  *   the super class (of the superNameSpace) as an argument.
  *
+ * @param {object} pluginsDefinitions
+ *   An object keyed by superNames, then plugin names holding arrays
+ *   of mixins by the names defined in a molotov implementing modules
+ *   plugins exports.
  * @param {obj} pluginsDirectoryObject
  *   A pluginsDirectoryObject represents a molotov plugin directory.
  *   By convention a plugin directory is organized by sub-directories
@@ -19,22 +23,31 @@ const _ = require('lodash');
  * @param {obj} supers
  *  Supers is an object keyed by superNameSpaces with their related
  *  super class as a value.
+ * @param {obj} dynamicPlugins
+ *  Dynamic plugins are the same shape as pluginsDefinitions but are meant to
+ *  be passed through in an implementing modules' polotpullo instance
+ *  resolved from molotov.getMolotov(). The intention is that these can be
+ *  assembled dynamically and passed to the implementing class before
+ *  resolving or overriding plugins. ex:
+ *  molotov.getMolotov().then(pluginMaker => pluginMaker.resolve(dynamicPlugins))
  *
  *  @returns {obj} plugins
  *   Returns an object keyed by superNameSpaces and then by pluginName
  *   with mixin class values.
  */
-module.exports = function pluginMaker(pluginsDefinitions, pluginsDirectoryObject, supers) {
+module.exports = function pluginMaker(pluginsDefinitions, pluginsDirectoryObject, supers, dynamicPlugins = {}) {
   const plugins = {};
+  let mergedPlugins = {};
+  mergedPlugins = _.merge(mergedPlugins, pluginsDefinitions, dynamicPlugins);
 
   // Plugin directories are structured in folders named
   // after the super namespaces.
-  Object.keys(pluginsDefinitions).forEach((directoryKey) => {
+  Object.keys(mergedPlugins).forEach((directoryKey) => {
     // Each key below the superNameSpace directory key will be a plugin file.
-    Object.keys(pluginsDefinitions[directoryKey]).forEach((pluginKey) => {
+    Object.keys(mergedPlugins[directoryKey]).forEach((pluginKey) => {
       const tmpPluginArray = _.reverse(
         _.cloneDeep(
-          pluginsDefinitions[directoryKey][pluginKey]
+          mergedPlugins[directoryKey][pluginKey]
         )
       );
       const superClass = supers[directoryKey];

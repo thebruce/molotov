@@ -59,3 +59,30 @@ test('getPlugins no config', async (t) => {
     ]
   );
 });
+
+test('getCrazy with Dynamic Plugins', async (t) => {
+  const dynamicPlugs = {
+    testSuper: {
+      drunkyDrunkerson: [
+        'pluginOne',
+        'pluginThree'
+      ]
+    }
+  };
+  const mixedDrink = new MixedDrink(
+    './test/helpers/',
+    supers,
+    plugins
+  );
+
+  t.context.data = await mixedDrink.resolve(dynamicPlugs);
+  t.deepEqual(
+    Object.keys(t.context.data.testSuper).sort(),
+    [
+      'drunkyDrunkerson',
+      'onlyPluginOne',
+      'pluginAll',
+      'pluginOneTwo'
+    ]
+  );
+});
