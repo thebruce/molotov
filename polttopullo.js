@@ -51,13 +51,14 @@ const polttopullo = class extends molotovProviderBase {
     return this.plugins;
   }
 
-  resolve() {
+  resolve(dynamicPlugins = {}) {
     const resolver = this.validateMolotovSettings(this.getValidateTarget())
     .then(() => {
       const plugins = pluginMaker(
         this.getMolotovSettings()[this.getMolotovNameSpace()].molotovPlugins,
         this.getPluginsDirectory(),
-        this.getSupers()
+        this.getSupers(),
+        dynamicPlugins
       );
       this.setPlugins(plugins);
       return plugins;

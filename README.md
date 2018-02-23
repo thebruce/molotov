@@ -148,14 +148,14 @@ Step 3: Use your molotov class in your Mixin Implementing classes.
 // Path to your molotov class implementation.
 const Molotov = require('./lib/molotov');
 
-module.exports = function implementFactory(superNameSpace, pluginName) {
+module.exports = function implementFactory(superNameSpace, pluginName, dynamicPlugs = {}) {
 const molotov = new Molotov();
   // Ensures we get any superOverrides from config.
   molotov.getMolotov()
   .then((pluginMaker) => {
     // Get all of the molotov plugins for our module and
     // any overrides from config.
-    const molotovPlugins = pluginMaker.resolve();
+    const molotovPlugins = pluginMaker.resolve(dynamicPlugs);
     return molotovPlugins;
   })
   .then(
