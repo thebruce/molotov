@@ -29,13 +29,14 @@ const _ = require('lodash');
  *  resolved from molotov.getMolotov(). The intention is that these can be
  *  assembled dynamically and passed to the implementing class before
  *  resolving or overriding plugins. ex:
- *  molotov.getMolotov().then(pluginMaker => pluginMaker.resolve(dynamicPlugins))
+ *  molotov.getMolotov().then(pluginMaker =>
+ *   pluginMaker.resolve(dynamicPlugins))
  *
  *  @returns {obj} plugins
  *   Returns an object keyed by superNameSpaces and then by pluginName
  *   with mixin class values.
  */
-module.exports = function pluginMaker(pluginsDefinitions, pluginsDirectoryObject, supers, dynamicPlugins = {}) {
+module.exports = function pluginMaker(pluginsDefinitions, pluginsDirectoryObject, supers, dynamicPlugins = {}) {  // eslint-disable-line max-len
   const plugins = {};
   let mergedPlugins = {};
   mergedPlugins = _.merge(mergedPlugins, pluginsDefinitions, dynamicPlugins);
