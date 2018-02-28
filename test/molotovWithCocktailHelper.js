@@ -55,6 +55,7 @@ test('molotov', async (t) => {
     [
       'onlyPluginOne',
       'pluginAll',
+      'pluginFour',
       'pluginNumbus',
       'pluginOneTwo'
     ]

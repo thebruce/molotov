@@ -29,6 +29,9 @@ const config = {
           ],
           pluginNumbus: [
             'pluginThree'
+          ],
+          pluginFour: [
+            'pluginFour',
           ]
         }
       }
@@ -62,13 +65,14 @@ const cocktailSupers = requireDirectory(module, './helpers/cocktailPlugins');
 
 // Test for bad path rejection.
 test('cocktailInvocation', (t) => {
-  const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins);
+  const cocktail = new Cocktail(molotov, '', cocktailPlugins, cocktailSupers);
 
   t.context.data = cocktail.resolve();
 
   t.deepEqual(
     Object.keys(t.context.data.testSuper).sort(),
     [
+      'pluginFour',
       'pluginNumbus',
       'pluginOneTwo'
     ]
@@ -77,13 +81,14 @@ test('cocktailInvocation', (t) => {
 
 // Test for bad path rejection.
 test('cocktailGetPlugins', (t) => {
-  const cocktail = new Cocktail(molotov, '', cocktailSupers, cocktailPlugins);
+  const cocktail = new Cocktail(molotov, '', cocktailPlugins, cocktailSupers);
 
   t.context.data = cocktail.resolve();
 
   t.deepEqual(
     Object.keys(cocktail.getPlugins().testSuper).sort(),
     [
+      'pluginFour',
       'pluginNumbus',
       'pluginOneTwo'
     ]

@@ -25,7 +25,7 @@ const molotov = new Molotov('./', 'testPackage', molotovSupers, molotovPlugins);
 const Cocktail = require('../../cocktail');
 
 const cocktailPlugins = requireDirectory(module, './cocktailPlugins');
-const cocktailSupers = requireDirectory(module, './cocktailPlugins');
+const cocktailSupers = requireDirectory(module, './cocktailSupers');
 
 const cocktailManualPluginDefinitions = {
   testSuper: {
@@ -35,6 +35,9 @@ const cocktailManualPluginDefinitions = {
     pluginOneTwo: [
       'pluginOne',
       'pluginTwo',
+      'pluginFour'
+    ],
+    pluginFour: [
       'pluginFour'
     ]
   }

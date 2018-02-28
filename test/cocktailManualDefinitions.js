@@ -58,7 +58,7 @@ const molotov = new Molotov(
 const Cocktail = require('../cocktail');
 
 const cocktailPlugins = requireDirectory(module, './helpers/cocktailPlugins');
-const cocktailSupers = requireDirectory(module, './helpers/cocktailPlugins');
+const cocktailSupers = requireDirectory(module, './helpers/cocktailSupers');
 
 const cocktailManualPluginDefinitions = {
   testSuper: {
@@ -73,8 +73,8 @@ test('cocktailInvocation', (t) => {
   const cocktail = new Cocktail(
     molotov,
     cocktailManualPluginDefinitions,
-    cocktailSupers,
-    cocktailPlugins
+    cocktailPlugins,
+    cocktailSupers
   );
 
   t.context.data = cocktail.resolve();

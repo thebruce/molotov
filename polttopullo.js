@@ -23,24 +23,12 @@ const pluginMaker = require('./mixinPluginMaker');
  * modules are to be included that will need to happen in the app config.
  */
 const polttopullo = class extends molotovProviderBase {
-  constructor(molotovConfigPath, supers, plugins, config) {
-    let tmpConfig = config;
-    if (!config) {
-      tmpConfig = {};
-    }
+  constructor(molotovConfigPath, supers, plugins, overrides = {}, cocktails = []) {
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(molotovConfigPath, type, target, tmpConfig);
+    super(molotovConfigPath, type, target, overrides, cocktails);
     this.setSupers(supers);
-    this.setPluginsDirectory(plugins);
-  }
-
-  setPluginsDirectory(pluginsDir) {
-    this.pluginsDirectory = pluginsDir;
-  }
-
-  getPluginsDirectory() {
-    return this.pluginsDirectory;
+    this.setPlugins(plugins);
   }
 
   setPlugins(plugins) {
@@ -51,7 +39,13 @@ const polttopullo = class extends molotovProviderBase {
     return this.plugins;
   }
 
-  resolve(dynamicPlugins = {}) {
+  resolve() {
+    // merge up config.
+    // getGetTypes
+    // then call GetTypes on cocktails
+    // merge down and reset thisType
+
+
     const resolver = this.validateMolotovSettings(this.getValidateTarget())
     .then(() => {
       const plugins = pluginMaker(

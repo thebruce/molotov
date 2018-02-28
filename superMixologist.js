@@ -21,18 +21,21 @@ const superMixologist = class extends molotovProviderBase {
   /**
    * constructor for the superMixologistAbstract.
    *
-   * @params {string} molotovConfigpath
+   * @param {string} molotovConfig
    *   The base path of the molotovConfig file for the provider module
    *     for these super classes.
+   * @param {object} supers
+   *   A supers object.
+   * @param {object} overrides
+   *   Overrides for molotov. These could be dynamic or provided
+   *     by module using a molotov implementer.
+   * @param {array} cocktails
+   *   An array of cocktail classes.
    */
-  constructor(molotovConfigpath, supers, config) {
-    let tmpConfig = config;
-    if (!config) {
-      tmpConfig = {};
-    }
+  constructor(molotovConfig, supers, overrides = {}, cocktails = []) {
     const type = 'Supers';
     const target = 'supersNameSpacePaths';
-    super(molotovConfigpath, type, target, tmpConfig);
+    super(molotovConfig, type, target, overrides, cocktails);
     if (typeof supers === 'object') {
       this.setSupers(supers);
     }

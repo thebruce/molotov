@@ -5,19 +5,37 @@
  */
 
 // User overrides are passed in targeted to a hierarchical namespace.
-const path = require('path');
 const _ = require('lodash');
-const fs = require('fs-extra');
-const stack = require('callsite');
 
 const molotovProviderBase = class {
-  constructor(molotovConfigpath, type, target, config) {
-    this.setDynamicRequiresType(type);
-    this.setValidateTarget(target);
+  constructor(molotovConfig, type, target, overrides = {}, cocktails = []) {
+    this.setType(type);
+    this.setTarget(target);
     this.molotovNameSpace = [];
-    this.setMolotovSettingsPath(molotovConfigpath);
-    const tmpConfig = _.isEmpty(config) ? {} : config;
-    this.setConfig(tmpConfig);
+    this.setMolotovConfig(molotovConfig);
+    this.setOverrides(_.get(overrides, this.getTarget(), {}));
+    this.setCocktails(cocktails);
+  }
+
+  setCocktails(cocktails) {
+    this.cocktails = cocktails;
+  }
+  /**
+   * It's martini time!
+   * .---------.'---.
+   * '.       :    .'
+   *   '.  .:::  .'
+   *     '.'::'.'
+   *       '||'
+   *        ||
+   *        ||
+   *        ||
+   *    ---====---
+   *
+   * @returns {cocktails}
+   */
+  getCocktails() {
+    return this.cocktails;
   }
 
   /**
@@ -25,8 +43,10 @@ const molotovProviderBase = class {
    *
    * @param {obj} userConfig
    */
-  setConfig(userConfig) {
-    this.config = userConfig;
+  setMolotovConfig(userConfig) {
+    if (this.validateMolotovConfig(userConfig)) {
+      this.molotovConfig = userConfig;
+    }
   }
 
   /**
@@ -34,16 +54,15 @@ const molotovProviderBase = class {
    *   Returns this.config.
    * @returns {obj}
    */
-  getConfig() {
-    return this.config;
+  getMolotovConfig() {
+    return this.molotovConfig;
   }
 
   /**
    * mergeConfig
    *
-   * @returns {Promise.obj}
-   *   A object bearing the molotov target classes keyed by target name space
-   *    with any user provided config overrides of those target.
+   * @returns {object}
+   *   A merged configuration object.
    */
   mergeConfig(mergeTarget) {
     const results = this[`get${mergeTarget}`]();
@@ -54,91 +73,30 @@ const molotovProviderBase = class {
 
   /**
    * validateMolotovSettings()
-   *   Validates and creates Molotov settings.
+   *   validates molotov config.
    *
-   * @returns {Promise.boolean}
+   * @returns {boolean}
    */
-  validateMolotovSettings(settingsAttribute) {
-    // First part of validating molotov is that the file exists.
-    const molotovSetPromise = this.setMolotovSettings();
+  validateMolotovConfig(settingsAttribute) {
     // Now check to see that we have what we need to do our work here.
-    return molotovSetPromise.then(() => {
-      let validator = false;
-      const molotov = this.getMolotovSettings();
+    let validator = false;
+    const molotov = this.getMolotovConfig();
 
-      if ((Object.keys(molotov).length > 0 && molotov.constructor === Object)) {
-        Object.keys(molotov).forEach((key) => {
-          // We must have superNameSpacePaths in atleast one of the provider
-          // name spaces.
-          if (
-            _.has(
-              molotov[key],
-              `${settingsAttribute}`
-            )) {
-            this.setMolotovNameSpace(key);
-            validator = true;
-          }
-        });
-      }
-      return validator;
-    });
-  }
-
-  /**
-   * setMolotovSettingsPath
-   *   Sets the path to the molotov settings file.
-   *
-   * @param {string} molotovBasePath
-   *   The base path to the molotov settings file for this provider module.
-   */
-  setMolotovSettingsPath(molotovBasePath) {
-    if (!molotovBasePath) {
-      throw new Error('No molotovBasePath provided.');
-    }
-    this.molotovSettingsPath = path.join(molotovBasePath, '.molotov.json');
-  }
-
-  /**
-   * getMolotovSettingsPath
-   *   Returns the path set for the molotov settings file for this provider.
-   *
-   * @returns {string}
-   *   The path to this provider's molotov file.
-   */
-  getMolotovSettingsPath() {
-    return this.molotovSettingsPath;
-  }
-
-  /**
-   * setMolotovSettings
-   *   Sets Molotov settings from the molotov settings path.
-   *
-   * @returns {Promise.object}
-   *   A molotov settings object.
-   */
-  setMolotovSettings() {
-    return new Promise((res, rej) => {
-      fs.readJson(this.getMolotovSettingsPath(), (err, data) => {
-        if (err) {
-          rej(err);
-        }
-        else {
-          this.molotovSettings = data;
-          res(true);
+    if ((Object.keys(molotov).length > 0 && molotov.constructor === Object)) {
+      Object.keys(molotov).forEach((key) => {
+        // We must have superNameSpacePaths in atleast one of the provider
+        // name spaces.
+        if (
+          _.has(
+            molotov[key],
+            `${settingsAttribute}`
+          )) {
+          this.setMolotovNameSpace(key);
+          validator = true;
         }
       });
-    });
-  }
-
-  /**
-   * getMolotovSettings
-   *   Returns the retrieved molotov settings objec.t
-   *
-   * @returns {obj}
-   *   A molotov settings object.
-   */
-  getMolotovSettings() {
-    return this.molotovSettings;
+    }
+    return validator;
   }
 
   /**
@@ -171,16 +129,15 @@ const molotovProviderBase = class {
    *  Returns an object bearing promise of config overrides.
    */
   fetchOverrides() {
-    const nameSpace = this.getMolotovNameSpace();
     const fetcher = new Promise((res) => {
       let configTemp;
-      const targetConfig = _.cloneDeep(this[`get${this.getDynamicRequiresType()}`]());
+      const targetConfig = _.cloneDeep(this[`get${this.getType()}`]());
 
-      if (this.getDynamicRequiresType() === 'Plugins') {
+      if (this.getType() === 'Plugins') {
         // For arrays we push the value to the array.
         configTemp = {};
-        if (_.has(this.getConfig(), `${nameSpace}.${this.getValidateTarget()}`)) {
-          this.getConfig()[nameSpace][`${this.getValidateTarget()}`].forEach((currentValue) => {
+        if (_.has(this.getConfig(), `${nameSpace}.${this.getTarget()}`)) {
+          this.getConfig()[nameSpace][`${this.getTarget()}`].forEach((currentValue) => {
             // We do have an overide, we will set the path.
             const Tempers = this.getItem(currentValue);
             const tempers = new Tempers();
@@ -194,10 +151,10 @@ const molotovProviderBase = class {
         Object.keys(targetConfig).forEach((currentValue) => {
           if (
             _.has(this.getConfig(),
-            `${nameSpace}.${currentValue}.${this.getDynamicRequiresType().toLowerCase()}Override`
+            `${nameSpace}.${currentValue}.${this.getType().toLowerCase()}Override`
             )) {
             // eslint-disable-next-line max-len
-            const override = this.getConfig()[nameSpace][currentValue][`${this.getDynamicRequiresType().toLowerCase()}Override`];
+            const override = this.getConfig()[nameSpace][currentValue][`${this.getType().toLowerCase()}Override`];
             configTemp[currentValue] = this.getItem(override);
           }
         }, this);
@@ -208,29 +165,6 @@ const molotovProviderBase = class {
       res(configTemp);
     });
     return fetcher.then(overriddenValues => overriddenValues);
-  }
-
-  /**
-   * getItem.
-   *
-   * @param {string} itemPath
-   *   A path to an item we should require.
-   *
-   * @returns a required item.
-   */
-  getItem(itemPath) {
-    const base = require.resolve('./');
-    const stackTrace = stack().reverse();
-    let traceIndex = stackTrace.findIndex(
-      trace => trace.getFileName() === base
-    );
-    traceIndex = this.getTraceIndex(traceIndex);
-    // eslint-disable-next-line import/no-dynamic-require
-    const requiredItem = require(
-      path.join(path.resolve(path.dirname(stackTrace[traceIndex].getFileName())),
-      itemPath
-    ));
-    return requiredItem;
   }
 
   /**
@@ -280,99 +214,49 @@ const molotovProviderBase = class {
   }
 
   /**
-   * getTraceIndex
-   *
-   * @param {int} index
-   *   A stack trace index.
-   *
-   * @returns {int}
-   */
-  getTraceIndex(index) {  // eslint-disable-line class-methods-use-this
-    if (index > 0) {
-      return index - 1;
-    }
-    return 0;
-  }
-
-  /**
-   * setDynamicRequiresType
+   * setType
    *
    * @param {string} type
-   *   A dynamicRequiresType i.e. Supers, or Plugins
+   *   A Type i.e. Supers, or Plugins
    */
-  setDynamicRequiresType(type) {
-    this.dynamicRequiresType = type;
+  setType(type) {
+    this.type = type;
   }
 
   /**
-   * getDynamicRequiresType
+   * getType
    *
    * @returns {string}
    *   returns a dynamic requires type i.e. Supers or Plugins.
    */
-  getDynamicRequiresType() {
-    return this.dynamicRequiresType;
+  getType() {
+    return this.type;
   }
 
   /**
-   * setValidateTarget
+   * setTarget
    *
    * @param {string} target
    *   A target namespace.
    */
-  setValidateTarget(target) {
-    this.validateTarget = target;
+  setTarget(target) {
+    this.target = target;
   }
 
   /**
-   * getValidateTarget()
+   * getTarget()
    *   Gets the namesapce target for this molotov class.
    *
    * @returns {string}
    *   The nameSpace target.
    */
-  getValidateTarget() {
-    return this.validateTarget;
-  }
-
-  /**
-   * dynamicRequires
-   *  Populates molotov provider indicated molotov Targets
-   *  by requiring their classes.
-   *
-   * @returns {Promise.object}
-   *   An object bearing promise of target class values keyed by molotov
-   *   indicated target namespaces.
-   */
-  dynamicRequires() {
-    return this.validateMolotovSettings(this.getValidateTarget())
-    .then(() => {
-      try {
-        // Get nameSpace.
-        const nameSpace = this.getMolotovNameSpace();
-        const items = {};
-        // require items in this name space.
-        Object.keys(
-          this.getMolotovSettings()[nameSpace][this.getValidateTarget()]
-        ).forEach((key) => {
-          // For each super in molotov settings attempt to require item.
-          // eslint-disable-next-line import/no-dynamic-require
-          items[key] = this.getItem(
-            this.getMolotovSettings()[nameSpace][this.getValidateTarget()][key]
-          );
-        });
-        this[`set${this.getDynamicRequiresType()}`](items);
-        return items;
-      }
-      catch (err) {
-        throw new Error(err);
-      }
-    });
+  getTarget() {
+    return this.target;
   }
 
   /**
    * resolve()
-   *   If we do not already have the molotov item in this scope
+   *   Takes the provided molotov config and merges
    *   (i.e. supers, or plugins) then we dynamically require them.
    *   Once we have a target item we then look for user provided overrides.
    *   We merge any overrides and return the merged object.
@@ -382,24 +266,24 @@ const molotovProviderBase = class {
    *    with any user provided config overrides of those target name spaces.
    */
   resolve() {
+    // merge up config.
+    // getGetTypes
+    // then call GetTypes on cocktails
+    // merge down and reset thisType
     let resolver;
-    if (_.has(this, this.getDynamicRequiresType().toLowerCase())) {
+    if (_.has(this, this.getType().toLowerCase())) {
       // If we have our target items in 'this' scope take them
       // from target getter, i.e. getSupers();
       // After that run validate, in case it hasn't been run.
-      resolver = new Promise(res => res(this[`get${this.getDynamicRequiresType()}`]()))
-      .then(() => this.validateMolotovSettings(this.getValidateTarget()));
+      resolver = new Promise(res => res(this[`get${this.getType()}`]()))
+      .then(() => this.validateMolotovSettings(this.getTarget()));
     }
-    else {
-      // If we don't have our target items, require them dynamically
-      // from molotov config.
-      resolver = this.dynamicRequires();
-    }
+
     // At this point we are ready to see if we have user provided overrides.
     const nextStep = resolver.then(() => this.fetchOverrides());
 
     // And finally we can return our merged config.
-    return nextStep.then(() => this.mergeConfig(this.getDynamicRequiresType()));
+    return nextStep.then(() => this.mergeConfig(this.getType()));
   }
 };
 

@@ -18,7 +18,7 @@ module.exports = class {
    *   If the cocktail implementing module is providing its own supers
    *    please require them and supply them here.
    */
-  constructor(molotovProvider, cocktailPluginDefinitions, modulesPluginDirectory, modulesSupers) {
+  constructor(molotovProvider, cocktailConfig, cocktailPlugins, cocktailSupers) {
     // Get their supers, and plugins.
     this.setMolotovSupers(molotovProvider.getSupersDirectory());
     this.setMolotovPlugins(molotovProvider.getPluginDirectory());
@@ -28,8 +28,8 @@ module.exports = class {
     this.setCocktailSupers({});
 
     if (typeof cocktailPluginDefinitions === 'object'
-      && Object.keys(cocktailPluginDefinitions).length > 0) {
-      this.setCocktailPluginDefinitions(cocktailPluginDefinitions);
+      && Object.keys(cocktailPlugins).length > 0) {
+      this.setCocktailPluginDefinitions(cocktailPlugins);
     }
     else if (_.has(
       molotovProvider.getConfig(),
@@ -43,12 +43,12 @@ module.exports = class {
       throw new Error('Cocktail must declare plugins.');
     }
     // If we have cocktail provided supers set them.
-    if (modulesSupers) {
-      this.setCocktailSupers(modulesSupers);
+    if (Object.keys(cocktailSupers).length) {
+      this.setCocktailSupers(cocktailSupers);
     }
     // If we have cocktail provided plugins set them.
-    if (modulesPluginDirectory) {
-      this.setCocktailPlugins(modulesPluginDirectory);
+    if (Object.keys(cocktailPlugins).length) {
+      this.setCocktailPlugins(cocktailPlugins);
     }
     // merge supers and plugins
     this.mergeSupers();
