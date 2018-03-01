@@ -5,6 +5,7 @@ import type Cocktail from './cocktail';
 
 const SuperMixologist = require('./superMixologist');
 const Polttopullo = require('./polttopullo');
+const _ = require('lodash');
 const {
   MOLOTOV_CONFIG_REQUIRED,
   MOLOTOV_SUPERS_REQUIRED,
@@ -196,7 +197,7 @@ const molotov = class Molotov {
    *   super classes values.
    */
   getSupers(): supers {
-    return this.supers;
+    return _.cloneDeep(this.supers);
   }
 
   /**
@@ -318,7 +319,7 @@ const molotov = class Molotov {
    *
  */
   getCocktails(): Array<?Cocktail> {
-    return this.cocktails;
+    return _.cloneDeep(this.cocktails);
   }
 };
 

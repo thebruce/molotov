@@ -54,6 +54,5 @@ export interface ProviderBase {
 }
 
 export interface ProviderImplementation<T> {
-  mixCocktails(): T;
   resolve(): T;
 }

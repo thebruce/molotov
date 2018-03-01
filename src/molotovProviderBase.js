@@ -79,13 +79,10 @@ module.exports = class MolotovProviderBase implements ProviderBase {
 
   /**
    * mergeConfig
-   * @param {target} mergeTarget
-   *   A target.
-   *
    * @returns {molotovConfig}
    *   A merged configuration object.
    */
-  mergeConfig(): molotovConfig {
+  fetchOverrides(): molotovConfig {
     // get config for target
     const config: molotovConfig = _.get(
       this.molotov.getMolotovConfig()[this.molotov.getNameSpace()],
@@ -97,6 +94,20 @@ module.exports = class MolotovProviderBase implements ProviderBase {
       this.getTarget(),
       {}
     );
+    return this.mergeConfig(config, overrides);
+  }
+
+  /**
+   * mergeConfig
+   * @param {molotovConfig} config
+   *   A molotov configuration object.
+   * @param {overrideConfig} overrides
+   *   A config override object.
+   *
+   * @returns {molotovConfig}
+   *   A merged configuration object.
+   */
+  mergeConfig(config: molotovConfig, overrides: overrideConfig): molotovConfig {
     // Bring in any dynamic or user provided overrides.
     const merged = _.merge({}, config, overrides);
     this.molotov.setMolotovConfig(merged);

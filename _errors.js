@@ -1,6 +1,7 @@
 /* eslint-disable */
 // Molotov Errors
 module.exports = {
+  COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG: 'A Cocktail class had supers passed in its supers object but not defined in its cocktail config.',
   VALID_COCKTAIL_CONFIG_REQUIRED: 'Cocktail classes must atleast have a fully formed config object.',
   MOLOTOV_CONFIG_REQUIRED: 'molotovConfig is required and must be an molotov config object.',
   MOLOTOV_SUPERS_REQUIRED: 'supers is required and must be an object',

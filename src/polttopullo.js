@@ -85,12 +85,20 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
    * @returns {T}
    *   The target classes item.
    */
-  mixCocktails(): plugins {
+  mixCocktails(): void {
     // Get Plugins
     // Get Plugins from cocktail
     // override and make plugins.
     // pass write to molotov.
     // Pass this along to super.mixCocktails.
-    return this.molotov.getPlugins();
+    // Do we have any plugin definitions to add?
+    // If so all the mixins used in those definitions should
+    // exist in the summation of all mixins.
+
+    // Do we have supers.
+    // Add any supers to config.
+    // By checking to see if we have any superNameSpacePaths
+    // for the molotov.getNameSpace()
+
   }
 };

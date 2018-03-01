@@ -13,7 +13,16 @@ import type molotov from './molotov';
  */
 
 // User overrides are stored in config.
+const _ = require('lodash');
 const molotovProviderBase = require('./molotovProviderBase');
+const Cocktail = require('./cocktail');
+const {
+  COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG,
+} = require('../_errors');
+
+const {
+  MolotovError,
+} = require('./molotovError');
 
 // Users instantiate superMixologist.
 // superMixologist = new SuperMixologist(pathToProviderModule);
@@ -52,15 +61,31 @@ module.exports = class SuperMixologist extends molotovProviderBase implements Pr
   /**
    * Returns cocktails for this class' target.
    *
-   * @returns {supers}
-   *   The target classes item.
+   * @returns {void}
    */
-  mixCocktails(): supers {
-    // GetSupers
-    // Get Supers from cocktail
-    // override and add to molotv
-    // Pass this along to super.mixCocktails.
-    return this.molotov.getSupers();
+  mixCocktails() {
+    const cocktailsArray = this.molotov.getCocktails();
+    let tempSupers = this.molotov.getSupers();
+    // Do we have any cocktails?
+    if (cocktailsArray.length) {
+      // We have cocktail classes. Build up our supers
+      // by calling this for each.
+      cocktailsArray.forEach((cocktail) => {
+        if (cocktail instanceof Cocktail && cocktail.getCocktailSupers()) {
+          const cocktailSupersClasses: supers = cocktail.getCocktailSupers();
+          // We have supers in our cocktail class. Ensure we have matching config declarations.
+          const cocktailConfigSupers = cocktail.getCocktailConfig()[this.molotov.getNameSpace()].supersNameSpace;
+          if (_.difference(cocktailConfigSupers, Object.keys(cocktailSupersClasses).length > 0)) {
+            throw new MolotovError(COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG);
+          }
+          // Everything is looking bright and cheery.
+          // add cocktail supers to our supers.
+          tempSupers = _.merge(tempSupers, cocktail.getCocktailSupers());
+          // now merge just the supers config and see if we have an issue.
+        }
+      });
+      this.molotov.setSupers(tempSupers);
+    }
   }
   /**
    * Resolves all supers.
@@ -69,11 +94,14 @@ module.exports = class SuperMixologist extends molotovProviderBase implements Pr
    *   Returns resolved supers.
    */
   resolve(): supers {
+    // Take config from molotov implementing module
+    // and merge config from overrides.
     this.mergeConfig();
 
     if (!this.validateMolotovConfig()) {
       throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
     }
+    // Now get any cocktails overrides.
     this.mixCocktails();
     return this.molotov.getSupers();
   }
