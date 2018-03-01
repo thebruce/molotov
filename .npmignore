@@ -1,0 +1,14 @@
+documentation
+__tests__
+./.travis.yml
+./.gitignore
+./.flowconfig
+./.eslintrc.yml
+./eslintignore
+coverage
+__coverage__
+.tmp
+yarn.lock
+src
+flow-typed
+lib/types

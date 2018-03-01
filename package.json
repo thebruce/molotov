@@ -2,38 +2,49 @@
   "name": "molotov",
   "description": "Molotov: (Mix/Plug)-in loader for explosive composeability",
   "main": "molotov.js",
+  "version": "0.0.0-development",
   "directories": {
     "example": "examples"
   },
   "dependencies": {
-    "callsite": "^1.0.0",
-    "config": "^1.25.1",
     "fs-extra": "^4.0.1",
     "lodash": "^4.17.4",
-    "require-directory": "^2.1.1",
-    "try-require": "^1.2.1"
+    "require-directory": "^2.1.1"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "@commitlint/config-angular": "^6.1.2",
+    "babel-eslint": "^8.2.2",
     "coveralls": "^3.0.0",
-    "eslint": "^3.16.0",
-    "eslint-config-airbnb-base": "^11.1.0",
-    "eslint-find-rules": "^1.13.0",
-    "eslint-plugin-ava": "^4.2.0",
-    "eslint-plugin-import": "^2.0.1",
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.9.0",
+    "flow-bin": "^0.66.0",
+    "flow-remove-types": "^1.2.3",
+    "flow-typed": "^2.3.0",
     "husky": "^0.14.0",
-    "npm-run-all": "^4.0.1",
-    "nyc": "^11.0.3",
+    "jest": "^22.4.2",
+    "jest-environment-node-debug": "^2.0.0",
     "semantic-release": "^6.3.2",
     "semantic-release-conventional-commits": "^1.0.2"
   },
   "scripts": {
-    "lint": "eslint .",
-    "test": "nyc ava && nyc report --reporter=html --reporter=lcov",
-    "precommit": "npm run lint",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "test": "npm run build && jest --coverage",
+    "test-ci": "npm run build && jest --coverage --runInBand",
+    "debug-test": "node --inspect --debug-brk ./node_modules/.bin/jest --env jest-environment-node-debug",
+    "precommit": "npm run build && npm run flow && npm run lint",
     "prepush": "npm test",
-    "coverage": "nyc --reporter=lcov --reporter=html check-coverage --statements 100 --lines 100 --branches 100 --functions 100",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "prepublish": "npm run build",
+    "flow": "flow",
+    "build": "rm -rf lib && flow-remove-types --all src/ --out-dir lib/",
+    "lint": "eslint .",
+    "flowstatus": "./node_modules/.bin/flow status",
+    "flowremove": "flow-remove-types -p src -i .test.js -d lib",
+    "flowgen": "flow gen-flow-files ./src/foo.js > ./dist/foo.js.flow",
+    "flowstop": "flow stop",
+    "travis-deploy-once": "travis-deploy-once",
+    "coveralls": "cat ./__coverage__/lcov.info | coveralls",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -53,5 +64,32 @@
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
     "node": ">=4"
+  },
+  "jest": {
+    "cacheDirectory": ".tmp/jest_cache",
+    "coverageDirectory": "__coverage__",
+    "coverageReporters": [
+      "json",
+      "json-summary",
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/__helpers__/",
+      "<rootDir>/__tests__/.*/[__mocks__|files]/"
+    ]
   }
 }
