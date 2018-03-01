@@ -129,10 +129,8 @@ module.exports = class MolotovProviderBase implements ProviderBase {
     // Our merged config needs to atleast have supers.
     // Out merged config needs to have this class' target.
     if ((
-      Object.keys(mergedConfig).length > 0 &&
-      mergedConfig.constructor === Object &&
-      _.has(mergedConfig[this.molotov.getNameSpace()], 'superNameSpacePaths') &&
-      _.has(mergedConfig[this.molotov.getNameSpace()], `${this.getTarget()}`)
+      _.has(mergedConfig, [this.molotov.getNameSpace(), 'superNameSpacePaths']) &&
+      _.has(mergedConfig, [this.molotov.getNameSpace(), this.getTarget()])
     )) {
       validator = true;
     }

@@ -8,9 +8,9 @@ Object.keys(require.cache).forEach((key) => {
 const config = {
   testPackage: {
     testSuper: {
-      supersOverride: '/test/helpers/testSuperOverride'
-    }
-  }
+      supersOverride: '/test/helpers/testSuperOverride',
+    },
+  },
 };
 const MolotovProviderBase = require('../molotovProviderBase');
 
@@ -44,10 +44,10 @@ test('validateMolotovSettingsFalse', async () => {
 
 test('mergeConfig', () => {
   const molotovProviderBase = new MolotovProviderBase('./test/helpers/', type, target, config);
-  molotovProviderBase.setSupers({superKeyName: 'thingOne'});
-  molotovProviderBase.setOverrides({superKeyName: 'thingTwo'});
+  molotovProviderBase.setSupers({ superKeyName: 'thingOne' });
+  molotovProviderBase.setOverrides({ superKeyName: 'thingTwo' });
   t.context.data = molotovProviderBase.mergeConfig('Supers');
-  expect(t.context.data).toEqual({superKeyName: 'thingTwo'});
+  expect(t.context.data).toEqual({ superKeyName: 'thingTwo' });
 });
 
 test('validateMolotovSettingsFalseAgain', async () => {
@@ -55,7 +55,8 @@ test('validateMolotovSettingsFalseAgain', async () => {
     './test/helpers/fakeMolotovTwo',
     type,
     target,
-    config);
+    config
+  );
   t.context.data = await molotovProviderBase.validateMolotovSettings('supersNameSpacePaths');
   expect(t.context.data).toBe(false);
 });
@@ -67,16 +68,16 @@ test('getSupersHasSupers', () => {
     target,
     config
   );
-  molotovProviderBase.setSupers({superKeyName: 'thing'});
+  molotovProviderBase.setSupers({ superKeyName: 'thing' });
   t.context.data = molotovProviderBase.getSupers();
-  expect(t.context.data).toEqual({superKeyName: 'thing'});
+  expect(t.context.data).toEqual({ superKeyName: 'thing' });
 });
 
 test('setOverrides', async () => {
   const molotovProviderBase = new MolotovProviderBase('./test/helpers/', type, target, config);
-  molotovProviderBase.setOverrides({superKeyName: 'thing'});
+  molotovProviderBase.setOverrides({ superKeyName: 'thing' });
   t.context.data = await molotovProviderBase.getOverrides();
-  expect(t.context.data).toEqual({superKeyName: 'thing'});
+  expect(t.context.data).toEqual({ superKeyName: 'thing' });
 });
 
 test('getSupers', () => {
