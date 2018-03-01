@@ -1,9 +1,9 @@
-'use strict';
+// @flow
 
-const molotov = require('./molotov');
-const cocktail = require('./cocktail');
+const molotov = require('./lib/molotov');
+const cocktail = require('./lib/cocktail');
 
 module.exports = {
   molotov,
-  cocktail
+  cocktail,
 };
