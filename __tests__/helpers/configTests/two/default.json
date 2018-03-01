@@ -1,0 +1,11 @@
+{
+  "testPackage": {
+    "testSuper": {
+    },
+    "molotov": {
+      "cocktailPluginLoaders": [
+        "badpath"
+      ]
+    }
+  }
+}

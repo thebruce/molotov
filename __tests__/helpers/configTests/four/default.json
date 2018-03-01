@@ -1,0 +1,26 @@
+{
+  "testPackage": {
+    "testSuper": {
+      "supersOverride": "/test/helpers/testSuperOverride"
+    },
+    "molotovPlugins": [
+      "/test/helpers/cocktailHelper"
+    ]
+  },
+  "molotov": {
+    "cocktailPlugins": {
+      "testPackage": {
+        "testSuper":{
+          "pluginOneTwo": [
+            "pluginOne",
+            "pluginTwo",
+            "pluginFour"
+          ],
+          "pluginNumbus": [
+            "pluginThree"
+          ]
+        }
+      }
+    }
+  }
+}

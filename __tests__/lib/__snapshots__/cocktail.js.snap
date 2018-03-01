@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cocktail Basic tests Cocktail constructor in action 1`] = `
+Object {
+  "testSuper": Object {
+    "pluginFour": [Function],
+    "pluginThree": [Function],
+  },
+}
+`;
+
+exports[`Cocktail Basic tests Cocktail constructor in action 2`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Cocktail Basic tests Cocktail constructor in action 3`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "onlyPluginOne": Array [
+          "pluginOne",
+        ],
+        "pluginAll": Array [
+          "pluginFour",
+        ],
+        "pluginOneTwo": Array [
+          "pluginOne",
+          "pluginTwo",
+          "pluginFour",
+        ],
+      },
+    },
+    "supersNameSpace": Array [
+      "testSuper",
+    ],
+  },
+}
+`;

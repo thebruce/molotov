@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Molotov Basic tests Molotov constructor 1`] = `
+Object {
+  "testSuper": Object {
+    "pluginOne": [Function],
+    "pluginThree": [Function],
+    "pluginTwo": [Function],
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 2`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "onlyPluginOne": Array [
+          "pluginOne",
+        ],
+        "pluginAll": Array [
+          "pluginOne",
+          "pluginTwo",
+          "pluginThree",
+        ],
+        "pluginOneTwo": Array [
+          "pluginOne",
+          "pluginTwo",
+        ],
+      },
+    },
+    "supersNameSpace": Array [
+      "testSuper",
+    ],
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 3`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 4`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "pluginAll": Array [
+          "pluginOne",
+          "pluginTwo",
+        ],
+        "pluginOneThree": Array [
+          "pluginOne",
+          "pluginThree",
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 5`] = `
+Array [
+  CocktailHelper {
+    "cocktailConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "pluginOne",
+            ],
+            "pluginAll": Array [
+              "pluginFour",
+            ],
+            "pluginOneTwo": Array [
+              "pluginOne",
+              "pluginTwo",
+              "pluginFour",
+            ],
+          },
+        },
+        "supersNameSpace": Array [
+          "testSuper",
+        ],
+      },
+    },
+    "cocktailMixins": Object {
+      "testSuper": [Function],
+    },
+    "cocktailSupers": Object {
+      "testSuper": Object {
+        "pluginFour": [Function],
+        "pluginThree": [Function],
+      },
+    },
+  },
+]
+`;
