@@ -211,14 +211,9 @@ const molotov = class Molotov {
    *
    */
   mixSupers(): supers {
-    const superMixologist = new SuperMixologist(
-      this.getMolotovConfig(),
-      this.getNameSpace(),
-      this.getSupers(),
-      this.getConfigOverrides(),
-      this.getCocktails()
-    );
-    return superMixologist.resolve();
+    const superMixologist = new SuperMixologist(this);
+    superMixologist.resolve();
+    return superMixologist;
   }
 
   /**
@@ -234,14 +229,7 @@ const molotov = class Molotov {
    */
   getMolotov(): Polttopullo {
     const resolvedSupers = this.mixSupers();
-    return new Polttopullo(
-      this.getMolotovConfig(),
-      this.getNameSpace(),
-      resolvedSupers,
-      this.getMixins(),
-      this.getConfigOverrides(),
-      this.getCocktails()
-    );
+    return new Polttopullo(resolvedSupers.molotov);
   }
 
   /**

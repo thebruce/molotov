@@ -1,7 +1,8 @@
 // @flow
 
-import type { molotovConfig, overrideConfig, supers, plugins, mixins, ProviderBase } from './types/molotov'; // eslint-disable-line max-len
+import type { molotovConfig, overrideConfig, supers, plugins, mixins, ProviderBase, ProviderImplementation } from './types/molotov'; // eslint-disable-line max-len
 import type Cocktail from './cocktail';
+import type Molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
 const pluginMaker = require('./mixinPluginMaker');
@@ -25,42 +26,20 @@ const pluginMaker = require('./mixinPluginMaker');
  * config space rather than other modules. If additional plugin supplying
  * modules are to be included that will need to happen in the app config.
  */
-module.exports = class Polttopullo extends molotovProviderBase implements ProviderBase<plugins> {
+module.exports = class Polttopullo extends molotovProviderBase implements ProviderBase<plugins>, ProviderImplementation<plugins> {
   mixins: mixins
   plugins: plugins
   /**
    * Create an instance of the Polttopuloo class. This class
    *  is used for mixing plugins.
    *
-   * @param {molotovConfig} config
+   * @param {Molotov} molotov
    *   A molotov configuration object.
-   * @param {string} nameSpace
-   *   THe namespace of your molotov implementing module.
-   * @param {object} pSupers
-   *   An object of Super classes keyed by the super name.
-   * @param {object} pMixins
-   *   An object of plugin classes keyed by supers name
-   *   and then by the pluginName.
-   *   {
-   *     superClass: {
-   *       pluginName: pluginClass
-   *     }
-   *   }
-   * @param {object} pOverrides
-   *   An object with the exact same shape as molotovConfig but
-   *     meant as a place to pass through calling modules overrides
-   *       to your molotov implementing configuration. Often used for
-   *         dynamically or runtime assembled plugins.
-   * @param {Array<Cocktail>} pCocktails
-   *   An array of cocktail classes used by modules using your molotov
-   *   implementing module and providing their own plugins or supers.
    */
-  constructor(config: molotovConfig, nameSpace: string, pSupers: supers, pMixins: mixins, pOverrides: (overrideConfig | {}) = {}, pCocktails: Array<?Cocktail>): void { // eslint-disable-line max-len
+  constructor(molotov: Molotov): void { // eslint-disable-line max-len
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(config, nameSpace, type, target, pOverrides, pCocktails);
-    this.setSupers(pSupers);
-    this.setMixins(pMixins);
+    super(molotov, type, target);
   }
 
   /**
@@ -140,9 +119,12 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
    *   can provide overrides and their own plugs and supers through Cocktail
    *   classes.
    */
-  resolve() {
-    // merge up config and validate.
-    super.resolve();
+  resolve(): plugins {
+    this.mergeConfig();
+
+    if (!this.validateMolotovConfig()) {
+      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
+    }
     // getGetTypes
     // then call GetTypes on cocktails
     // merge down and reset thisType

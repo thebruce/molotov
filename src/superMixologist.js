@@ -1,7 +1,8 @@
 // @flow
 
-import type { molotovConfig, overrideConfig, supers, target, ProviderBase } from './types/molotov';
+import type { molotovConfig, overrideConfig, supers, target, ProviderBase, ProviderImplementation } from './types/molotov';
 import type Cocktail from './cocktail';
+import type Molotov from './molotov';
 
 /**
  * This class an implementation of the molotovProviderBase class.
@@ -20,33 +21,21 @@ const molotovProviderBase = require('./molotovProviderBase');
 // To use the new instantiated super to return this providers supers we:
 // const providerSupers = superMixologist.getSupers();
 
-module.exports = class SuperMixologist extends molotovProviderBase implements ProviderBase<supers> {
+module.exports = class SuperMixologist extends molotovProviderBase implements ProviderBase<supers>, ProviderImplementation<supers> {
+  molotov: Molotov
   /**
    * Create an instance of the superMixologist class. This class is for
    *   mixing supers.
    *
-   * @param {molotovConfig} config
+   * @param {Molotov} molotov
    *   A molotov configuration object.
-   * @param {string} nameSpace
-   *   THe namespace of your molotov implementing module.
-   * @param {object} sSupers
-   *   An object of Super classes keyed by the super name.
-   * @param {object} sOverrides
-   *   An object with the exact same shape as molotovConfig but
-   *     meant as a place to pass through calling modules overrides
-   *       to your molotov implementing configuration. Often used for
-   *         dynamically or runtime assembled plugins.
-   * @param {Array<Cocktail>} sCocktails
-   *   An array of cocktail classes used by modules using your molotov
-   *   implementing module and providing their own plugins or supers.
+   *
+   * @returns {void}
    */
-  constructor(config: molotovConfig, nameSpace: string, sSupers: supers, sOverrides: (overrideConfig | {}) = {}, sCocktails: Array<?Cocktail>): void { // eslint-disable-line max-len
+  constructor(molotov: Molotov): void { // eslint-disable-line max-len
     const type = 'Supers';
     const targetType: target = 'supersNameSpace';
-    super(config, nameSpace, type, targetType, sOverrides, sCocktails);
-    if (typeof sSupers === 'object') {
-      this.setSupers(sSupers);
-    }
+    super(molotov, type, targetType);
   }
   /**
    * Validate our molotov config for supers.
@@ -70,9 +59,9 @@ module.exports = class SuperMixologist extends molotovProviderBase implements Pr
   mixCocktails(): supers {
     // GetSupers
     // Get Supers from cocktail
-    // override and add.
+    // override and add to molotv
     // Pass this along to super.mixCocktails.
-    return this.getSupers();
+    return this.molotov.getSupers();
   }
   /**
    * Resolves all supers.
@@ -80,10 +69,13 @@ module.exports = class SuperMixologist extends molotovProviderBase implements Pr
    * @returns {supers}
    *   Returns resolved supers.
    */
-  resolve() {
-    super.resolve();
+  resolve(): supers {
+    this.mergeConfig();
+
+    if (!this.validateMolotovConfig()) {
+      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
+    }
     this.mixCocktails();
-    // $FlowFixMe
-    return this.getSupers();
+    return this.molotov.getSupers();
   }
 };
