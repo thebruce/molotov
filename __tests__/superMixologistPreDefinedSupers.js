@@ -4,15 +4,15 @@ Object.keys(require.cache).forEach((key) => {
 const config = {
   testPackage: {
     testSuper: {
-      supersOverride: '/test/helpers/testSuperOverride'
-    }
-  }
+      supersOverride: '/test/helpers/testSuperOverride',
+    },
+  },
 };
 
 const SuperMixologist = require('../superMixologist');
 
 const supers = {
-  testSuper: require('./helpers/supers/testSuper')
+  testSuper: require('./helpers/supers/testSuper'),
 };
 
 test('resolveSupers', async () => {

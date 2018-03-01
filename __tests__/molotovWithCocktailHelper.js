@@ -8,11 +8,11 @@ Object.keys(require.cache).forEach((key) => {
 const config = {
   testPackage: {
     testSuper: {
-      supersOverride: '/test/helpers/testSuperOverride'
+      supersOverride: '/test/helpers/testSuperOverride',
     },
     molotovPlugins: [
-      '/test/helpers/cocktailHelper'
-    ]
+      '/test/helpers/cocktailHelper',
+    ],
   },
   molotov: {
     cocktailPlugins: {
@@ -21,38 +21,38 @@ const config = {
           pluginOneTwo: [
             'pluginOne',
             'pluginTwo',
-            'pluginFour'
+            'pluginFour',
           ],
           pluginNumbus: [
-            'pluginThree'
-          ]
-        }
-      }
-    }
-  }
+            'pluginThree',
+          ],
+        },
+      },
+    },
+  },
 };
 const Molotov = require('../molotov');
 
 const plugins = requireDirectory(module, './helpers/plugins');
 const supers = {
-  testSuper: require('./helpers/supers/testSuper')
+  testSuper: require('./helpers/supers/testSuper'),
 };
 
 // Test for bad path rejection.
 test('molotov', async () => {
   const molotov = new Molotov('./test/helpers/', 'testPackage', supers, plugins, config);
   t.context.data = await molotov.getMolotov()
-  .then((newMolotov) => {
+    .then((newMolotov) => {
     // Get all of the molotov plugins for our module.
-    const molotovPlugins = newMolotov.resolve();
-    return molotovPlugins;
-  });
+      const molotovPlugins = newMolotov.resolve();
+      return molotovPlugins;
+    });
 
   expect(Object.keys(t.context.data.testSuper).sort()).toEqual([
     'onlyPluginOne',
     'pluginAll',
     'pluginFour',
     'pluginNumbus',
-    'pluginOneTwo'
+    'pluginOneTwo',
   ]);
 });

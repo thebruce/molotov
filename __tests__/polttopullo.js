@@ -8,16 +8,16 @@ Object.keys(require.cache).forEach((key) => {
 const config = {
   testPackage: {
     testSuper: {
-      supersOverride: '/test/helpers/testSuperOverride'
-    }
-  }
+      supersOverride: '/test/helpers/testSuperOverride',
+    },
+  },
 };
 
 const MixedDrink = require('../polttopullo');
 
 const plugins = requireDirectory(module, './helpers/plugins');
 const supers = {
-  testSuper: require('./helpers/supers/testSuper')
+  testSuper: require('./helpers/supers/testSuper'),
 };
 
 test('getPlugins', async () => {
@@ -32,7 +32,7 @@ test('getPlugins', async () => {
   expect(Object.keys(t.context.data.testSuper).sort()).toEqual([
     'onlyPluginOne',
     'pluginAll',
-    'pluginOneTwo'
+    'pluginOneTwo',
   ]);
 });
 
@@ -48,7 +48,7 @@ test('getPlugins no config', async () => {
   expect(Object.keys(t.context.data.testSuper).sort()).toEqual([
     'onlyPluginOne',
     'pluginAll',
-    'pluginOneTwo'
+    'pluginOneTwo',
   ]);
 });
 
@@ -57,9 +57,9 @@ test('getCrazy with Dynamic Plugins', async () => {
     testSuper: {
       drunkyDrunkerson: [
         'pluginOne',
-        'pluginThree'
-      ]
-    }
+        'pluginThree',
+      ],
+    },
   };
   const mixedDrink = new MixedDrink(
     './test/helpers/',
@@ -72,6 +72,6 @@ test('getCrazy with Dynamic Plugins', async () => {
     'drunkyDrunkerson',
     'onlyPluginOne',
     'pluginAll',
-    'pluginOneTwo'
+    'pluginOneTwo',
   ]);
 });
