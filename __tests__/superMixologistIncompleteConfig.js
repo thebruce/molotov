@@ -9,14 +9,14 @@ const config = {
     },
     molotov: {
       cocktailPluginLoaders: [
-        'badpath'
-      ]
-    }
-  }
+        'badpath',
+      ],
+    },
+  },
 };
 const SuperMixologist = require('../superMixologist');
 
-test('fetchOverrides', async () => {  // eslint-disable-line no-unused-vars
+test('fetchOverrides', async () => { // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers', '', config);
   superMixologist.overridesFetched = true;
   await superMixologist.dynamicRequires()

@@ -14,6 +14,7 @@
   "devDependencies": {
     "@commitlint/config-angular": "^6.1.2",
     "babel-eslint": "^8.2.2",
+    "commitlint": "^6.1.2",
     "coveralls": "^3.0.0",
     "eslint": "^4.18.1",
     "eslint-config-airbnb-base": "^12.1.0",

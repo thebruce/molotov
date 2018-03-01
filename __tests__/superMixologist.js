@@ -5,9 +5,9 @@ Object.keys(require.cache).forEach((key) => {
 const config = {
   testPackage: {
     testSuper: {
-      supersOverride: '/test/helpers/testSuperOverride'
-    }
-  }
+      supersOverride: '/test/helpers/testSuperOverride',
+    },
+  },
 };
 
 const SuperMixologist = require('../superMixologist');
@@ -25,22 +25,22 @@ test('dynamicRequiresError', async () => {
   await expect(superMixologist.dynamicRequires()).toThrow();
 });
 
-test('fetchOverrides', async () => {  // eslint-disable-line no-unused-vars
+test('fetchOverrides', async () => { // eslint-disable-line no-unused-vars
   const superMixologist = new SuperMixologist('./test/helpers/', '', config);
   await superMixologist.dynamicRequires()
     .then(() => {
       superMixologist.setConfig({
         testPackage: {
           testSuper: {
-            supersOverride: '/helpers/testSuperOverride'
+            supersOverride: '/helpers/testSuperOverride',
           },
           molotov: {
             cocktailPluginLoaders: [
               'path/to/mixinStylePluginLoader/implementing/cocktailClass',
-              'anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides'
-            ]
-          }
-        }
+              'anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides',
+            ],
+          },
+        },
       });
       return superMixologist.fetchOverrides();
     })
