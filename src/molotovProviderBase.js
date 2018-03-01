@@ -12,7 +12,7 @@ import type {
 // User overrides are passed in targeted to a hierarchical namespace.
 const _ = require('lodash');
 
-module.exports = class MolotovProviderBase implements ProviderBase<void> {
+module.exports = class MolotovProviderBase implements ProviderBase {
   molotov: molotov
   target: target
   type: string

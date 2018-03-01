@@ -206,11 +206,11 @@ const molotov = class Molotov {
    * their interface. After this our supers will be
    * ready to combine with plugins for *REAL* mixins.
    *
-   * @returns {supers}
+   * @returns {SuperMixologist}
    *   Returns supers with overrides from cocktail classes.
    *
    */
-  mixSupers(): supers {
+  mixSupers(): SuperMixologist {
     const superMixologist = new SuperMixologist(this);
     superMixologist.resolve();
     return superMixologist;

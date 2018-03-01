@@ -1,8 +1,7 @@
 // @flow
 
-import type { molotovConfig, overrideConfig, supers, plugins, mixins, ProviderBase, ProviderImplementation } from './types/molotov'; // eslint-disable-line max-len
-import type Cocktail from './cocktail';
-import type Molotov from './molotov';
+import type { plugins, ProviderBase, ProviderImplementation } from './types/molotov'; // eslint-disable-line max-len
+import type molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
 const pluginMaker = require('./mixinPluginMaker');
@@ -26,20 +25,18 @@ const pluginMaker = require('./mixinPluginMaker');
  * config space rather than other modules. If additional plugin supplying
  * modules are to be included that will need to happen in the app config.
  */
-module.exports = class Polttopullo extends molotovProviderBase implements ProviderBase<plugins>, ProviderImplementation<plugins> {
-  mixins: mixins
-  plugins: plugins
+module.exports = class Polttopullo extends molotovProviderBase implements ProviderBase, ProviderImplementation<plugins> { // eslint-disable-line max-len
   /**
    * Create an instance of the Polttopuloo class. This class
    *  is used for mixing plugins.
    *
-   * @param {Molotov} molotov
+   * @param {molotov} molotovInstance
    *   A molotov configuration object.
    */
-  constructor(molotov: Molotov): void { // eslint-disable-line max-len
+  constructor(molotovInstance: molotov): void { // eslint-disable-line max-len
     const type = 'Plugins';
     const target = 'molotovPlugins';
-    super(molotov, type, target);
+    super(molotovInstance, type, target);
   }
 
   /**
@@ -54,59 +51,6 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
     // only the mixins we have.
     return validator;
   }
-  /**
-   * Sets the mixins for this Polttopullo.
-   *
-   * @param {mixins} mixinObj
-   *   An object of mixin classes keyed by super name
-   *   and then mixin name with a value of the corresponding
-   *   mixin class.
-   *
-   * @returns {void}
-   *
-   */
-  setMixins(mixinObj: mixins): void {
-    this.mixins = mixinObj;
-  }
-
-  /**
-   * Gets this mixins for this Polttopullo.
-   *
-   * @returns {mixins}
-   *   An object of mixin classes keyed by super name
-   *   and then mixin name with a value of the corresponding
-   *   mixin class.
-   */
-  getMixins(): mixins {
-    return this.mixins;
-  }
-
-  /**
-   * Sets the plugin classes for this Polttopullo.
-   *
-   * @param {plugins} pluginObj
-   *   An object keyed by supers name's and then
-   *   keyed by plugin names with values of mixin
-   *   classes or pre-mixed mixin classes.
-   *
-   * @returns {void}
-   */
-  setPlugins(pluginObj: plugins): void {
-    this.plugins = pluginObj;
-  }
-
-  /**
-   * Returns the plugin object for this PolttoPullo.
-   *
-   * @returns {plugins}
-   *   An object keyed by supers name's and then
-   *   keyed by plugin names with values of mixin
-   *   classes or pre-mixed mixin classes.
-   */
-  getPlugins(): plugins {
-    return this.plugins;
-  }
-
   /**
    * Creates mixed plugins ensuring that modules who are using molotov
    *   implementing modules have their overrides and Cocktail classes
@@ -130,8 +74,7 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
     // merge down and reset thisType
     this.mixCocktails();
     // run pluginmaker.
-    // $FlowFixMe generics not working.
-    return this.getPlugins();
+    return this.molotov.getPlugins();
   }
   /**
    * Returns cocktails for this class' target.
@@ -145,8 +88,9 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
   mixCocktails(): plugins {
     // Get Plugins
     // Get Plugins from cocktail
-    // override and add.
+    // override and make plugins.
+    // pass write to molotov.
     // Pass this along to super.mixCocktails.
-    return this.getPlugins();
+    return this.molotov.getPlugins();
   }
 };

@@ -1,8 +1,7 @@
 // @flow
 
-import type { molotovConfig, overrideConfig, supers, target, ProviderBase, ProviderImplementation } from './types/molotov';
-import type Cocktail from './cocktail';
-import type Molotov from './molotov';
+import type { supers, target, ProviderBase, ProviderImplementation } from './types/molotov';
+import type molotov from './molotov';
 
 /**
  * This class an implementation of the molotovProviderBase class.
@@ -21,21 +20,21 @@ const molotovProviderBase = require('./molotovProviderBase');
 // To use the new instantiated super to return this providers supers we:
 // const providerSupers = superMixologist.getSupers();
 
-module.exports = class SuperMixologist extends molotovProviderBase implements ProviderBase<supers>, ProviderImplementation<supers> {
-  molotov: Molotov
+module.exports = class SuperMixologist extends molotovProviderBase implements ProviderBase, ProviderImplementation<supers> { // eslint-disable-line max-len
+  molotov: molotov
   /**
    * Create an instance of the superMixologist class. This class is for
    *   mixing supers.
    *
-   * @param {Molotov} molotov
+   * @param {molotov} molotovInstance
    *   A molotov configuration object.
    *
    * @returns {void}
    */
-  constructor(molotov: Molotov): void { // eslint-disable-line max-len
+  constructor(molotovInstance: molotov): void { // eslint-disable-line max-len
     const type = 'Supers';
     const targetType: target = 'supersNameSpace';
-    super(molotov, type, targetType);
+    super(molotovInstance, type, targetType);
   }
   /**
    * Validate our molotov config for supers.

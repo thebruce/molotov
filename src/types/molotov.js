@@ -42,7 +42,7 @@ export type target = ("molotovPlugins" | "supersNameSpace");
 
 export type CocktailArray = Array<?Cocktail>;
 
-export interface ProviderBase<T> {
+export interface ProviderBase {
   target: target;
   type: string;
   setType(string): void;
