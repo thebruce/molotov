@@ -1,7 +1,0 @@
-{
-  "testPackage": {
-    "testSuper": {
-      "supersOverride": "/test/helpers/testSuperOverride"
-    }
-  }
-}

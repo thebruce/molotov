@@ -1,7 +1,0 @@
-{
-  "testPackage": {
-    "molotoPlugins": [
-      "pathtoPluginLoader"
-    ]
-  }
-}
