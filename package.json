@@ -7,6 +7,7 @@
     "example": "examples"
   },
   "dependencies": {
+    "ajv": "^6.2.0",
     "fs-extra": "^4.0.1",
     "lodash": "^4.17.4",
     "require-directory": "^2.1.1"

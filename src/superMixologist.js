@@ -16,6 +16,8 @@ import type molotov from './molotov';
 const _ = require('lodash');
 const molotovProviderBase = require('./molotovProviderBase');
 const Cocktail = require('./cocktail');
+const validator = require('./validateConfig');
+
 const {
   COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG,
 } = require('../_errors');
@@ -65,7 +67,9 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
           // We have supers in our cocktail class. Ensure we have
           // matching config declarations.
           const cocktailConfigSupers = cocktail.getCocktailConfig()[nameSpace][this.getTarget()];
-          if (_.difference(Object.keys(cocktailSupersClasses), _.values(cocktailConfigSupers)).length > 0) { // eslint-disable-line max-len
+          // Get all possible keys for supers
+          const allSupersKeys = _.concat(Object.keys(cocktailSupersClasses), Object.keys(tempSupers));
+          if (_.difference(_.values(cocktailConfigSupers), allSupersKeys).length > 0) { // eslint-disable-line max-len
             throw new MolotovError(COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG);
           }
           // now merge just the supers config.
@@ -98,9 +102,8 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
     // Take config from molotov implementing module
     // and merge config from overrides.
     this.fetchOverrides();
-    if (!this.validateMolotovConfig()) {
-      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
-    }
+    this.validateMolotovConfig();
+
     // Now get any cocktails overrides.
     this.mixCocktails();
     return this.molotov.getSupers();

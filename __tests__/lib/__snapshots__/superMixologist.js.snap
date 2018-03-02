@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Super Mixologist mixCocktails Edge Cases Super Mixologist resolve cocktail not filled with cocktails 1`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Super Mixologist mixCocktails Edge Cases Super Mixologist resolve no cocktails tests 1`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
 exports[`Super Mixologist resolve Super Mixologist fetchOverrides tests 1`] = `
 Object {
   "testMolotovImplementer": Object {

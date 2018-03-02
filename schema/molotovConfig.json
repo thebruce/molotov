@@ -1,0 +1,41 @@
+{
+  "title": "molotovConfig",
+  "description": "Schema for molotov config.",
+  "type": "object",
+  "patternProperties": {
+    "^\\w.*": {
+      "type": "object",
+      "description": "Package namespaces, must begin with an alpha.",
+      "properties": {
+          "supersNameSpace": {
+            "type": "object",
+            "description": "The supersNameSpace contains named supers with values of keys in the supers class object.",
+            "patternProperties": {
+              "^\\w.*": {
+                "type": "string",
+                "description": "The value of this named super is a key in the supers class object passed to molotov."
+              }
+          },
+          "molotovPlugins": {
+            "patternProperties": {
+              "^\\w.*": {
+                "type": "object",
+                "description": "A super name space. This should match one of the keys in the supersNameSpace object.",
+                "patternProperties": {
+                  "^\\w.*": {
+                    "type": "array",
+                    "description": "A plugin name. Plugins combine 1 or more mixins.",
+                    "items": {
+                      "type": "string",
+                      "description": "A mixin key for the mixin class object."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

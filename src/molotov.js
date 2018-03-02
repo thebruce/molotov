@@ -3,6 +3,7 @@
 import type { molotovConfig, overrideConfig, supers, plugins, mixins } from './types/molotov';
 import type Cocktail from './cocktail';
 
+const validator = require('./validateConfig');
 const SuperMixologist = require('./superMixologist');
 const Polttopullo = require('./polttopullo');
 const _ = require('lodash');
@@ -79,6 +80,7 @@ const molotov = class Molotov {
     if ((!config) || (typeof config !== 'object')) {
       throw new MolotovError(MOLOTOV_CONFIG_REQUIRED);
     }
+    validator(config);
     if ((typeof molotovSupers !== 'object')) {
       throw new MolotovError(MOLOTOV_SUPERS_REQUIRED);
     }

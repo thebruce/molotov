@@ -57,7 +57,7 @@ export interface ProviderBase<Y: string> {
   getTarget(): Y;
   mergeConfig(molotovConfig, overrideConfig): molotovConfig;
   fetchOverrides(): molotovConfig;
-  validateMolotovConfig(string): boolean;
+  validateMolotovConfig(): void;
 }
 
 export interface ProviderImplementation<T> {

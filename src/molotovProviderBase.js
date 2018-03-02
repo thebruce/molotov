@@ -12,6 +12,7 @@ import type {
 
 // User overrides are passed in targeted to a hierarchical namespace.
 const _ = require('lodash');
+const validator = require('./validateConfig');
 
 module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T> {
   target: T
@@ -131,18 +132,7 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
    * @returns {boolean}
    *   True if we have valid config.
    */
-  validateMolotovConfig(): boolean {
-    let validator = false;
-    const mergedConfig = this.molotov.getMolotovConfig();
-    // Our merged config needs to be populated.
-    // Our merged config needs to atleast have supers.
-    // Out merged config needs to have this class' target.
-    if ((
-      _.has(mergedConfig, [this.molotov.getNameSpace(), 'supersNameSpace']) &&
-      _.has(mergedConfig, [this.molotov.getNameSpace(), this.getTarget()])
-    )) {
-      validator = true;
-    }
-    return validator;
+  validateMolotovConfig(): void {
+    validator(this.molotov.getMolotovConfig());
   }
 };

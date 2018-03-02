@@ -107,3 +107,49 @@ describe('Super Mixologist resolve', () => {
     expect(superMixologist.resolve()).toMatchSnapshot();
   });
 });
+
+describe('Super Mixologist mixCocktails Edge Cases', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Super Mixologist resolve no cocktails tests', () => {
+    expect.assertions(1);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides);
+    const superMixologist = new SuperMixologist(_.cloneDeep(molotov2));
+    expect(superMixologist.resolve()).toMatchSnapshot();
+  });
+  test('Super Mixologist resolve cocktail not filled with cocktails', () => {
+    expect.assertions(1);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, ['tubs']);
+    const superMixologist = new SuperMixologist(_.cloneDeep(molotov2));
+    expect(superMixologist.resolve()).toMatchSnapshot();
+  });
+});
+describe('Super Mixologist mixCocktails Edge Cases2', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+  test('Super Mixologist resolve cocktail throws when cocktail supers object and config do not match', () => {
+    expect.assertions(1);
+    const cocktailConfig = cocktailClass.getCocktailConfig();
+    cocktailConfig.testMolotovImplementer.supersNameSpace.gumby = 'notAtAllAKey';
+    cocktailClass.setCocktailConfig(cocktailConfig);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass]);
+    const superMixologist = new SuperMixologist(_.cloneDeep(molotov2));
+    superMixologist.fetchOverrides();
+    expect(() => superMixologist.mixCocktails()).toThrow(MolotovError);
+  });
+});

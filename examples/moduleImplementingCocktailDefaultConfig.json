@@ -1,12 +1,16 @@
 {
   "schemePunk": {
-    "supersNameSpace": [
-      "yourSuperName"
-    ],
-    "molotovPlugins": [
-      "path/to/mixinStylePluginLoader/implementing/cocktailClass",
-      "anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides"
-    ]
+    "supersNameSpace": {
+      "superName": "yourSuperClassKey"
+    },
+    "molotovPlugins": {
+      "supersNameSpace": {
+        "aPluginName":       [
+          "aMixinKey",
+          "aSecondMixinKey"
+        ]
+      }
+    }
   },
   "schemeRunner.semverist": {
     "supersNameSpacePaths": {

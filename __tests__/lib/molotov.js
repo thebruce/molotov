@@ -112,4 +112,8 @@ describe('Molotov Constructor Errors', () => {
     expect.assertions(1);
     expect(() => new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, 'cocktail')).toThrowError(MolotovError);
   });
+  test('Bad Molotov config throws an error', () => {
+    expect.assertions(1);
+    expect(() => new Molotov({nob: 'nope'}, 'testMolotovImplementer', supers, mixins, configOverrides, 'cocktail')).toThrowError(MolotovError);
+  });
 });

@@ -2,36 +2,51 @@ const MolotovProviderBase = require('../../lib/molotovProviderBase')
 
 describe('MolotovProviderBase', () => {
   test('can construct', () => {
-    const mpb = new MolotovProviderBase('molotov', 'test-type', 'target-type');
-    expect(mpb.type).toBe('test-type');
-    expect(mpb.target).toBe('target-type');
+    const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
+    expect(mpb.target).toBe('supersNameSpace');
+    expect(mpb.type).toBe('Supers');
     expect(mpb.molotov).toBe('molotov');
   });
 
   test('setType()', () => {
-    const mpb = new MolotovProviderBase('molotov', 'test-type', 'target-type');
-    mpb.setType('new-type');
-    expect(mpb.type).toBe('new-type');
+    const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
+    mpb.setType('Plugins');
+    expect(mpb.type).toBe('Plugins');
   });
 
   test('getType()', () => {
-    const mpb = new MolotovProviderBase('molotov', 'test-type', 'target-type');
-    expect(mpb.getType()).toBe('test-type');
+    const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
+    expect(mpb.getType()).toBe('Supers');
   });
 
   test('fetchOverrides()', () => {
     const molotov = {
       getMolotovConfig: jest.fn().mockReturnValue({
         test: {
-          'target-type': {
-            config: true
+          'supersNameSpace': {
+            superName: 'superkey'
+          },
+          'molotovPlugins': {
+            supersNameSpace: {
+              pluginOne: [
+                'mixinOne'
+              ]
+            }
           }
         }
       }),
       getConfigOverrides: jest.fn().mockReturnValue({
         test: {
-          'target-type': {
-            overrides: true
+          'supersNameSpace': {
+            superName: 'superkey'
+          },
+          'molotovPlugins': {
+            supersNameSpace: {
+              pluginOne: [
+                'mixinOne',
+                'mixinTwo'
+              ]
+            }
           }
         }
       }),
@@ -39,10 +54,20 @@ describe('MolotovProviderBase', () => {
       setMolotovConfig: jest.fn(),
     };
     const expected = {
-      config: true,
-      overrides: true,
+      test: {
+        'supersNameSpace': {
+          superName: 'superkey'
+        },
+        'molotovPlugins': {
+          supersNameSpace: {
+            pluginOne: [
+              'mixinOne'
+            ]
+          }
+        }
+      }
     };
-    const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
+    const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
     expect(mpb.fetchOverrides()).toEqual(expected);
     expect(molotov.getMolotovConfig).toHaveBeenCalled();
     expect(molotov.getNameSpace).toHaveBeenCalledTimes(2);
@@ -63,43 +88,37 @@ describe('MolotovProviderBase', () => {
     });
 
     test('handles no config', () => {
+      expect.assertions(1);
       molotov.getMolotovConfig.mockReturnValue({});
-      const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-      expect(mpb.validateMolotovConfig()).toBe(false);
+      const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
+      expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
 
     test('handles non-object constructor', () => {
+      expect.assertions(1);
       const junk = {};
       junk.constructor = () => {};
       molotov.getMolotovConfig.mockReturnValue(junk);
-      const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-      expect(mpb.validateMolotovConfig()).toBe(false);
+      const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
+      expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
 
     test('handles missing superNameSpacePaths', () => {
+      expect.assertions(1);
       molotov.getNameSpace.mockReturnValue('test');
       molotov.getMolotovConfig.mockReturnValue({ test: {} });
-      const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-      expect(mpb.validateMolotovConfig()).toBe(false);
+      const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
+      expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
 
     test('handles missing target', () => {
+      expect.assertions(1);
       molotov.getNameSpace.mockReturnValue('test');
       molotov.getMolotovConfig.mockReturnValue({ test: {
         supersNameSpace: true,
       } });
-      const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-      expect(mpb.validateMolotovConfig()).toBe(false);
-    });
-
-    test('can validate', () => {
-      molotov.getNameSpace.mockReturnValue('test');
-      molotov.getMolotovConfig.mockReturnValue({ test: {
-        supersNameSpace: true,
-        'target-type': true,
-      } });
-      const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-      expect(mpb.validateMolotovConfig()).toBe(true);
+      const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
+      expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
   })
 })
