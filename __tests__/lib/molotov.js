@@ -117,3 +117,50 @@ describe('Molotov Constructor Errors', () => {
     expect(() => new Molotov({nob: 'nope'}, 'testMolotovImplementer', supers, mixins, configOverrides, 'cocktail')).toThrowError(MolotovError);
   });
 });
+
+describe('Molotov advanced', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Molotov Mix Supers', () => {
+    expect.assertions(1);
+    const molotov = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass]);
+    expect(molotov.mixSupers()).toMatchSnapshot();
+  });
+
+  test('Molotov Mix Supers', () => {
+    expect.assertions(1);
+    const molotov = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass]);
+    expect(molotov.getMolotov()).toMatchSnapshot();
+  });
+});
+
+
+describe('Molotov no overrides no cocktails', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Molotov constructor', () => {
+    expect.assertions(7);
+    const molotov = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins);
+    molotov.setPlugins({ plugins: 'yay' });
+    expect(molotov.getNameSpace()).toEqual('testMolotovImplementer');
+    expect(molotov.getMixins()).toMatchSnapshot();
+    expect(molotov.getSupers()).toMatchSnapshot();
+    expect(molotov.getMolotov()).toMatchSnapshot();
+  });
+});

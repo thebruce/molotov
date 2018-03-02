@@ -108,3 +108,279 @@ Array [
   },
 ]
 `;
+
+exports[`Molotov advanced Molotov Mix Supers 1`] = `
+SuperMixologist {
+  "molotov": Molotov {
+    "cocktails": Array [
+      CocktailHelper {
+        "cocktailConfig": Object {
+          "testMolotovImplementer": Object {
+            "molotovPlugins": Object {
+              "testSuper": Object {
+                "onlyPluginOne": Array [
+                  "pluginOne",
+                ],
+                "pluginAll": Array [
+                  "pluginFour",
+                ],
+                "pluginOneTwo": Array [
+                  "pluginOne",
+                  "pluginTwo",
+                  "pluginFour",
+                ],
+              },
+              "testSuperTwo": Object {
+                "pluginSeven": Array [
+                  "pluginSeven",
+                ],
+              },
+            },
+            "supersNameSpace": Object {
+              "testSuper": "testSuper",
+              "testSuperTwo": "testSuperTwo",
+            },
+          },
+        },
+        "cocktailMixins": Object {
+          "testSuper": Object {
+            "pluginFour": [Function],
+            "pluginThree": [Function],
+          },
+          "testSuperTwo": Object {
+            "pluginSeven": [Function],
+          },
+        },
+        "cocktailSupers": Object {
+          "testSuper": [Function],
+          "testSuperTwo": [Function],
+        },
+      },
+    ],
+    "configOverrides": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "pluginAll": Array [
+              "pluginOne",
+              "pluginTwo",
+            ],
+            "pluginOneThree": Array [
+              "pluginOne",
+              "pluginThree",
+            ],
+          },
+        },
+      },
+    },
+    "mixins": Object {
+      "testSuper": Object {
+        "pluginOne": [Function],
+        "pluginThree": [Function],
+        "pluginTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "pluginOne",
+            ],
+            "pluginAll": Array [
+              "pluginOne",
+              "pluginTwo",
+              "pluginThree",
+            ],
+            "pluginOneTwo": Array [
+              "pluginOne",
+              "pluginTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "supers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
+    },
+  },
+  "target": "supersNameSpace",
+  "type": "Supers",
+}
+`;
+
+exports[`Molotov advanced Molotov Mix Supers 2`] = `
+Polttopullo {
+  "molotov": Molotov {
+    "cocktails": Array [
+      CocktailHelper {
+        "cocktailConfig": Object {
+          "testMolotovImplementer": Object {
+            "molotovPlugins": Object {
+              "testSuper": Object {
+                "onlyPluginOne": Array [
+                  "pluginOne",
+                ],
+                "pluginAll": Array [
+                  "pluginFour",
+                ],
+                "pluginOneTwo": Array [
+                  "pluginOne",
+                  "pluginTwo",
+                  "pluginFour",
+                ],
+              },
+              "testSuperTwo": Object {
+                "pluginSeven": Array [
+                  "pluginSeven",
+                ],
+              },
+            },
+            "supersNameSpace": Object {
+              "testSuper": "testSuper",
+              "testSuperTwo": "testSuperTwo",
+            },
+          },
+        },
+        "cocktailMixins": Object {
+          "testSuper": Object {
+            "pluginFour": [Function],
+            "pluginThree": [Function],
+          },
+          "testSuperTwo": Object {
+            "pluginSeven": [Function],
+          },
+        },
+        "cocktailSupers": Object {
+          "testSuper": [Function],
+          "testSuperTwo": [Function],
+        },
+      },
+    ],
+    "configOverrides": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "pluginAll": Array [
+              "pluginOne",
+              "pluginTwo",
+            ],
+            "pluginOneThree": Array [
+              "pluginOne",
+              "pluginThree",
+            ],
+          },
+        },
+      },
+    },
+    "mixins": Object {
+      "testSuper": Object {
+        "pluginOne": [Function],
+        "pluginThree": [Function],
+        "pluginTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "pluginOne",
+            ],
+            "pluginAll": Array [
+              "pluginOne",
+              "pluginTwo",
+              "pluginThree",
+            ],
+            "pluginOneTwo": Array [
+              "pluginOne",
+              "pluginTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "supers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
+    },
+  },
+  "target": "molotovPlugins",
+  "type": "Plugins",
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 1`] = `
+Object {
+  "testSuper": Object {
+    "pluginOne": [Function],
+    "pluginThree": [Function],
+    "pluginTwo": [Function],
+  },
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 2`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 3`] = `
+Polttopullo {
+  "molotov": Molotov {
+    "cocktails": Array [],
+    "configOverrides": Object {},
+    "mixins": Object {
+      "testSuper": Object {
+        "pluginOne": [Function],
+        "pluginThree": [Function],
+        "pluginTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "pluginOne",
+            ],
+            "pluginAll": Array [
+              "pluginOne",
+              "pluginTwo",
+              "pluginThree",
+            ],
+            "pluginOneTwo": Array [
+              "pluginOne",
+              "pluginTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "plugins": Object {
+      "plugins": "yay",
+    },
+    "supers": Object {
+      "testSuper": [Function],
+    },
+  },
+  "target": "molotovPlugins",
+  "type": "Plugins",
+}
+`;
