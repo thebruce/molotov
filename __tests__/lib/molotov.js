@@ -3,9 +3,9 @@ const { MolotovError } = require('../../lib/molotovError');
 
 const molotovConfig = {
   testMolotovImplementer: {
-    supersNameSpace: [
-      'testSuper',
-    ],
+    supersNameSpace: {
+      testSuper: 'testSuper'
+    },
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [

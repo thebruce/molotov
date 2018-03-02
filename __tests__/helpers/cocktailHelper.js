@@ -6,9 +6,10 @@ const cocktailSupers = require('./cocktailSupers');
 // This could be passed in.
 const cocktailConfig = {
   testMolotovImplementer: {
-    supersNameSpace: [
-      'testSuper',
-    ],
+    supersNameSpace: {
+      testSuperTwo: 'testSuperTwo',
+      testSuper: 'testSuper',
+    },
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
@@ -23,13 +24,18 @@ const cocktailConfig = {
           'pluginFour',
         ],
       },
+      testSuperTwo: {
+        pluginSeven: [
+          'pluginSeven',
+        ],
+      },
     },
   },
 };
 
 class CocktailHelper extends Cocktail {
   constructor() {
-    super(cocktailConfig, cocktailPlugins, cocktailSupers);
+    super(cocktailConfig, cocktailSupers, cocktailPlugins);
   }
 }
 

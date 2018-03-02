@@ -19,7 +19,7 @@ describe('MolotovProviderBase', () => {
     expect(mpb.getType()).toBe('test-type');
   });
 
-  test('mergeConfig()', () => {
+  test('fetchOverrides()', () => {
     const molotov = {
       getMolotovConfig: jest.fn().mockReturnValue({
         test: {
@@ -43,7 +43,7 @@ describe('MolotovProviderBase', () => {
       overrides: true,
     };
     const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
-    expect(mpb.mergeConfig()).toEqual(expected);
+    expect(mpb.fetchOverrides()).toEqual(expected);
     expect(molotov.getMolotovConfig).toHaveBeenCalled();
     expect(molotov.getNameSpace).toHaveBeenCalledTimes(2);
     expect(molotov.getConfigOverrides).toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe('MolotovProviderBase', () => {
     test('handles missing target', () => {
       molotov.getNameSpace.mockReturnValue('test');
       molotov.getMolotovConfig.mockReturnValue({ test: {
-        superNameSpacePaths: true,
+        supersNameSpace: true,
       } });
       const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');
       expect(mpb.validateMolotovConfig()).toBe(false);
@@ -95,7 +95,7 @@ describe('MolotovProviderBase', () => {
     test('can validate', () => {
       molotov.getNameSpace.mockReturnValue('test');
       molotov.getMolotovConfig.mockReturnValue({ test: {
-        superNameSpacePaths: true,
+        supersNameSpace: true,
         'target-type': true,
       } });
       const mpb = new MolotovProviderBase(molotov, 'test-type', 'target-type');

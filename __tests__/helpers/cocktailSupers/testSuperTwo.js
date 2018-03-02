@@ -2,7 +2,7 @@
  * Test SuperClass
  *
  */
-module.exports = class testSuper {
+module.exports = class testSuperTwo {
   constructor() {
     this.value = 'test';
   }
@@ -18,6 +18,6 @@ module.exports = class testSuper {
    *   A test return value.
    */
   testFunction(otherValue) {
-    return String.concat(this.value, 'cocktailSuperOne', otherValue);
+    return String.concat(this.value, 'cocktailSuper2', otherValue);
   }
 };

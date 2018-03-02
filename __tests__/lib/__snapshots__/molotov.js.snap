@@ -29,9 +29,9 @@ Object {
         ],
       },
     },
-    "supersNameSpace": Array [
-      "testSuper",
-    ],
+    "supersNameSpace": Object {
+      "testSuper": "testSuper",
+    },
   },
 }
 `;

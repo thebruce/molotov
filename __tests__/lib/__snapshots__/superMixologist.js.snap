@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Super Mixologist resolve Super Mixologist fetchOverrides tests 1`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "onlyPluginOne": Array [
+          "pluginOne",
+        ],
+        "pluginAll": Array [
+          "pluginOne",
+          "pluginTwo",
+          "pluginThree",
+        ],
+        "pluginOneTwo": Array [
+          "pluginOne",
+          "pluginTwo",
+        ],
+      },
+    },
+    "supersNameSpace": Object {
+      "testSuper": "testSuper",
+    },
+  },
+}
+`;
+
+exports[`Super Mixologist resolve Super Mixologist resolve tests 1`] = `
+Object {
+  "testSuper": [Function],
+  "testSuperTwo": [Function],
+}
+`;

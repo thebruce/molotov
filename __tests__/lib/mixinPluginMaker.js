@@ -4,9 +4,9 @@ const _ = require('lodash');
 
 const molotovConfig = {
   testMolotovImplementer: {
-    supersNameSpace: [
-      'testSuper',
-    ],
+    supersNameSpace: {
+      testSuper: 'testSuper'
+    },
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [

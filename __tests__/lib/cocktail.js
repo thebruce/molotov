@@ -5,9 +5,9 @@ const supers = require('../helpers/supers');
 const mixins = require('../helpers/mixins');
 const cocktailConfig = {
   testMolotovImplementer: {
-    supersNameSpace: [
-      'testSuper',
-    ],
+    supersNameSpace: {
+      testSuper: 'testSuper'
+    },
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
