@@ -232,7 +232,7 @@ const molotov = class Molotov {
    */
   getMolotov(): Polttopullo {
     const resolvedSupers = this.mixSupers();
-    return new Polttopullo(resolvedSupers.molotov);
+    return new Polttopullo(resolvedSupers.getMolotov());
   }
 
   /**

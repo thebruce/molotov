@@ -129,13 +129,13 @@ describe('Polttopullo mixCocktails Edge Cases', () => {
     jest.restoreAllMocks();
   });
 
-  test('Polttopullo resolve with no cocktail classes.', () => {
+  test('Polttopullo resolve with no cocktail classes no overrides.', () => {
     expect.assertions(1);
-    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins);
     const superMixologist = new SuperMixologist(molotov2);
     superMixologist.resolve();
     const polttopullo = new Polttopullo(superMixologist.molotov);
-    expect(polttopullo.resolve()).toEqual();
+    expect(polttopullo.resolve()).toMatchSnapshot();
   });
   test('Super Mixologist resolve cocktail not filled with cocktails', () => {
     expect.assertions(1);
@@ -144,7 +144,7 @@ describe('Polttopullo mixCocktails Edge Cases', () => {
     superMixologist.resolve();
     superMixologist.molotov.setCocktails(['tubs']);
     const polttopullo = new Polttopullo(superMixologist.molotov);
-    expect(polttopullo.resolve()).toEqual();
+    expect(polttopullo.resolve()).toMatchSnapshot();
   });
 });
 

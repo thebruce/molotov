@@ -57,9 +57,11 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
    *   The target classes item.
    */
   mixCocktails(): void {
-    const cocktailsArray = this.molotov.getCocktails();
+    const cocktailsArray = this.getMolotov().getCocktails();
     const nameSpace = this.molotov.getNameSpace();
     let tempMixins = this.molotov.getMixins();
+    // Get plugins set up if there are no cocktails.
+    this.molotov.setPlugins(pluginMaker(this.molotov.getMolotovConfig()[nameSpace].molotovPlugins, this.molotov.getMixins(), this.molotov.getSupers())); // eslint-disable-line max-len
     // Do we have any cocktails?
     if (cocktailsArray.length) {
       // We have cocktail classes. Build up our mixins

@@ -33,7 +33,7 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
   constructor(molotovInstance: molotov, type: string, targetType: T): void { // eslint-disable-line max-len
     this.setType(type);
     this.setTarget(targetType);
-    this.molotov = molotovInstance;
+    this.setMolotov(molotovInstance);
   }
 
   /**
@@ -88,11 +88,11 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
     // get config for target
     // get any overridden config from overrides.
     const overrides: ((pluginsList | supersNameSpace)) = _.get(
-      this.molotov.getConfigOverrides()[this.molotov.getNameSpace()],
+      this.getMolotov().getConfigOverrides()[this.getMolotov().getNameSpace()],
       `${this.getTarget()}`,
       {}
     );
-    return this.mergeConfig(this.molotov.getMolotovConfig(), this.createPartialConfig(overrides));
+    return this.mergeConfig(this.getMolotov().getMolotovConfig(), this.createPartialConfig(overrides)); // eslint-disable-line max-len
   }
 
   /**
@@ -108,7 +108,7 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
   mergeConfig(config: molotovConfig, overrides: overrideConfig): molotovConfig {
     // Bring in any dynamic or user provided overrides.
     const merged = _.merge({}, config, overrides);
-    this.molotov.setMolotovConfig(merged);
+    this.getMolotov().setMolotovConfig(merged);
     this.validateMolotovConfig();
 
     return merged;
@@ -135,5 +135,26 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
    */
   validateMolotovConfig(): void {
     validator(this.molotov.getMolotovConfig());
+  }
+
+  /**
+   * Sets molotov
+   *
+   * @param {molotov} molotovClass
+   *   Pass in a molotov calss to set.
+   * @returns {void}
+   */
+  setMolotov(molotovClass: molotov): void {
+    this.molotov = molotovClass;
+  }
+
+  /**
+   * Gets molotov.
+   *
+   * @returns {molotov}
+   *   Returns the molotov class.
+   */
+  getMolotov(): molotov {
+    return this.molotov;
   }
 };
