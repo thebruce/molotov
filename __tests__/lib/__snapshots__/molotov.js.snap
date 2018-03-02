@@ -80,20 +80,30 @@ Array [
               "pluginFour",
             ],
           },
+          "testSuperTwo": Object {
+            "pluginSeven": Array [
+              "pluginSeven",
+            ],
+          },
         },
-        "supersNameSpace": Array [
-          "testSuper",
-        ],
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
       },
     },
     "cocktailMixins": Object {
-      "testSuper": [Function],
-    },
-    "cocktailSupers": Object {
       "testSuper": Object {
         "pluginFour": [Function],
         "pluginThree": [Function],
       },
+      "testSuperTwo": Object {
+        "pluginSeven": [Function],
+      },
+    },
+    "cocktailSupers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
     },
   },
 ]
