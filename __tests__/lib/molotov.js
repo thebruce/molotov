@@ -157,7 +157,6 @@ describe('Molotov no overrides no cocktails', () => {
   test('Molotov constructor', () => {
     expect.assertions(4);
     const molotov = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins);
-    molotov.setPlugins({ plugins: 'yay' });
     expect(molotov.getNameSpace()).toEqual('testMolotovImplementer');
     expect(molotov.getMixins()).toMatchSnapshot();
     expect(molotov.getSupers()).toMatchSnapshot();

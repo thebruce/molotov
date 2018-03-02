@@ -373,9 +373,6 @@ Polttopullo {
       },
     },
     "molotovNameSpace": "testMolotovImplementer",
-    "plugins": Object {
-      "plugins": "yay",
-    },
     "supers": Object {
       "testSuper": [Function],
     },
