@@ -1,13 +1,22 @@
 {
   "schemePunk": {
-    "superNameSpaceItem": {
-      "superOverride": "/path/to/superNameSpaceItem/Override"
+    "supersNameSpace": {
+      "superName": "yourSuperClassKey"
     },
-    "molotov": {
-      "molotovPlugins": [
-        "path/to/mixinStylePluginLoader/implementing/cocktailClass",
-        "anotherPath/to/mixinStylePluginLoader/implementing/cocktailClass/lastInOverrides"
-      ]
+    "molotovPlugins": {
+      "supersNameSpace": {
+        "aPluginName":       [
+          "aMixinKey",
+          "aSecondMixinKey"
+        ]
+      }
+    }
+  },
+  "schemeRunner.semverist": {
+    "supersNameSpacePaths": {
+      "superNameSpaceForSemverist": {
+        "superOverride": "/path/to/superNameSpaceForSemverist/Override"
+      }
     }
   }
 }

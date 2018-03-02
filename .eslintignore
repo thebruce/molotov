@@ -1,5 +1,4 @@
-# node_modules ignored by default
-
-# Ignore generated files
-coverage
-site
+__coverage__
+lib
+flow-typed
+__tests__/helpers

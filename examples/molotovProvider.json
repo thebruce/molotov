@@ -1,16 +1,13 @@
 {
-  "examplePackageNameSpace": {
-    "supersNameSpacePaths": {
-      "aSuperNameSpace": "pathToThisSuperNameSpace",
-      "aSecondSuperNameSpace": "pathToTheSecondSuperNameSpace",
-      "aThirdSuperNameSpace": "pathToTheThirdSuperNameSpace"
+  "exampleModuleNameSpace": {
+    "supersNameSpace": {
+      "exampleSuperName": "yourSuperClassKey"
     },
     "molotovPlugins": {
-      "aSuperNameSpace":{
-        "aPluginName": [
-          "pluginNameOne",
-          "pluginNameTwo",
-          "pluginNameThree"
+      "exampleSuperName": {
+        "aPluginName":       [
+          "aMixinClassKey",
+          "aSecondMixinClassKey"
         ]
       }
     }

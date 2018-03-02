@@ -1,0 +1,388 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Molotov Basic tests Molotov constructor 1`] = `
+Object {
+  "testSuper": Object {
+    "mixinOne": [Function],
+    "mixinThree": [Function],
+    "mixinTwo": [Function],
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 2`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "onlyPluginOne": Array [
+          "mixinOne",
+        ],
+        "pluginAll": Array [
+          "mixinOne",
+          "mixinTwo",
+          "mixinThree",
+        ],
+        "pluginOneTwo": Array [
+          "mixinOne",
+          "mixinTwo",
+        ],
+      },
+    },
+    "supersNameSpace": Object {
+      "testSuper": "testSuper",
+    },
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 3`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 4`] = `
+Object {
+  "testMolotovImplementer": Object {
+    "molotovPlugins": Object {
+      "testSuper": Object {
+        "pluginAll": Array [
+          "mixinOne",
+          "mixinTwo",
+        ],
+        "pluginOneThree": Array [
+          "mixinOne",
+          "mixinThree",
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`Molotov Basic tests Molotov constructor 5`] = `
+Array [
+  CocktailHelper {
+    "cocktailConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "mixinOne",
+            ],
+            "pluginAll": Array [
+              "mixinFour",
+            ],
+            "pluginOneTwo": Array [
+              "mixinOne",
+              "mixinTwo",
+              "mixinFour",
+            ],
+          },
+          "testSuperTwo": Object {
+            "pluginSeven": Array [
+              "mixinSeven",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
+      },
+    },
+    "cocktailMixins": Object {
+      "testSuper": Object {
+        "mixinFour": [Function],
+        "mixinThree": [Function],
+      },
+      "testSuperTwo": Object {
+        "mixinSeven": [Function],
+      },
+    },
+    "cocktailSupers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
+    },
+  },
+]
+`;
+
+exports[`Molotov Constructor Errors Config must match the schema 1`] = `
+"Molotov configuration failed validation against the molotov schema. Please ensure your config conforms to the molotovConfig schema.
+['hi'] should have required property '.molotovPlugins'"
+`;
+
+exports[`Molotov advanced Molotov Mix Supers 1`] = `
+SuperMixologist {
+  "molotov": Molotov {
+    "cocktails": Array [
+      CocktailHelper {
+        "cocktailConfig": Object {
+          "testMolotovImplementer": Object {
+            "molotovPlugins": Object {
+              "testSuper": Object {
+                "onlyPluginOne": Array [
+                  "mixinOne",
+                ],
+                "pluginAll": Array [
+                  "mixinFour",
+                ],
+                "pluginOneTwo": Array [
+                  "mixinOne",
+                  "mixinTwo",
+                  "mixinFour",
+                ],
+              },
+              "testSuperTwo": Object {
+                "pluginSeven": Array [
+                  "mixinSeven",
+                ],
+              },
+            },
+            "supersNameSpace": Object {
+              "testSuper": "testSuper",
+              "testSuperTwo": "testSuperTwo",
+            },
+          },
+        },
+        "cocktailMixins": Object {
+          "testSuper": Object {
+            "mixinFour": [Function],
+            "mixinThree": [Function],
+          },
+          "testSuperTwo": Object {
+            "mixinSeven": [Function],
+          },
+        },
+        "cocktailSupers": Object {
+          "testSuper": [Function],
+          "testSuperTwo": [Function],
+        },
+      },
+    ],
+    "configOverrides": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "pluginAll": Array [
+              "mixinOne",
+              "mixinTwo",
+            ],
+            "pluginOneThree": Array [
+              "mixinOne",
+              "mixinThree",
+            ],
+          },
+        },
+      },
+    },
+    "mixins": Object {
+      "testSuper": Object {
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "mixinOne",
+            ],
+            "pluginAll": Array [
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
+            ],
+            "pluginOneTwo": Array [
+              "mixinOne",
+              "mixinTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "supers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
+    },
+  },
+  "target": "supersNameSpace",
+  "type": "Supers",
+}
+`;
+
+exports[`Molotov advanced Molotov Mix Supers 2`] = `
+Polttopullo {
+  "molotov": Molotov {
+    "cocktails": Array [
+      CocktailHelper {
+        "cocktailConfig": Object {
+          "testMolotovImplementer": Object {
+            "molotovPlugins": Object {
+              "testSuper": Object {
+                "onlyPluginOne": Array [
+                  "mixinOne",
+                ],
+                "pluginAll": Array [
+                  "mixinFour",
+                ],
+                "pluginOneTwo": Array [
+                  "mixinOne",
+                  "mixinTwo",
+                  "mixinFour",
+                ],
+              },
+              "testSuperTwo": Object {
+                "pluginSeven": Array [
+                  "mixinSeven",
+                ],
+              },
+            },
+            "supersNameSpace": Object {
+              "testSuper": "testSuper",
+              "testSuperTwo": "testSuperTwo",
+            },
+          },
+        },
+        "cocktailMixins": Object {
+          "testSuper": Object {
+            "mixinFour": [Function],
+            "mixinThree": [Function],
+          },
+          "testSuperTwo": Object {
+            "mixinSeven": [Function],
+          },
+        },
+        "cocktailSupers": Object {
+          "testSuper": [Function],
+          "testSuperTwo": [Function],
+        },
+      },
+    ],
+    "configOverrides": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "pluginAll": Array [
+              "mixinOne",
+              "mixinTwo",
+            ],
+            "pluginOneThree": Array [
+              "mixinOne",
+              "mixinThree",
+            ],
+          },
+        },
+      },
+    },
+    "mixins": Object {
+      "testSuper": Object {
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "mixinOne",
+            ],
+            "pluginAll": Array [
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
+            ],
+            "pluginOneTwo": Array [
+              "mixinOne",
+              "mixinTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+          "testSuperTwo": "testSuperTwo",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "supers": Object {
+      "testSuper": [Function],
+      "testSuperTwo": [Function],
+    },
+  },
+  "target": "molotovPlugins",
+  "type": "Plugins",
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 1`] = `
+Object {
+  "testSuper": Object {
+    "mixinOne": [Function],
+    "mixinThree": [Function],
+    "mixinTwo": [Function],
+  },
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 2`] = `
+Object {
+  "testSuper": [Function],
+}
+`;
+
+exports[`Molotov no overrides no cocktails Molotov constructor 3`] = `
+Polttopullo {
+  "molotov": Molotov {
+    "cocktails": Array [],
+    "configOverrides": Object {},
+    "mixins": Object {
+      "testSuper": Object {
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
+      },
+    },
+    "molotovConfig": Object {
+      "testMolotovImplementer": Object {
+        "molotovPlugins": Object {
+          "testSuper": Object {
+            "onlyPluginOne": Array [
+              "mixinOne",
+            ],
+            "pluginAll": Array [
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
+            ],
+            "pluginOneTwo": Array [
+              "mixinOne",
+              "mixinTwo",
+            ],
+          },
+        },
+        "supersNameSpace": Object {
+          "testSuper": "testSuper",
+        },
+      },
+    },
+    "molotovNameSpace": "testMolotovImplementer",
+    "supers": Object {
+      "testSuper": [Function],
+    },
+  },
+  "target": "molotovPlugins",
+  "type": "Plugins",
+}
+`;
