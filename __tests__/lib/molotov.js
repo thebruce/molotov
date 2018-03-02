@@ -9,16 +9,16 @@ const molotovConfig = {
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
-          'pluginOne',
+          'mixinOne',
         ],
         pluginAll: [
-          'pluginOne',
-          'pluginTwo',
-          'pluginThree',
+          'mixinOne',
+          'mixinTwo',
+          'mixinThree',
         ],
         pluginOneTwo: [
-          'pluginOne',
-          'pluginTwo',
+          'mixinOne',
+          'mixinTwo',
         ],
       },
     },
@@ -30,12 +30,12 @@ const configOverrides = {
     molotovPlugins: {
       testSuper: {
         pluginAll: [
-          'pluginOne',
-          'pluginTwo',
+          'mixinOne',
+          'mixinTwo',
         ],
         pluginOneThree: [
-          'pluginOne',
-          'pluginThree',
+          'mixinOne',
+          'mixinThree',
         ],
       },
     },

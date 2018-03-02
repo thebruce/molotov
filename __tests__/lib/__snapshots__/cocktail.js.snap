@@ -10,11 +10,11 @@ Object {
 exports[`Cocktail Basic tests Cocktail constructor in action 2`] = `
 Object {
   "testSuper": Object {
-    "pluginFour": [Function],
-    "pluginThree": [Function],
+    "mixinFour": [Function],
+    "mixinThree": [Function],
   },
   "testSuperTwo": Object {
-    "pluginSeven": [Function],
+    "mixinSeven": [Function],
   },
 }
 `;
@@ -25,20 +25,20 @@ Object {
     "molotovPlugins": Object {
       "testSuper": Object {
         "onlyPluginOne": Array [
-          "pluginOne",
+          "mixinOne",
         ],
         "pluginAll": Array [
-          "pluginFour",
+          "mixinFour",
         ],
         "pluginOneTwo": Array [
-          "pluginOne",
-          "pluginTwo",
-          "pluginFour",
+          "mixinOne",
+          "mixinTwo",
+          "mixinFour",
         ],
       },
       "testSuperTwo": Object {
         "pluginSeven": Array [
-          "pluginSeven",
+          "mixinSeven",
         ],
       },
     },

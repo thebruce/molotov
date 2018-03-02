@@ -1,6 +1,6 @@
 // @flow
 
-import type { plugins, mixins, ProviderBase, ProviderImplementation, targetMp } from './types/molotov'; // eslint-disable-line max-len
+import type { plugins, pluginsList, mixins, ProviderBase, ProviderImplementation, targetMp } from './types/molotov'; // eslint-disable-line max-len
 import type molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
@@ -75,8 +75,12 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
           // are keys of the molotovPlugins object.
           // A plugins value is an array of mixins. So we union those
           // array values to get all mixins.
-          const cocktailConfigMixins: string[] = _.union(_.values(cocktail.getCocktailConfig()[nameSpace][this.getTarget()])); // eslint-disable-line max-len
-          const allMixinKeys = _.concat(Object.keys(cocktailMixinClasses), Object.keys(tempMixins));
+          const cocktailConfigMixins = this.getMixinsFromPluginConfig(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]); // eslint-disable-line max-len
+          const cocktailMixinsObjectKeys = this.getMixinsFromPluginObject(cocktailMixinClasses);
+          const molotovMixinsObjectKeys = this.getMixinsFromPluginObject(tempMixins);
+
+          const allMixinKeys = _.uniq(_.concat(cocktailMixinsObjectKeys, molotovMixinsObjectKeys));
+
           if (_.difference(cocktailConfigMixins, allMixinKeys).length > 0) { // eslint-disable-line max-len
             throw new MolotovError(COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS);
           }
@@ -114,5 +118,27 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
     // Now get any cocktails overrides.
     this.mixCocktails();
     return this.molotov.getPlugins();
+  }
+  /**
+   * Unwraps a plugins config very delicately to get the juicy mixins inside.
+   *
+   * @param {pluginsList} pluginsObj
+   *   A list of plugins for molotov.
+   * @returns {string[]}
+   *   An array of mixin names.
+   */
+  getMixinsFromPluginConfig(pluginsObj: pluginsList): string[] {
+    return _.union(_.flattenDeep(_.map(_.values(pluginsObj), item => _.flattenDeep(_.values(item))))); // eslint-disable-line max-len
+  }
+  /**
+   * Unwraps a plugins object very delicately to get the juicy mixins inside.
+   *
+   * @param {{}} pluginsObj
+   *   A list of plugins for molotov.
+   * @returns {string[]}
+   *   An array of mixin names.
+   */
+  getMixinsFromPluginObject(pluginsObj: {}): string[] {
+    return _.union(_.flattenDeep(_.map(_.values(pluginsObj), item => _.flattenDeep(_.keys(item))))); // eslint-disable-line max-len
   }
 };

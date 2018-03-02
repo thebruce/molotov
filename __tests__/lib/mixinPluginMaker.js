@@ -10,16 +10,16 @@ const molotovConfig = {
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
-          'pluginOne',
+          'mixinOne',
         ],
         pluginAll: [
-          'pluginOne',
-          'pluginTwo',
-          'pluginThree',
+          'mixinOne',
+          'mixinTwo',
+          'mixinThree',
         ],
         pluginOneTwo: [
-          'pluginOne',
-          'pluginTwo',
+          'mixinOne',
+          'mixinTwo',
         ],
       },
     },

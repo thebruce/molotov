@@ -3,9 +3,9 @@
 exports[`Molotov Basic tests Molotov constructor 1`] = `
 Object {
   "testSuper": Object {
-    "pluginOne": [Function],
-    "pluginThree": [Function],
-    "pluginTwo": [Function],
+    "mixinOne": [Function],
+    "mixinThree": [Function],
+    "mixinTwo": [Function],
   },
 }
 `;
@@ -16,16 +16,16 @@ Object {
     "molotovPlugins": Object {
       "testSuper": Object {
         "onlyPluginOne": Array [
-          "pluginOne",
+          "mixinOne",
         ],
         "pluginAll": Array [
-          "pluginOne",
-          "pluginTwo",
-          "pluginThree",
+          "mixinOne",
+          "mixinTwo",
+          "mixinThree",
         ],
         "pluginOneTwo": Array [
-          "pluginOne",
-          "pluginTwo",
+          "mixinOne",
+          "mixinTwo",
         ],
       },
     },
@@ -48,12 +48,12 @@ Object {
     "molotovPlugins": Object {
       "testSuper": Object {
         "pluginAll": Array [
-          "pluginOne",
-          "pluginTwo",
+          "mixinOne",
+          "mixinTwo",
         ],
         "pluginOneThree": Array [
-          "pluginOne",
-          "pluginThree",
+          "mixinOne",
+          "mixinThree",
         ],
       },
     },
@@ -69,20 +69,20 @@ Array [
         "molotovPlugins": Object {
           "testSuper": Object {
             "onlyPluginOne": Array [
-              "pluginOne",
+              "mixinOne",
             ],
             "pluginAll": Array [
-              "pluginFour",
+              "mixinFour",
             ],
             "pluginOneTwo": Array [
-              "pluginOne",
-              "pluginTwo",
-              "pluginFour",
+              "mixinOne",
+              "mixinTwo",
+              "mixinFour",
             ],
           },
           "testSuperTwo": Object {
             "pluginSeven": Array [
-              "pluginSeven",
+              "mixinSeven",
             ],
           },
         },
@@ -94,11 +94,11 @@ Array [
     },
     "cocktailMixins": Object {
       "testSuper": Object {
-        "pluginFour": [Function],
-        "pluginThree": [Function],
+        "mixinFour": [Function],
+        "mixinThree": [Function],
       },
       "testSuperTwo": Object {
-        "pluginSeven": [Function],
+        "mixinSeven": [Function],
       },
     },
     "cocktailSupers": Object {
@@ -119,20 +119,20 @@ SuperMixologist {
             "molotovPlugins": Object {
               "testSuper": Object {
                 "onlyPluginOne": Array [
-                  "pluginOne",
+                  "mixinOne",
                 ],
                 "pluginAll": Array [
-                  "pluginFour",
+                  "mixinFour",
                 ],
                 "pluginOneTwo": Array [
-                  "pluginOne",
-                  "pluginTwo",
-                  "pluginFour",
+                  "mixinOne",
+                  "mixinTwo",
+                  "mixinFour",
                 ],
               },
               "testSuperTwo": Object {
                 "pluginSeven": Array [
-                  "pluginSeven",
+                  "mixinSeven",
                 ],
               },
             },
@@ -144,11 +144,11 @@ SuperMixologist {
         },
         "cocktailMixins": Object {
           "testSuper": Object {
-            "pluginFour": [Function],
-            "pluginThree": [Function],
+            "mixinFour": [Function],
+            "mixinThree": [Function],
           },
           "testSuperTwo": Object {
-            "pluginSeven": [Function],
+            "mixinSeven": [Function],
           },
         },
         "cocktailSupers": Object {
@@ -162,12 +162,12 @@ SuperMixologist {
         "molotovPlugins": Object {
           "testSuper": Object {
             "pluginAll": Array [
-              "pluginOne",
-              "pluginTwo",
+              "mixinOne",
+              "mixinTwo",
             ],
             "pluginOneThree": Array [
-              "pluginOne",
-              "pluginThree",
+              "mixinOne",
+              "mixinThree",
             ],
           },
         },
@@ -175,9 +175,9 @@ SuperMixologist {
     },
     "mixins": Object {
       "testSuper": Object {
-        "pluginOne": [Function],
-        "pluginThree": [Function],
-        "pluginTwo": [Function],
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
       },
     },
     "molotovConfig": Object {
@@ -185,16 +185,16 @@ SuperMixologist {
         "molotovPlugins": Object {
           "testSuper": Object {
             "onlyPluginOne": Array [
-              "pluginOne",
+              "mixinOne",
             ],
             "pluginAll": Array [
-              "pluginOne",
-              "pluginTwo",
-              "pluginThree",
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
             ],
             "pluginOneTwo": Array [
-              "pluginOne",
-              "pluginTwo",
+              "mixinOne",
+              "mixinTwo",
             ],
           },
         },
@@ -225,20 +225,20 @@ Polttopullo {
             "molotovPlugins": Object {
               "testSuper": Object {
                 "onlyPluginOne": Array [
-                  "pluginOne",
+                  "mixinOne",
                 ],
                 "pluginAll": Array [
-                  "pluginFour",
+                  "mixinFour",
                 ],
                 "pluginOneTwo": Array [
-                  "pluginOne",
-                  "pluginTwo",
-                  "pluginFour",
+                  "mixinOne",
+                  "mixinTwo",
+                  "mixinFour",
                 ],
               },
               "testSuperTwo": Object {
                 "pluginSeven": Array [
-                  "pluginSeven",
+                  "mixinSeven",
                 ],
               },
             },
@@ -250,11 +250,11 @@ Polttopullo {
         },
         "cocktailMixins": Object {
           "testSuper": Object {
-            "pluginFour": [Function],
-            "pluginThree": [Function],
+            "mixinFour": [Function],
+            "mixinThree": [Function],
           },
           "testSuperTwo": Object {
-            "pluginSeven": [Function],
+            "mixinSeven": [Function],
           },
         },
         "cocktailSupers": Object {
@@ -268,12 +268,12 @@ Polttopullo {
         "molotovPlugins": Object {
           "testSuper": Object {
             "pluginAll": Array [
-              "pluginOne",
-              "pluginTwo",
+              "mixinOne",
+              "mixinTwo",
             ],
             "pluginOneThree": Array [
-              "pluginOne",
-              "pluginThree",
+              "mixinOne",
+              "mixinThree",
             ],
           },
         },
@@ -281,9 +281,9 @@ Polttopullo {
     },
     "mixins": Object {
       "testSuper": Object {
-        "pluginOne": [Function],
-        "pluginThree": [Function],
-        "pluginTwo": [Function],
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
       },
     },
     "molotovConfig": Object {
@@ -291,16 +291,16 @@ Polttopullo {
         "molotovPlugins": Object {
           "testSuper": Object {
             "onlyPluginOne": Array [
-              "pluginOne",
+              "mixinOne",
             ],
             "pluginAll": Array [
-              "pluginOne",
-              "pluginTwo",
-              "pluginThree",
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
             ],
             "pluginOneTwo": Array [
-              "pluginOne",
-              "pluginTwo",
+              "mixinOne",
+              "mixinTwo",
             ],
           },
         },
@@ -324,9 +324,9 @@ Polttopullo {
 exports[`Molotov no overrides no cocktails Molotov constructor 1`] = `
 Object {
   "testSuper": Object {
-    "pluginOne": [Function],
-    "pluginThree": [Function],
-    "pluginTwo": [Function],
+    "mixinOne": [Function],
+    "mixinThree": [Function],
+    "mixinTwo": [Function],
   },
 }
 `;
@@ -344,9 +344,9 @@ Polttopullo {
     "configOverrides": Object {},
     "mixins": Object {
       "testSuper": Object {
-        "pluginOne": [Function],
-        "pluginThree": [Function],
-        "pluginTwo": [Function],
+        "mixinOne": [Function],
+        "mixinThree": [Function],
+        "mixinTwo": [Function],
       },
     },
     "molotovConfig": Object {
@@ -354,16 +354,16 @@ Polttopullo {
         "molotovPlugins": Object {
           "testSuper": Object {
             "onlyPluginOne": Array [
-              "pluginOne",
+              "mixinOne",
             ],
             "pluginAll": Array [
-              "pluginOne",
-              "pluginTwo",
-              "pluginThree",
+              "mixinOne",
+              "mixinTwo",
+              "mixinThree",
             ],
             "pluginOneTwo": Array [
-              "pluginOne",
-              "pluginTwo",
+              "mixinOne",
+              "mixinTwo",
             ],
           },
         },

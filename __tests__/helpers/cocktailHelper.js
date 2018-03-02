@@ -1,6 +1,6 @@
 const Cocktail = require('../../lib/cocktail');
 
-const cocktailPlugins = require('./cocktailPlugins');
+const cocktailMixins = require('./cocktailMixins');
 const cocktailSupers = require('./cocktailSupers');
 
 // This could be passed in.
@@ -13,20 +13,20 @@ const cocktailConfig = {
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
-          'pluginOne',
+          'mixinOne',
         ],
         pluginOneTwo: [
-          'pluginOne',
-          'pluginTwo',
-          'pluginFour',
+          'mixinOne',
+          'mixinTwo',
+          'mixinFour',
         ],
         pluginAll: [
-          'pluginFour',
+          'mixinFour',
         ],
       },
       testSuperTwo: {
         pluginSeven: [
-          'pluginSeven',
+          'mixinSeven',
         ],
       },
     },
@@ -35,7 +35,7 @@ const cocktailConfig = {
 
 class CocktailHelper extends Cocktail {
   constructor() {
-    super(cocktailConfig, cocktailSupers, cocktailPlugins);
+    super(cocktailConfig, cocktailSupers, cocktailMixins);
   }
 }
 

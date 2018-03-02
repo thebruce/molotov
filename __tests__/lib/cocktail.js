@@ -11,15 +11,15 @@ const cocktailConfig = {
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
-          'pluginOne',
+          'mixinOne',
         ],
         pluginOneTwo: [
-          'pluginOne',
-          'pluginTwo',
-          'pluginFour',
+          'mixinOne',
+          'mixinTwo',
+          'mixinFour',
         ],
         pluginAll: [
-          'pluginFour',
+          'mixinFour',
         ],
       },
     },

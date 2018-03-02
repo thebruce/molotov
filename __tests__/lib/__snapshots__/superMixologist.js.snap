@@ -18,16 +18,16 @@ Object {
     "molotovPlugins": Object {
       "testSuper": Object {
         "onlyPluginOne": Array [
-          "pluginOne",
+          "mixinOne",
         ],
         "pluginAll": Array [
-          "pluginOne",
-          "pluginTwo",
-          "pluginThree",
+          "mixinOne",
+          "mixinTwo",
+          "mixinThree",
         ],
         "pluginOneTwo": Array [
-          "pluginOne",
-          "pluginTwo",
+          "mixinOne",
+          "mixinTwo",
         ],
       },
     },

@@ -12,16 +12,16 @@ const molotovConfig = {
     molotovPlugins: {
       testSuper: {
         onlyPluginOne: [
-          'pluginOne',
+          'mixinOne',
         ],
         pluginAll: [
-          'pluginOne',
-          'pluginTwo',
-          'pluginThree',
+          'mixinOne',
+          'mixinTwo',
+          'mixinThree',
         ],
         pluginOneTwo: [
-          'pluginOne',
-          'pluginTwo',
+          'mixinOne',
+          'mixinTwo',
         ],
       },
     },
@@ -33,12 +33,12 @@ const configOverrides = {
     molotovPlugins: {
       testSuper: {
         pluginAll: [
-          'pluginOne',
-          'pluginTwo',
+          'mixinOne',
+          'mixinTwo',
         ],
         pluginOneThree: [
-          'pluginOne',
-          'pluginThree',
+          'mixinOne',
+          'mixinThree',
         ],
       },
     },
@@ -93,6 +93,82 @@ describe('PolttoPullo mix cocktails', () => {
     const polttopullo = new Polttopullo(superMixologist.molotov);
     polttopullo.fetchOverrides();
     polttopullo.mixCocktails();
-    expect(polttopullo.molotov.getMixins()).toBe();
+    expect(polttopullo.molotov.getMixins()).toMatchSnapshot();
+  });
+});
+
+
+describe('PolttoPullo resolve', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Polttopullo Constructor tests', () => {
+    expect.assertions(1);
+    const superMixologist = new SuperMixologist(molotov);
+    superMixologist.resolve();
+    const polttopullo = new Polttopullo(superMixologist.molotov);
+    expect(polttopullo.resolve()).toMatchSnapshot();
+  });
+});
+
+describe('Polttopullo mixCocktails Edge Cases', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Polttopullo resolve with no cocktail classes.', () => {
+    expect.assertions(1);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides);
+    const superMixologist = new SuperMixologist(molotov2);
+    superMixologist.resolve();
+    const polttopullo = new Polttopullo(superMixologist.molotov);
+    expect(polttopullo.resolve()).toEqual();
+  });
+  test('Super Mixologist resolve cocktail not filled with cocktails', () => {
+    expect.assertions(1);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides);
+    const superMixologist = new SuperMixologist(molotov2);
+    superMixologist.resolve();
+    superMixologist.molotov.setCocktails(['tubs']);
+    const polttopullo = new Polttopullo(superMixologist.molotov);
+    expect(polttopullo.resolve()).toEqual();
+  });
+});
+
+describe('Polttopullo mixCocktails Edge Cases2', () => {
+  beforeEach(() => {
+    tmpMocks.forEach(mock => mock.mockRestore());
+    tmpMocks = [];
+    jest.resetAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+  test('Polttopullo resolve cocktail throws when cocktail supers object and config do not match', () => {
+    expect.assertions(1);
+    let cocktailConfig = cocktailClass.getCocktailConfig();
+    // Set a new plugin under an existing super with a mixin that doesn't exist.
+    cocktailConfig = _.set(cocktailConfig, 'testMolotovImplementer.molotovPlugins.testSuper.jalapeno',  ['notAtAllAKey']);
+    cocktailClass.setCocktailConfig(cocktailConfig);
+    const molotov2  = new Molotov(molotovConfig, 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass]);
+    const superMixologist = new SuperMixologist(molotov2);
+    superMixologist.resolve();
+    const polttopullo = new Polttopullo(superMixologist.molotov);
+    polttopullo.fetchOverrides();
+    expect(() => polttopullo.mixCocktails()).toThrow(MolotovError);
   });
 });

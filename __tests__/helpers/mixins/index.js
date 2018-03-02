@@ -1,11 +1,11 @@
-const pluginOne = require('./testSuper/pluginOne');
-const pluginTwo = require('./testSuper/pluginTwo');
-const pluginThree = require('./testSuper/pluginThree');
+const mixinOne = require('./testSuper/mixinOne');
+const mixinTwo = require('./testSuper/mixinTwo');
+const mixinThree = require('./testSuper/mixinThree');
 
 module.exports = {
   testSuper: {
-    pluginOne,
-    pluginTwo,
-    pluginThree,
+    mixinOne,
+    mixinTwo,
+    mixinThree,
   },
 };
