@@ -64,6 +64,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
     // for the molotov.getNameSpace()
 
   }
+
   /**
    * Creates mixed plugins ensuring that modules who are using molotov
    *   implementing modules have their overrides and Cocktail classes
@@ -77,16 +78,13 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
    *   classes.
    */
   resolve(): plugins {
+    // Take config from molotov implementing module
+    // and merge config from overrides.
     this.fetchOverrides();
+    this.validateMolotovConfig();
 
-    if (!this.validateMolotovConfig()) {
-      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
-    }
-    // getGetTypes
-    // then call GetTypes on cocktails
-    // merge down and reset thisType
+    // Now get any cocktails overrides.
     this.mixCocktails();
-    // run pluginmaker.
     return this.molotov.getPlugins();
   }
 };
