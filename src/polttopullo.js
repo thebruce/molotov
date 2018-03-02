@@ -75,7 +75,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
           // are keys of the molotovPlugins object.
           // A plugins value is an array of mixins. So we union those
           // array values to get all mixins.
-          const cocktailConfigMixins: string[] = _.union(_.values(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]));
+          const cocktailConfigMixins: string[] = _.union(_.values(cocktail.getCocktailConfig()[nameSpace][this.getTarget()])); // eslint-disable-line max-len
           const allMixinKeys = _.concat(Object.keys(cocktailMixinClasses), Object.keys(tempMixins));
           if (_.difference(cocktailConfigMixins, allMixinKeys).length > 0) { // eslint-disable-line max-len
             throw new MolotovError(COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS);
@@ -84,10 +84,10 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
           tempMixins = _.merge(tempMixins, cocktailMixinClasses);
           this.molotov.setMixins(tempMixins);
           // Merge in plugin config.
-          const tempPluginsConfig = this.createPartialConfig(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]);
+          const tempPluginsConfig = this.createPartialConfig(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]); // eslint-disable-line max-len
           this.mergeConfig(this.molotov.getMolotovConfig(), tempPluginsConfig);
           // Now make some plugins.
-          this.molotov.setPlugins(pluginMaker(this.molotov.getMolotovConfig()[nameSpace].molotovPlugins, this.molotov.getMixins(), this.molotov.getSupers()));
+          this.molotov.setPlugins(pluginMaker(this.molotov.getMolotovConfig()[nameSpace].molotovPlugins, this.molotov.getMixins(), this.molotov.getSupers())); // eslint-disable-line max-len
         }
       }, this);
     }

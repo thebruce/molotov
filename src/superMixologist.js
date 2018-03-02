@@ -67,7 +67,7 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
           // matching config declarations.
           const cocktailConfigSupers = cocktail.getCocktailConfig()[nameSpace][this.getTarget()];
           // Get all possible keys for supers
-          const allSupersKeys = _.concat(Object.keys(cocktailSupersClasses), Object.keys(tempSupers));
+          const allSupersKeys = _.concat(Object.keys(cocktailSupersClasses), Object.keys(tempSupers)); // eslint-disable-line max-len
           if (_.difference(_.values(cocktailConfigSupers), allSupersKeys).length > 0) { // eslint-disable-line max-len
             throw new MolotovError(COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG);
           }
