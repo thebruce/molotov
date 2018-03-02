@@ -925,6 +925,10 @@ concat-stream@^1.5.2, concat-stream@^1.6.0:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
+condition-noop@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/condition-noop/-/condition-noop-1.0.0.tgz#b895fbb833273e307d503757396c877115d5255c"
+
 config-chain@~1.1.8:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/config-chain/-/config-chain-1.1.11.tgz#aba09747dfbe4c3e70e766a6e41586e1859fc6f2"
