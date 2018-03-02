@@ -1,6 +1,7 @@
 // @flow
 
 import type Cocktail from '../cocktail';
+import type molotov from '../molotov';
 
 export type pluginsList = {
   [superNameSpace: string]: {
@@ -58,6 +59,9 @@ export interface ProviderBase<Y: string> {
   mergeConfig(molotovConfig, overrideConfig): molotovConfig;
   fetchOverrides(): molotovConfig;
   validateMolotovConfig(): void;
+  setMolotov(molotov): void;
+  getMolotov(): molotov;
+
 }
 
 export interface ProviderImplementation<T> {

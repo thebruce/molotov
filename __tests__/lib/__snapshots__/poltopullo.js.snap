@@ -27,3 +27,24 @@ Object {
   },
 }
 `;
+
+exports[`Polttopullo mixCocktails Edge Cases Polttopullo resolve with no cocktail classes no overrides. 1`] = `
+Object {
+  "testSuper": Object {
+    "onlyPluginOne": [Function],
+    "pluginAll": [Function],
+    "pluginOneTwo": [Function],
+  },
+}
+`;
+
+exports[`Polttopullo mixCocktails Edge Cases Super Mixologist resolve cocktail not filled with cocktails 1`] = `
+Object {
+  "testSuper": Object {
+    "onlyPluginOne": [Function],
+    "pluginAll": [Function],
+    "pluginOneThree": [Function],
+    "pluginOneTwo": [Function],
+  },
+}
+`;
