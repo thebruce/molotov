@@ -92,7 +92,7 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
       `${this.getTarget()}`,
       {}
     );
-    return this.mergeConfig(this.getMolotov().getMolotovConfig(), this.createPartialConfig(overrides));
+    return this.mergeConfig(this.getMolotov().getMolotovConfig(), this.createPartialConfig(overrides)); // eslint-disable-line max-len
   }
 
   /**
