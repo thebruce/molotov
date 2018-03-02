@@ -5,7 +5,6 @@ import type molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
 const Cocktail = require('./cocktail');
-const validator = require('./validateConfig');
 const pluginMaker = require('./mixinPluginMaker');
 const _ = require('lodash');
 

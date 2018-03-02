@@ -16,7 +16,6 @@ import type molotov from './molotov';
 const _ = require('lodash');
 const molotovProviderBase = require('./molotovProviderBase');
 const Cocktail = require('./cocktail');
-const validator = require('./validateConfig');
 
 const {
   COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG,
