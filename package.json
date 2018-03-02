@@ -71,8 +71,6 @@
     "cacheDirectory": ".tmp/jest_cache",
     "coverageDirectory": "__coverage__",
     "coverageReporters": [
-      "json",
-      "json-summary",
       "lcov",
       "text",
       "text-summary"
