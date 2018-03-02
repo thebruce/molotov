@@ -6,6 +6,10 @@
     "^\\w.*": {
       "type": "object",
       "description": "Package namespaces, must begin with an alpha.",
+      "required": [
+        "supersNameSpace",
+        "molotovPlugins"
+      ],
       "properties": {
           "supersNameSpace": {
             "type": "object",
