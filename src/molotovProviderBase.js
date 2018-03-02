@@ -5,16 +5,17 @@ import type molotov from './molotov';
 import type {
   molotovConfig,
   overrideConfig,
+  pluginsList,
   ProviderBase,
-  target,
+  supersNameSpace,
 } from './types/molotov';
 
 // User overrides are passed in targeted to a hierarchical namespace.
 const _ = require('lodash');
 
-module.exports = class MolotovProviderBase implements ProviderBase {
+module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T> {
+  target: T
   molotov: molotov
-  target: target
   type: string
   /**
    * Create an instance of the Polttopuloo class. This class
@@ -28,7 +29,7 @@ module.exports = class MolotovProviderBase implements ProviderBase {
    *   The target for this molotov class.
    * @returns {void}
    */
-  constructor(molotovInstance: molotov, type: string, targetType: target): void { // eslint-disable-line max-len
+  constructor(molotovInstance: molotov, type: string, targetType: T): void { // eslint-disable-line max-len
     this.setType(type);
     this.setTarget(targetType);
     this.molotov = molotovInstance;
@@ -62,7 +63,7 @@ module.exports = class MolotovProviderBase implements ProviderBase {
    *   A target namespace.
    * @returns {void}
    */
-  setTarget(targetType: target): void {
+  setTarget(targetType: T): void {
     this.target = targetType;
   }
 
@@ -73,7 +74,7 @@ module.exports = class MolotovProviderBase implements ProviderBase {
    * @returns {target}
    *   The nameSpace target.
    */
-  getTarget(): target {
+  getTarget(): T {
     return this.target;
   }
 
@@ -84,17 +85,13 @@ module.exports = class MolotovProviderBase implements ProviderBase {
    */
   fetchOverrides(): molotovConfig {
     // get config for target
-    const config: molotovConfig = _.get(
-      this.molotov.getMolotovConfig()[this.molotov.getNameSpace()],
-      this.getTarget()
-    );
     // get any overridden config from overrides.
-    const overrides: overrideConfig = _.get(
+    const overrides: ((pluginsList | supersNameSpace)) = _.get(
       this.molotov.getConfigOverrides()[this.molotov.getNameSpace()],
-      this.getTarget(),
+      `${this.getTarget()}`,
       {}
     );
-    return this.mergeConfig(config, overrides);
+    return this.mergeConfig(this.molotov.getMolotovConfig(), this.createPartialConfig(overrides));
   }
 
   /**
@@ -116,6 +113,18 @@ module.exports = class MolotovProviderBase implements ProviderBase {
   }
 
   /**
+   * Creates a partial config.
+   *
+   * @param {(pluginsList | supersNameSpace)} configPart
+   *   A config part.
+   * @returns {overrideConfig}
+   *   Returns a partial config object.
+   */
+  createPartialConfig(configPart: (pluginsList | supersNameSpace)): overrideConfig {
+    return _.set({}, [this.molotov.getNameSpace(), this.getTarget()], configPart);
+  }
+
+  /**
    * validateMolotovConfig()
    *   Validates that our molotovConfig is legit.
    *
@@ -129,7 +138,7 @@ module.exports = class MolotovProviderBase implements ProviderBase {
     // Our merged config needs to atleast have supers.
     // Out merged config needs to have this class' target.
     if ((
-      _.has(mergedConfig, [this.molotov.getNameSpace(), 'superNameSpacePaths']) &&
+      _.has(mergedConfig, [this.molotov.getNameSpace(), 'supersNameSpace']) &&
       _.has(mergedConfig, [this.molotov.getNameSpace(), this.getTarget()])
     )) {
       validator = true;

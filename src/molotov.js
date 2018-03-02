@@ -147,7 +147,7 @@ const molotov = class Molotov {
    *    and plugin mixin composition.
    */
   getMolotovConfig(): molotovConfig {
-    return this.molotovConfig;
+    return _.cloneDeep(this.molotovConfig);
   }
 
   /**

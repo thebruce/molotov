@@ -1,6 +1,6 @@
 // @flow
 
-import type { plugins, ProviderBase, ProviderImplementation } from './types/molotov'; // eslint-disable-line max-len
+import type { plugins, ProviderBase, ProviderImplementation, targetMp } from './types/molotov'; // eslint-disable-line max-len
 import type molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
@@ -25,7 +25,7 @@ const pluginMaker = require('./mixinPluginMaker');
  * config space rather than other modules. If additional plugin supplying
  * modules are to be included that will need to happen in the app config.
  */
-module.exports = class Polttopullo extends molotovProviderBase implements ProviderBase, ProviderImplementation<plugins> { // eslint-disable-line max-len
+module.exports = class Polttopullo extends molotovProviderBase<targetMp> implements ProviderBase<targetMp>, ProviderImplementation<plugins> { // eslint-disable-line max-len
   /**
    * Create an instance of the Polttopuloo class. This class
    *  is used for mixing plugins.
@@ -39,43 +39,6 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
     super(molotovInstance, type, target);
   }
 
-  /**
-   * Validate our molotov config for plugins.
-   *
-   * @returns {boolean}
-   *   True if our molotovConfig is valid.
-   */
-  validateMolotovConfig(): boolean {
-    const validator = super.validateMolotovConfig();
-    // Now check to see if the plugins we have contain
-    // only the mixins we have.
-    return validator;
-  }
-  /**
-   * Creates mixed plugins ensuring that modules who are using molotov
-   *   implementing modules have their overrides and Cocktail classes
-   *   factored into the plugin
-   *   mixing.
-   *
-   * @returns {plugins}
-   *   Returns mixed plugins taking into account molotov implementing modules'
-   *   supers and plugins and ensuring that users of those implementing modules
-   *   can provide overrides and their own plugs and supers through Cocktail
-   *   classes.
-   */
-  resolve(): plugins {
-    this.mergeConfig();
-
-    if (!this.validateMolotovConfig()) {
-      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
-    }
-    // getGetTypes
-    // then call GetTypes on cocktails
-    // merge down and reset thisType
-    this.mixCocktails();
-    // run pluginmaker.
-    return this.molotov.getPlugins();
-  }
   /**
    * Returns cocktails for this class' target.
    *
@@ -100,5 +63,30 @@ module.exports = class Polttopullo extends molotovProviderBase implements Provid
     // By checking to see if we have any superNameSpacePaths
     // for the molotov.getNameSpace()
 
+  }
+  /**
+   * Creates mixed plugins ensuring that modules who are using molotov
+   *   implementing modules have their overrides and Cocktail classes
+   *   factored into the plugin
+   *   mixing.
+   *
+   * @returns {plugins}
+   *   Returns mixed plugins taking into account molotov implementing modules'
+   *   supers and plugins and ensuring that users of those implementing modules
+   *   can provide overrides and their own plugs and supers through Cocktail
+   *   classes.
+   */
+  resolve(): plugins {
+    this.fetchOverrides();
+
+    if (!this.validateMolotovConfig()) {
+      throw new Error(`Merging molotovConfig and provided overrides has resulted in an malformed configuration for molotov implementing module ${this.molotov.getNameSpace()}`);
+    }
+    // getGetTypes
+    // then call GetTypes on cocktails
+    // merge down and reset thisType
+    this.mixCocktails();
+    // run pluginmaker.
+    return this.molotov.getPlugins();
   }
 };

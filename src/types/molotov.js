@@ -8,16 +8,20 @@ export type pluginsList = {
   }
 }
 
+export type supersNameSpace = {
+  [superName: string]: string,
+}
+
 export type molotovConfig = {
   [namespace: string]: {
-    supersNameSpace: string[],
+    supersNameSpace: supersNameSpace,
     molotovPlugins: pluginsList
   }
 }
 
 export type overrideConfig = {
   [namespace: string]: {
-    supersNameSpace?: string[],
+    supersNameSpace?: supersNameSpace,
     molotovPlugins?: pluginsList
   }
 };
@@ -38,18 +42,21 @@ export type plugins = {
   }
 }
 
-export type target = ("molotovPlugins" | "supersNameSpace");
+export type targetMp = "molotovPlugins";
+
+export type targetSns = "supersNameSpace";
 
 export type CocktailArray = Array<?Cocktail>;
 
-export interface ProviderBase {
-  target: target;
+export interface ProviderBase<Y: string> {
   type: string;
+  target: Y;
   setType(string): void;
   getType(): string;
-  setTarget(target): void;
-  getTarget(): target;
-  mergeConfig(): molotovConfig;
+  setTarget(Y): void;
+  getTarget(): Y;
+  mergeConfig(molotovConfig, overrideConfig): molotovConfig;
+  fetchOverrides(): molotovConfig;
   validateMolotovConfig(string): boolean;
 }
 
