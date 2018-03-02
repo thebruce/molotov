@@ -92,6 +92,10 @@ describe('Molotov Constructor Errors', () => {
     expect.assertions(1);
     expect(() => new Molotov('string', 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass])).toThrowError(MolotovError);
   });
+  test('Config must match the schema', () => {
+    expect.assertions(1);
+    expect(() => new Molotov({hi: {sns: {} }}, 'testMolotovImplementer', supers, mixins, configOverrides, [cocktailClass])).toThrowErrorMatchingSnapshot();
+  });
   test('Supers must be an object', () => {
     expect.assertions(1);
     expect(() => new Molotov(molotovConfig, 'testMolotovImplementer', 'supers', mixins, configOverrides, [cocktailClass])).toThrowError(MolotovError);

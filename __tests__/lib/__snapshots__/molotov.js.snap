@@ -109,6 +109,11 @@ Array [
 ]
 `;
 
+exports[`Molotov Constructor Errors Config must match the schema 1`] = `
+"Molotov configuration failed validation against the molotov schema. Please ensure your config conforms to the molotovConfig schema.
+['hi'] should have required property '.molotovPlugins'"
+`;
+
 exports[`Molotov advanced Molotov Mix Supers 1`] = `
 SuperMixologist {
   "molotov": Molotov {
