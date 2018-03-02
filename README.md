@@ -4,7 +4,7 @@
 
 ## Install
 
-`npm install --save molotov`
+`npm install --save molotov` or `yarn add molotov`
 
 ## Description
 
