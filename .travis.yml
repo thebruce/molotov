@@ -26,8 +26,6 @@ jobs:
     -
       stage: test
       node_js: 'lts/carbon'
-      before_script:
-        - yarn installPeers
       script:
         - yarn test
         - yarn coveralls
