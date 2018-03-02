@@ -89,8 +89,9 @@ describe('MolotovProviderBase', () => {
 
     test('handles no config', () => {
       expect.assertions(1);
-      molotov.getMolotovConfig.mockReturnValue({});
+      molotov.getMolotovConfig.mockImplementation(() => {});
       const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
+      mpb.molotovConfig = {};
       expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
 
@@ -98,7 +99,7 @@ describe('MolotovProviderBase', () => {
       expect.assertions(1);
       const junk = {};
       junk.constructor = () => {};
-      molotov.getMolotovConfig.mockReturnValue(junk);
+      molotov.getMolotovConfig.mockImplementation(() => junk);
       const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
       expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
@@ -106,7 +107,7 @@ describe('MolotovProviderBase', () => {
     test('handles missing superNameSpacePaths', () => {
       expect.assertions(1);
       molotov.getNameSpace.mockReturnValue('test');
-      molotov.getMolotovConfig.mockReturnValue({ test: {} });
+      molotov.getMolotovConfig.mockImplementation(() => { test: {} });
       const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
       expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
@@ -114,9 +115,9 @@ describe('MolotovProviderBase', () => {
     test('handles missing target', () => {
       expect.assertions(1);
       molotov.getNameSpace.mockReturnValue('test');
-      molotov.getMolotovConfig.mockReturnValue({ test: {
+      molotov.getMolotovConfig.mockImplementation(() => {  return { test: {
         supersNameSpace: true,
-      } });
+      } }});
       const mpb = new MolotovProviderBase(molotov, 'Supers', 'supersNameSpace');
       expect(() => mpb.validateMolotovConfig()).toThrowError();
     });
