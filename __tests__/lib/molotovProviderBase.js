@@ -2,6 +2,7 @@ const MolotovProviderBase = require('../../lib/molotovProviderBase')
 
 describe('MolotovProviderBase', () => {
   test('can construct', () => {
+    expect.assertions(3);
     const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
     expect(mpb.target).toBe('supersNameSpace');
     expect(mpb.type).toBe('Supers');
@@ -9,17 +10,20 @@ describe('MolotovProviderBase', () => {
   });
 
   test('setType()', () => {
+    expect.assertions(1);
     const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
     mpb.setType('Plugins');
     expect(mpb.type).toBe('Plugins');
   });
 
   test('getType()', () => {
+    expect.assertions(1);
     const mpb = new MolotovProviderBase('molotov', 'Supers', 'supersNameSpace');
     expect(mpb.getType()).toBe('Supers');
   });
 
   test('fetchOverrides()', () => {
+    expect.assertions(5);
     const molotov = {
       getMolotovConfig: jest.fn().mockReturnValue({
         test: {
