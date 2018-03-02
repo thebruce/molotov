@@ -109,6 +109,7 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
     // Bring in any dynamic or user provided overrides.
     const merged = _.merge({}, config, overrides);
     this.molotov.setMolotovConfig(merged);
+    this.validateMolotovConfig();
 
     return merged;
   }

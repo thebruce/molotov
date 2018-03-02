@@ -49,11 +49,11 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
   }
 
   /**
-   * Returns cocktails for this class' target.
+   * Integrates any cocktail provided classes supers into the molotov supers.
    *
    * @returns {void}
    */
-  mixCocktails() {
+  mixCocktails(): void {
     const cocktailsArray = this.molotov.getCocktails();
     const nameSpace = this.molotov.getNameSpace();
     const tempSupers = this.molotov.getSupers();

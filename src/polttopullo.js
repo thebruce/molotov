@@ -1,10 +1,22 @@
 // @flow
 
-import type { plugins, ProviderBase, ProviderImplementation, targetMp } from './types/molotov'; // eslint-disable-line max-len
+import type { plugins, mixins, ProviderBase, ProviderImplementation, targetMp } from './types/molotov'; // eslint-disable-line max-len
 import type molotov from './molotov';
 
 const molotovProviderBase = require('./molotovProviderBase');
+const Cocktail = require('./cocktail');
+const validator = require('./validateConfig');
 const pluginMaker = require('./mixinPluginMaker');
+const _ = require('lodash');
+
+const {
+  COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS,
+} = require('../_errors');
+
+const {
+  MolotovError,
+} = require('./molotovError');
+
 
 /**
  * Molotov class for modules implementing molotov mixin loading.
@@ -40,29 +52,46 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
   }
 
   /**
-   * Returns cocktails for this class' target.
+   * Integrates and cocktail provided plugins into the molotov plugins.
    *
-   * @template T
-   * @param {T} targetItem
-   *   The target classes item.
-   * @returns {T}
+   * @returns {void}
    *   The target classes item.
    */
   mixCocktails(): void {
-    // Get Plugins
-    // Get Plugins from cocktail
-    // override and make plugins.
-    // pass write to molotov.
-    // Pass this along to super.mixCocktails.
-    // Do we have any plugin definitions to add?
-    // If so all the mixins used in those definitions should
-    // exist in the summation of all mixins.
+    const cocktailsArray = this.molotov.getCocktails();
+    const nameSpace = this.molotov.getNameSpace();
+    let tempMixins = this.molotov.getMixins();
+    // Do we have any cocktails?
+    if (cocktailsArray.length) {
+      // We have cocktail classes. Build up our mixins
+      // by calling this for each.
+      cocktailsArray.forEach((cocktail) => {
+        if (cocktail instanceof Cocktail && cocktail.getCocktailMixins()) {
+          const cocktailMixinClasses: mixins = cocktail.getCocktailMixins();
+          // We have mixins in our cocktail class. Let's make sure
+          // that we only reference mixins in our cocktail plugin definiitons
+          // that we will have available to us.
 
-    // Do we have supers.
-    // Add any supers to config.
-    // By checking to see if we have any superNameSpacePaths
-    // for the molotov.getNameSpace()
-
+          // Cocktail mixins are used to make plugins. In config plugins
+          // are keys of the molotovPlugins object.
+          // A plugins value is an array of mixins. So we union those
+          // array values to get all mixins.
+          const cocktailConfigMixins: string[] = _.union(_.values(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]));
+          const allMixinKeys = _.concat(Object.keys(cocktailMixinClasses), Object.keys(tempMixins));
+          if (_.difference(cocktailConfigMixins, allMixinKeys).length > 0) { // eslint-disable-line max-len
+            throw new MolotovError(COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS);
+          }
+          // now merge the all of the mixins.
+          tempMixins = _.merge(tempMixins, cocktailMixinClasses);
+          this.molotov.setMixins(tempMixins);
+          // Merge in plugin config.
+          const tempPluginsConfig = this.createPartialConfig(cocktail.getCocktailConfig()[nameSpace][this.getTarget()]);
+          this.mergeConfig(this.molotov.getMolotovConfig(), tempPluginsConfig);
+          // Now make some plugins.
+          this.molotov.setPlugins(pluginMaker(this.molotov.getMolotovConfig()[nameSpace].molotovPlugins, this.molotov.getMixins(), this.molotov.getSupers()));
+        }
+      }, this);
+    }
   }
 
   /**
