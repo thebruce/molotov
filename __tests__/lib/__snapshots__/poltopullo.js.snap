@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PolttoPullo mix cocktails Polttopullo Constructor tests 1`] = `
+Object {
+  "testSuper": Object {
+    "mixinFour": [Function],
+    "mixinOne": [Function],
+    "mixinThree": [Function],
+    "mixinTwo": [Function],
+  },
+  "testSuperTwo": Object {
+    "mixinSeven": [Function],
+  },
+}
+`;
+
+exports[`PolttoPullo resolve Polttopullo Constructor tests 1`] = `
+Object {
+  "testSuper": Object {
+    "onlyPluginOne": [Function],
+    "pluginAll": [Function],
+    "pluginOneThree": [Function],
+    "pluginOneTwo": [Function],
+  },
+  "testSuperTwo": Object {
+    "pluginSeven": [Function],
+  },
+}
+`;
+
+exports[`Polttopullo mixCocktails Edge Cases Polttopullo resolve with no cocktail classes no overrides. 1`] = `
+Object {
+  "testSuper": Object {
+    "onlyPluginOne": [Function],
+    "pluginAll": [Function],
+    "pluginOneTwo": [Function],
+  },
+}
+`;
+
+exports[`Polttopullo mixCocktails Edge Cases Super Mixologist resolve cocktail not filled with cocktails 1`] = `
+Object {
+  "testSuper": Object {
+    "onlyPluginOne": [Function],
+    "pluginAll": [Function],
+    "pluginOneThree": [Function],
+    "pluginOneTwo": [Function],
+  },
+}
+`;
