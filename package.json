@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "ajv": "^6.2.0",
-    "fs-extra": "^4.0.1",
-    "lodash": "^5.0.0"
+    "fs-extra": "^5.0.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "@commitlint/config-angular": "^6.1.2",
