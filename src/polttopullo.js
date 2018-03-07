@@ -84,7 +84,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp> impleme
           const allMixinKeys = _.uniq(_.concat(cocktailMixinsObjectKeys, molotovMixinsObjectKeys));
 
           if (_.difference(cocktailConfigMixins, allMixinKeys).length > 0) { // eslint-disable-line max-len
-            throw new MolotovError(COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS, `The plugins ${_.difference(cocktailConfigMixins, allMixinKeys).join(',')} were indicated but not included.`); // eslint-ignore-line max-len
+            throw new MolotovError(COCKTAIL_CONFIG_USES_UNDEFINED_MIXINS, `The plugins ${_.difference(cocktailConfigMixins, allMixinKeys).join(',')} were indicated but not included.`); // eslint-disable-line max-len
           }
           // now merge the all of the mixins.
           tempMixins = _.merge(tempMixins, cocktailMixinClasses);
