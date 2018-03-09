@@ -66,7 +66,7 @@
   },
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "jest": {
     "cacheDirectory": ".tmp/jest_cache",
