@@ -40,6 +40,12 @@ Using Molotov Mixin Manager will:
 
 ## Usage
 
+After setting up molotov (steps provided below) you can access all of your mixin layers (groups of mixins meant to work together as an application) by the parameterizing super class they relate to with this call:
+
+```js
+molotov.getMolotov().resolve();  // Returns mixed in mixins with their supers keyed by their plugin name organized by supers class name.
+```
+
 ### Molotov: How to to provide "Real Mixins" in your package: (4 steps)
 
 1) Create your supers classes and mixins.
