@@ -18,8 +18,8 @@ const {
 
 
 /**
- * Molotov class for modules implementing molotov mixin loading.
- * Attempts to provide the module with its default plugins
+ * Poltopullo attempts to provide plugins as defined in a molotov
+ * implementer's molotov config and passed in molotov plugin object.
  * and incorporate any overrides from passed in configuration.
  * Modules will extend this class and provide setConfig values,
  * but may also provide declared specific requires
