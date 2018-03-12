@@ -11,4 +11,3 @@ __coverage__
 yarn.lock
 src
 flow-typed
-lib/types
