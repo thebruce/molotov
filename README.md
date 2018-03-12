@@ -19,7 +19,7 @@ In Node.js that looks like:
 Mixin = (superclass) => class extends superclass { // your mixin code };
 ```
 
-This is great and can easily be implemented anywhere you need mixins. Mr Fagnani even wrote a package to help you quickly and relably create and introspect mixins (see [mixwith](https://github.com/justinfagnani/mixwith.js)).
+This is great and can easily be implemented anywhere you need mixins. Mr Fagnani even wrote a package to help you quickly and reliably create and introspect mixins (see [mixwith](https://github.com/justinfagnani/mixwith.js)).
 
 Even having both simple use and good tooling covered I found that implementing the "Real Mixin" pattern in several projects left me writing very similar code in an effort to bring organization and understanding to the sometimes confusing world of compositional capabilities.
 
