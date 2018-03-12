@@ -205,7 +205,7 @@ const molotov = class Molotov {
   /**
    * Mixes supers with the superMixologist class
    * ensuring that we get any overridden supers
-   * from passed cocktail classes. And unifying
+   * from passed cocktail classes. Also, this unifies
    * their interface. After this our supers will be
    * ready to combine with plugins for *REAL* mixins.
    *
