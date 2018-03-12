@@ -7,7 +7,7 @@
 class MolotovError extends Error {
   code: string
   /**
-   * Creates an instance of ParkQbError.
+   * Creates an instance of MolotovError.
    * @param {string} code
    *   A code string.
    * @param {any} args

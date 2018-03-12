@@ -1,4 +1,4 @@
-# Molotov: (Mix/Plug)-in loader for explosive composeability
+# Molotov: A "Real Mixin" Manager
 
 [![Build Status](https://travis-ci.org/thebruce/molotov.svg?branch=master)](https://travis-ci.org/thebruce/molotov) [![Coverage Status](https://coveralls.io/repos/github/thebruce/molotov/badge.svg)](https://coveralls.io/github/thebruce/molotov) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/thebruce/molotov.svg)](https://greenkeeper.io/)
 
@@ -8,7 +8,29 @@
 
 ## Description
 
-Molotov provides a mixin layer framework in node.js for packages to define and provide extendable supers of composeable mixin capabilities as described in ["Real Mixins"](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) and ["Implementing layered designs with mixin layers"](https://yanniss.github.io/templates.pdf) . Molotov also provides the ability for modules that use any package that implements molotov's supers and mixins interface to override and expand those molotov implementer packages' supers and mixins with their own custom mixins and supers.
+Molotov is a mixin manager that provides a uniform approach to using ["Real Mixins"](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) for class composition. It also encourages thoughtful mixin design and management by enforcing the idea of mixin layers. For a description of mixin layers see: ["Implementing layered designs with mixin layers"](https://yanniss.github.io/templates.pdf). 
+
+## Why use a mixin manager?
+
+The process of using "Real Mixins" in node.js as describe in Justin Fagnani's [blog post](http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/) relies on "subclass factories, parameterized by the superclass" which is in fact the exact same language used in the [white paper](https://yanniss.github.io/templates.pdf) on mixin layers above. 
+
+In Node.js that looks like:
+```js
+Mixin = (superclass) => class extends superclass { // your mixin code };
+```
+
+This is great and can easily be implemented anywhere you need mixins. Mr Fagnani even wrote a package to help you quickly and reliably create and introspect mixins (see [mixwith](https://github.com/justinfagnani/mixwith.js)).
+
+Even having both simple use and good tooling covered I found that implementing the "Real Mixin" pattern in several projects left me writing very similar code in an effort to bring organization and understanding to the sometimes confusing world of compositional capabilities.
+
+From that experience molotov was born - a way to organize use of Real Mixins for packages.
+
+Using Molotov Mixin Manager will:
+
+1) Provide an organized way to declare a mixin layer, or group of mixins meant to work together under a encompassing super class as an application.
+2) Reduce repetitive code needed to setup and create mixins
+3) Provide a way for users to override and supplement your mixins and supers with custom functionality or dynamic composition of mixin layers.
+4) Encourage operation control by organizing mixins within parameterizing super and base class implementers.
 
 ## Two ways to use Molotov
 
@@ -17,6 +39,12 @@ Molotov provides a mixin layer framework in node.js for packages to define and p
 2) Override or extend a package that uses Molotov to provide "Real Mixins" with your own custom plugin definitions, mixins and or supers via Molotov's Cocktail class.
 
 ## Usage
+
+After setting up molotov (steps provided below) you can access all of your mixin layers (groups of mixins meant to work together as an application) by the parameterizing super class they relate to with this call:
+
+```js
+molotov.getMolotov().resolve();  // Returns mixed in mixins with their supers keyed by their plugin name organized by supers class name.
+```
 
 ### Molotov: How to to provide "Real Mixins" in your package: (4 steps)
 
