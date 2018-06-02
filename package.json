@@ -12,7 +12,7 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "@commitlint/config-angular": "^6.1.2",
+    "@commitlint/config-angular": "^7.0.0",
     "babel-eslint": "^8.2.2",
     "commitlint": "^6.1.2",
     "condition-noop": "^1.0.0",
