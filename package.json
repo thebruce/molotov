@@ -29,7 +29,7 @@
     "jest": "^22.4.2",
     "jest-environment-node-debug": "^2.0.0",
     "semantic-release": "^6.3.2",
-    "semantic-release-conventional-commits": "^1.0.2"
+    "semantic-release-conventional-commits": "^2.0.1"
   },
   "scripts": {
     "commitmsg": "commitlint -e $GIT_PARAMS",
