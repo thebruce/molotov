@@ -17,11 +17,11 @@
     "commitlint": "^6.1.2",
     "condition-noop": "^1.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^4.18.1",
+    "eslint": "^5.0.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-flowtype": "^2.46.1",
     "eslint-plugin-import": "^2.9.0",
-    "flow-bin": "^0.67.1",
+    "flow-bin": "^0.75.0",
     "flow-copy-source": "^2.0.1",
     "flow-remove-types": "^1.2.3",
     "flow-typed": "^2.3.0",
@@ -66,7 +66,7 @@
   },
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "jest": {
     "cacheDirectory": ".tmp/jest_cache",
