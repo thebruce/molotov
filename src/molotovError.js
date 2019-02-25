@@ -5,7 +5,7 @@
  *   should align with molotov errors defined in ../_errors.js
  */
 class MolotovError extends Error {
-  code: string
+  code: string;
   /**
    * Creates an instance of MolotovError.
    * @param {string} code

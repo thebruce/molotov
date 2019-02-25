@@ -14,10 +14,11 @@ import type {
 const _ = require('lodash');
 const validator = require('./validateConfig');
 
-module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T> {
-  target: T
-  molotov: molotov
-  type: string
+module.exports = class MolotovProviderBase<T: string>
+  implements ProviderBase<T> {
+  target: T;
+  molotov: molotov;
+  type: string;
   /**
    * Create an instance of the Polttopuloo class. This class
    *  is used for mixing plugins.
@@ -30,7 +31,8 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
    *   The target for this molotov class.
    * @returns {void}
    */
-  constructor(molotovInstance: molotov, type: string, targetType: T): void { // eslint-disable-line max-len
+  constructor(molotovInstance: molotov, type: string, targetType: T): void {
+    // eslint-disable-line max-len
     this.setType(type);
     this.setTarget(targetType);
     this.setMolotov(molotovInstance);
@@ -87,12 +89,15 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
   fetchOverrides(): molotovConfig {
     // get config for target
     // get any overridden config from overrides.
-    const overrides: ((pluginsList | supersNameSpace)) = _.get(
+    const overrides: pluginsList | supersNameSpace = _.get(
       this.getMolotov().getConfigOverrides()[this.getMolotov().getNameSpace()],
       `${this.getTarget()}`,
       {}
     );
-    return this.mergeConfig(this.getMolotov().getMolotovConfig(), this.createPartialConfig(overrides)); // eslint-disable-line max-len
+    return this.mergeConfig(
+      this.getMolotov().getMolotovConfig(),
+      this.createPartialConfig(overrides)
+    ); // eslint-disable-line max-len
   }
 
   /**
@@ -122,8 +127,14 @@ module.exports = class MolotovProviderBase<T: string> implements ProviderBase<T>
    * @returns {overrideConfig}
    *   Returns a partial config object.
    */
-  createPartialConfig(configPart: (pluginsList | supersNameSpace)): overrideConfig {
-    return _.set({}, [this.molotov.getNameSpace(), this.getTarget()], configPart);
+  createPartialConfig(
+    configPart: pluginsList | supersNameSpace
+  ): overrideConfig {
+    return _.set(
+      {},
+      [this.molotov.getNameSpace(), this.getTarget()],
+      configPart
+    );
   }
 
   /**

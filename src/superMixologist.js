@@ -1,6 +1,11 @@
 // @flow
 
-import type { supers, targetSns, ProviderBase, ProviderImplementation } from './types/molotov';
+import type {
+  supers,
+  targetSns,
+  ProviderBase,
+  ProviderImplementation,
+} from './types/molotov';
 import type molotov from './molotov';
 
 /**
@@ -21,17 +26,17 @@ const {
   COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG,
 } = require('../_errors');
 
-const {
-  MolotovError,
-} = require('./molotovError');
+const { MolotovError } = require('./molotovError');
 
 // Users instantiate superMixologist.
 // superMixologist = new SuperMixologist(pathToProviderModule);
 // To use the new instantiated super to return this providers supers we:
 // const providerSupers = superMixologist.getSupers();
 
-module.exports = class SuperMixologist extends molotovProviderBase<targetSns> implements ProviderBase<targetSns>, ProviderImplementation<supers> { // eslint-disable-line max-len
-  molotov: molotov
+module.exports = class SuperMixologist extends molotovProviderBase<targetSns>
+  implements ProviderBase<targetSns>, ProviderImplementation<supers> {
+  // eslint-disable-line max-len
+  molotov: molotov;
   /**
    * Create an instance of the superMixologist class. This class is for
    *   mixing supers.
@@ -41,7 +46,8 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
    *
    * @returns {void}
    */
-  constructor(molotovInstance: molotov): void { // eslint-disable-line max-len
+  constructor(molotovInstance: molotov): void {
+    // eslint-disable-line max-len
     const type = 'Supers';
     const targetType: targetSns = 'supersNameSpace';
     super(molotovInstance, type, targetType);
@@ -60,31 +66,52 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns> im
     if (cocktailsArray.length) {
       // We have cocktail classes. Build up our supers
       // by calling this for each.
-      cocktailsArray.forEach((cocktail) => {
+      cocktailsArray.forEach(cocktail => {
         if (cocktail instanceof Cocktail && cocktail.getCocktailSupers()) {
           const cocktailSupersClasses: supers = cocktail.getCocktailSupers();
           // We have supers in our cocktail class. Ensure we have
           // matching config declarations.
-          const cocktailConfigSupers = cocktail.getCocktailConfig()[nameSpace][this.getTarget()];
+          const cocktailConfigSupers = cocktail.getCocktailConfig()[nameSpace][
+            this.getTarget()
+          ];
           // Get all possible keys for supers
-          const allSupersKeys = _.concat(Object.keys(cocktailSupersClasses), Object.keys(tempSupers)); // eslint-disable-line max-len
-          if (_.difference(_.values(cocktailConfigSupers), allSupersKeys).length > 0) { // eslint-disable-line max-len
-            throw new MolotovError(COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG);
+          const allSupersKeys = _.concat(
+            Object.keys(cocktailSupersClasses),
+            Object.keys(tempSupers)
+          ); // eslint-disable-line max-len
+          if (
+            _.difference(_.values(cocktailConfigSupers), allSupersKeys).length >
+            0
+          ) {
+            // eslint-disable-line max-len
+            throw new MolotovError(
+              COCKTAIL_SUPERS_NOT_DEFINED_IN_COCKTAIL_CONFIG
+            );
           }
           // now merge just the supers config.
-          const tempSupersConfig = this.createPartialConfig(cocktailConfigSupers);
+          const tempSupersConfig = this.createPartialConfig(
+            cocktailConfigSupers
+          );
 
           this.mergeConfig(this.molotov.getMolotovConfig(), tempSupersConfig);
           // Now set the supers overrides in accordance with
           // this newly merged config.
           // $FlowFixMe
-          _.forEach(Object.keys(cocktailConfigSupers), (value) => {
-            // Attempt to get any overrides or new classes from cocktailSupers.
-            // Otherwise use existing.
-            const tempClass = _.get(cocktailSupersClasses, cocktailConfigSupers[value], tempSupers[value]); // eslint-disable-line max-len
-            // Now set the key to tempClass.
-            _.set(tempSupers, `${value}`, tempClass);
-          }, this);
+          _.forEach(
+            Object.keys(cocktailConfigSupers),
+            value => {
+              // Attempt to get any overrides or new classes from cocktailSupers.
+              // Otherwise use existing.
+              const tempClass = _.get(
+                cocktailSupersClasses,
+                cocktailConfigSupers[value],
+                tempSupers[value]
+              ); // eslint-disable-line max-len
+              // Now set the key to tempClass.
+              _.set(tempSupers, `${value}`, tempClass);
+            },
+            this
+          );
         }
       });
 
