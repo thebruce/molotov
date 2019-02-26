@@ -78,8 +78,5 @@
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
     "node": ">=8"
-  },
-  "release": {
-    "verifyConditions": "condition-noop"
   }
 }
