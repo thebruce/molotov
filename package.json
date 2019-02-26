@@ -14,6 +14,10 @@
   "devDependencies": {
     "@babel/core": "^7.3.4",
     "@commitlint/config-angular": "^6.1.2",
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/github": "^5.2.10",
+    "@semantic-release/npm": "^5.1.4",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "commitlint": "^6.1.2",
@@ -35,8 +39,7 @@
     "jest": "^23.6.0",
     "jest-environment-node-debug": "^2.0.0",
     "prettier": "^1.16.4",
-    "semantic-release": "^6.3.2",
-    "semantic-release-conventional-commits": "^1.0.2"
+    "semantic-release": "^15.13.3"
   },
   "scripts": {
     "commitmsg": "commitlint -e $GIT_PARAMS",
@@ -76,7 +79,6 @@
   "engines": {
     "node": ">=8"
   },
-
   "release": {
     "verifyConditions": "condition-noop"
   }
