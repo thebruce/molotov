@@ -1,17 +1,10 @@
 // @flow
 
-import type {
-  pluginsList,
-  mixins,
-  plugins,
-  supers,
-} from './types/molotov';
+import type { pluginsList, mixins, plugins, supers } from './types/molotov';
 
 const _ = require('lodash');
 
-const {
-  MolotovError,
-} = require('./molotovError');
+const { MolotovError } = require('./molotovError');
 
 const {
   MOLOTOV_PLUGIN_MAKER_NO_SUPER_WITH_THIS_NAME,
@@ -45,26 +38,39 @@ const {
  *   Returns an object keyed by superNameSpaces and then by pluginName
  *   with mixin class values.
  */
-module.exports = function pluginMaker(pluginsDefinitions: pluginsList, pMMixins: mixins, pMSupers: supers): plugins { // eslint-disable-line max-len
+module.exports = function pluginMaker(
+  pluginsDefinitions: pluginsList,
+  pMMixins: mixins,
+  pMSupers: supers
+): plugins {
+  // eslint-disable-line max-len
   const resolvedPlugins = {};
 
   // Plugin directories are structured in folders named
   // after the super namespaces.
-  Object.keys(pluginsDefinitions).forEach((directoryKey) => {
+  Object.keys(pluginsDefinitions).forEach(directoryKey => {
     // If a plugin definition asks for a super we don't have.
     // This is a problem.
     if (!_.has(pMSupers, directoryKey)) {
       throw new MolotovError(MOLOTOV_PLUGIN_MAKER_NO_SUPER_WITH_THIS_NAME);
     }
     // Each key below the superNameSpace directory key will be a plugin name
-    Object.keys(pluginsDefinitions[directoryKey]).forEach((pluginKey) => {
+    Object.keys(pluginsDefinitions[directoryKey]).forEach(pluginKey => {
       // Check to see that we have these mixins in our mixins object.
       // If we have different mixins indicated than the ones we have.
       // This is a problem.
-      if (_.intersection(Object.keys(pMMixins[directoryKey]), pluginsDefinitions[directoryKey][pluginKey]).length <= 0) { // eslint-disable-line max-len
+      if (
+        _.intersection(
+          Object.keys(pMMixins[directoryKey]),
+          pluginsDefinitions[directoryKey][pluginKey]
+        ).length <= 0
+      ) {
+        // eslint-disable-line max-len
         throw new MolotovError(MOLOTOV_PLUGIN_MAKER_PLUGIN_CANT_FIND_MIXIN);
       }
-      const tmpMixinArray = _.reverse(_.cloneDeep(pluginsDefinitions[directoryKey][pluginKey]));
+      const tmpMixinArray = _.reverse(
+        _.cloneDeep(pluginsDefinitions[directoryKey][pluginKey])
+      );
       const superClass = pMSupers[directoryKey];
 
       // Mixins follow a pattern like this: Mixin2(Mixin3(superclass));
@@ -72,11 +78,7 @@ module.exports = function pluginMaker(pluginsDefinitions: pluginsList, pMMixins:
         (mixClass, mixin) => pMMixins[directoryKey][mixin](mixClass),
         superClass
       );
-      _.set(
-        resolvedPlugins,
-        `${directoryKey}.${pluginKey}`,
-        mixinShaker
-      );
+      _.set(resolvedPlugins, `${directoryKey}.${pluginKey}`, mixinShaker);
     });
   });
   return resolvedPlugins;

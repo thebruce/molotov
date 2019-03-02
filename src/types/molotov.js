@@ -5,47 +5,47 @@ import type molotov from '../molotov';
 
 export type pluginsList = {
   [superNameSpace: string]: {
-    [mixinArrayName: string]: string[]
-  }
-}
+    [mixinArrayName: string]: string[],
+  },
+};
 
 export type supersNameSpace = {
   [superName: string]: string,
-}
+};
 
 export type molotovConfig = {
   [namespace: string]: {
     supersNameSpace: supersNameSpace,
-    molotovPlugins: pluginsList
-  }
-}
+    molotovPlugins: pluginsList,
+  },
+};
 
 export type overrideConfig = {
   [namespace: string]: {
     supersNameSpace?: supersNameSpace,
-    molotovPlugins?: pluginsList
-  }
+    molotovPlugins?: pluginsList,
+  },
 };
 
 export type supers = {
-  [namespace: string]: Class<*>
-}
+  [namespace: string]: Class<*>,
+};
 
 export type mixins = {
   [namespace: string]: {
-    [mixinName: string]: Class<*>
-  }
-}
+    [mixinName: string]: Class<*>,
+  },
+};
 
 export type plugins = {
   [namespace: string]: {
-    [pluginName: string]: Class<*>
-  }
-}
+    [pluginName: string]: Class<*>,
+  },
+};
 
-export type targetMp = "molotovPlugins";
+export type targetMp = 'molotovPlugins';
 
-export type targetSns = "supersNameSpace";
+export type targetSns = 'supersNameSpace';
 
 export type CocktailArray = Array<?Cocktail>;
 
@@ -61,7 +61,6 @@ export interface ProviderBase<Y: string> {
   validateMolotovConfig(): void;
   setMolotov(molotov): void;
   getMolotov(): molotov;
-
 }
 
 export interface ProviderImplementation<T> {
