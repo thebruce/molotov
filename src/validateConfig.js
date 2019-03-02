@@ -5,14 +5,9 @@ import type { molotovConfig } from './types/molotov';
 const Ajv = require('ajv');
 const schema = require('../schema/molotovConfig');
 
-const {
-  MOLOTOV_MALFORMED_MOLOTOV_CONFIG,
-} = require('../_errors');
+const { MOLOTOV_MALFORMED_MOLOTOV_CONFIG } = require('../_errors');
 
-const {
-  MolotovError,
-} = require('./molotovError');
-
+const { MolotovError } = require('./molotovError');
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);

@@ -1,6 +1,12 @@
 // @flow
 
-import type { molotovConfig, overrideConfig, supers, plugins, mixins } from './types/molotov';
+import type {
+  molotovConfig,
+  overrideConfig,
+  supers,
+  plugins,
+  mixins,
+} from './types/molotov';
 import type Cocktail from './cocktail';
 
 const validator = require('./validateConfig');
@@ -15,9 +21,7 @@ const {
   MOLOTOV_MALFORMED_COCKTAIL_ARRAY,
 } = require('../_errors');
 
-const {
-  MolotovError,
-} = require('./molotovError');
+const { MolotovError } = require('./molotovError');
 
 // Declarative version your `MolotovLoaderClass.`
 // const supers = require('supersDirectory');
@@ -41,13 +45,13 @@ const {
 //   const resolvedPlugins = molotov.getPlugins();
 // })
 const molotov = class Molotov {
-  molotovConfig: molotovConfig
-  molotovNameSpace: string
-  mixins: mixins
-  supers: supers
-  plugins: plugins
-  configOverrides: (overrideConfig | {})
-  cocktails: (Array<?Cocktail>)
+  molotovConfig: molotovConfig;
+  molotovNameSpace: string;
+  mixins: mixins;
+  supers: supers;
+  plugins: plugins;
+  configOverrides: overrideConfig | {};
+  cocktails: Array<?Cocktail>;
 
   /**
    * Create an instance of the molotov class. This class is meant
@@ -76,18 +80,29 @@ const molotov = class Molotov {
    *   An array of cocktail classes used by modules using your molotov
    *   implementing module and providing their own plugins or supers.
    */
-  constructor(config: molotovConfig, nameSpace: string, molotovSupers: supers, molotovMixins: mixins, configOverrides: (overrideConfig | {}) = {}, cocktails: Array<?Cocktail> = []) { // eslint-disable-line max-len
-    if ((!config) || (typeof config !== 'object')) {
+  constructor(
+    config: molotovConfig,
+    nameSpace: string,
+    molotovSupers: supers,
+    molotovMixins: mixins,
+    configOverrides: overrideConfig | {} = {},
+    cocktails: Array<?Cocktail> = []
+  ) {
+    // eslint-disable-line max-len
+    if (!config || typeof config !== 'object') {
       throw new MolotovError(MOLOTOV_CONFIG_REQUIRED);
     }
     validator(config);
-    if ((typeof molotovSupers !== 'object')) {
+    if (typeof molotovSupers !== 'object') {
       throw new MolotovError(MOLOTOV_SUPERS_REQUIRED);
     }
-    if ((Object.keys(molotovMixins).length === 0) || (typeof molotovMixins !== 'object')) {
+    if (
+      Object.keys(molotovMixins).length === 0 ||
+      typeof molotovMixins !== 'object'
+    ) {
       throw new MolotovError(MOLOTOV_PLUGINS_REQUIRED);
     }
-    if ((typeof configOverrides !== 'object')) {
+    if (typeof configOverrides !== 'object') {
       throw new MolotovError(MOLOTOV_MALFORMED_OVERRIDES);
     }
     if (!Array.isArray(cocktails)) {
@@ -271,7 +286,7 @@ const molotov = class Molotov {
    *
    * @returns {void}
    */
-  setConfigOverrides(overrides: (overrideConfig | {})): void {
+  setConfigOverrides(overrides: overrideConfig | {}): void {
     this.configOverrides = overrides;
   }
 
@@ -282,7 +297,7 @@ const molotov = class Molotov {
    *   Configuration overrides for this molotov instance. These will
    *   override existing configuration in the passed in molotovConfig.
    */
-  getConfigOverrides(): (overrideConfig | {}) {
+  getConfigOverrides(): overrideConfig | {} {
     return this.configOverrides;
   }
 
@@ -319,7 +334,7 @@ const molotov = class Molotov {
    *   or provide additional supers, mixins, and plugin
    *   definitions.
    *
- */
+   */
   getCocktails(): Array<?Cocktail> {
     return _.cloneDeep(this.cocktails);
   }

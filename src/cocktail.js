@@ -1,20 +1,14 @@
 // @flow
 
-import type {
-  molotovConfig,
-  mixins,
-  supers,
-} from './types/molotov';
+import type { molotovConfig, mixins, supers } from './types/molotov';
 
 const { MolotovError } = require('./molotovError');
-const {
-  VALID_COCKTAIL_CONFIG_REQUIRED,
-} = require('../_errors');
+const { VALID_COCKTAIL_CONFIG_REQUIRED } = require('../_errors');
 
 module.exports = class Cocktail {
-  cocktailMixins: mixins
-  cocktailSupers: supers
-  cocktailConfig: molotovConfig
+  cocktailMixins: mixins;
+  cocktailSupers: supers;
+  cocktailConfig: molotovConfig;
   /**
    * Creates an instance of Cocktail.
    * @param {molotovConfig} cocktailConfig
@@ -32,14 +26,21 @@ module.exports = class Cocktail {
    *   }
    * @returns {void}
    */
-  constructor(cocktailConfig: molotovConfig, cocktailSupers: ?supers, cocktailMixins: ?mixins) { // eslint-disable-line max-len
+  constructor(
+    cocktailConfig: molotovConfig,
+    cocktailSupers: ?supers,
+    cocktailMixins: ?mixins
+  ) {
+    // eslint-disable-line max-len
     // Cocktail classes must atleast have a valid config object.
     // That's the whole point of cocktail.
     // Without this we don't have any new or overriden supers,
     //  mixins, or plugins.
-    if (typeof cocktailConfig !== 'object'
-      || !cocktailConfig
-      || !(Object.keys(cocktailConfig).length > 0)) {
+    if (
+      typeof cocktailConfig !== 'object' ||
+      !cocktailConfig ||
+      !(Object.keys(cocktailConfig).length > 0)
+    ) {
       throw new MolotovError(VALID_COCKTAIL_CONFIG_REQUIRED);
     }
     this.setCocktailConfig(cocktailConfig);
