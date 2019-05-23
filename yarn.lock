@@ -2151,10 +2151,10 @@ eslint-config-prettier@^4.0.0:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-problems@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-problems/-/eslint-config-problems-2.0.0.tgz#8a7d4a3d7205afef86c463f5fc12b909891a9fa3"
-  integrity sha512-4QbWmmkyf85cmuTGeqrXNRk3wxDEG9meV3Ss4iH8x5EbqJL200MJZkuK3CNJxNWLWl9sxHVXeJlyPaQIgjBS3w==
+eslint-config-problems@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-problems/-/eslint-config-problems-3.0.0.tgz#05600cec8e96231e268b79cfce08bec2ed89f319"
+  integrity sha512-Ve1VQVOhYiwGYHatd3/1rH0/C/y+b/X8ofS/04j0PDpfgQhzh/p2xtUuGfoSK+tvdQzOpM9834/QTh80Ai8z/w==
 
 eslint-import-resolver-node@^0.3.2:
   version "0.3.2"
