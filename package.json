@@ -23,7 +23,7 @@
     "commitlint": "^7.5.2",
     "condition-noop": "^1.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^5.12.1",
+    "eslint": "^6.5.1",
     "eslint-config-prettier": "^4.0.0",
     "eslint-config-problems": "^3.0.1",
     "eslint-plugin-better": "^0.1.5",
