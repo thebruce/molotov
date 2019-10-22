@@ -23,33 +23,29 @@
     "commitlint": "^8.2.0",
     "condition-noop": "^1.0.0",
     "coveralls": "^3.0.0",
-    "eslint": "^5.12.1",
-    "eslint-config-prettier": "^4.0.0",
-    "eslint-config-problems": "^3.0.1",
+    "eslint": "6.5.1",
+    "eslint-config-prettier": "6.4.0",
     "eslint-plugin-better": "^0.1.5",
-    "eslint-plugin-flowtype": "^3.4.2",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-flowtype": "4.3.0",
+    "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-prettier": "^3.0.1",
-    "flow-bin": "^0.100.0",
+    "flow-bin": "0.110.0",
     "flow-copy-source": "^2.0.1",
     "flow-remove-types": "^2.100.0",
     "flow-typed": "^2.3.0",
-    "husky": "^2.4.0",
+    "husky": "3.0.9",
     "jest": "^23.6.0",
     "jest-environment-node-debug": "^2.0.0",
     "prettier": "^1.16.4",
     "semantic-release": "^15.13.3"
   },
   "scripts": {
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "test": "npm run build && jest --coverage",
     "test-ci": "npm run build && jest --coverage --runInBand",
     "debug-test": "node --inspect --debug-brk ./node_modules/.bin/jest --env jest-environment-node-debug",
     "prettier": "prettier --write 'src/**/*.js' && eslint 'src/**/*.js' --fix",
     "prepack": "npm run build",
-    "precommit": "npm run build && npm run flow && npm run lint",
-    "prepush": "npm test",
     "flow": "flow",
     "build": "flow-remove-types src/ --out-dir lib/ && flow-copy-source src/ lib",
     "lint": "eslint .",
@@ -78,5 +74,12 @@
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
     "node": ">=8"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run build && npm run flow && npm run lint",
+      "pre-push": "npm test"
+    }
   }
 }

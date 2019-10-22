@@ -18,16 +18,18 @@ jobs:
   include:
     -
       stage: test
-      node_js: 'lts/carbon'
+      node_js: 'lts/dubnium'
       script:
-        - yarn test
+        - yarn lint
+        - yarn test-ci
+      after_script:
         - yarn coveralls
 
     -
       stage: deploy
       if: branch = master
       # Semantic release will fail if it's not using node 8.
-      node_js: 'lts/carbon'
+      node_js: 'lts/dubnium'
       before_install:
         - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
       provider: script
