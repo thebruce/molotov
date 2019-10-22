@@ -41,14 +41,11 @@
     "semantic-release": "^15.13.3"
   },
   "scripts": {
-    "commitmsg": "commitlint -e $GIT_PARAMS",
     "test": "npm run build && jest --coverage",
     "test-ci": "npm run build && jest --coverage --runInBand",
     "debug-test": "node --inspect --debug-brk ./node_modules/.bin/jest --env jest-environment-node-debug",
     "prettier": "prettier --write 'src/**/*.js' && eslint 'src/**/*.js' --fix",
     "prepack": "npm run build",
-    "precommit": "npm run build && npm run flow && npm run lint",
-    "prepush": "npm test",
     "flow": "flow",
     "build": "flow-remove-types src/ --out-dir lib/ && flow-copy-source src/ lib",
     "lint": "eslint .",
@@ -77,5 +74,12 @@
   "homepage": "https://github.com/thebruce/molotov#readme",
   "engines": {
     "node": ">=8"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run build && npm run flow && npm run lint",
+      "pre-push": "npm test"
+    }
   }
 }
