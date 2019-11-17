@@ -24,7 +24,7 @@
     "condition-noop": "^1.0.0",
     "coveralls": "^3.0.7",
     "eslint": "6.5.1",
-    "eslint-config-prettier": "6.4.0",
+    "eslint-config-prettier": "6.6.0",
     "eslint-plugin-better": "^0.1.5",
     "eslint-plugin-flowtype": "4.3.0",
     "eslint-plugin-import": "2.18.2",
