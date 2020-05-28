@@ -12,7 +12,7 @@
     "lodash": "4.17.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
+    "@babel/core": "^7.10.1",
     "@commitlint/config-angular": "^8.2.0",
     "@semantic-release/commit-analyzer": "^6.3.0",
     "@semantic-release/github": "^5.5.4",
