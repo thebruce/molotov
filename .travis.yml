@@ -17,7 +17,7 @@ jobs:
   include:
     -
       stage: test
-      node_js: 'lts/dubnium'
+      node_js: '10'
       script:
         - npm lint
         - npm test-ci
@@ -28,7 +28,7 @@ jobs:
       stage: deploy
       if: branch = master
       # Semantic release will fail if it's not using node 8.
-      node_js: 'lts/dubnium'
+      node_js: '10'
       before_install:
         - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
       provider: script
