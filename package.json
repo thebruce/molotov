@@ -35,7 +35,7 @@
     "flow-remove-types": "^2.110.0",
     "flow-typed": "^2.6.2",
     "husky": "^4.2.5",
-    "jest": "24.9.0",
+    "jest": "26.0.1",
     "jest-environment-node-debug": "^2.0.0",
     "prettier": "^2.0.5",
     "semantic-release": "^17.0.8"
