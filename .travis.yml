@@ -19,10 +19,10 @@ jobs:
       stage: test
       node_js: '10'
       script:
-        - npm lint
-        - npm test-ci
+        - npm run lint
+        - npm run test-ci
       after_script:
-        - npm coveralls
+        - npm run coveralls
 
     -
       stage: deploy
