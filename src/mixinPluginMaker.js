@@ -48,14 +48,14 @@ module.exports = function pluginMaker(
 
   // Plugin directories are structured in folders named
   // after the super namespaces.
-  Object.keys(pluginsDefinitions).forEach(directoryKey => {
+  Object.keys(pluginsDefinitions).forEach((directoryKey) => {
     // If a plugin definition asks for a super we don't have.
     // This is a problem.
     if (!_.has(pMSupers, directoryKey)) {
       throw new MolotovError(MOLOTOV_PLUGIN_MAKER_NO_SUPER_WITH_THIS_NAME);
     }
     // Each key below the superNameSpace directory key will be a plugin name
-    Object.keys(pluginsDefinitions[directoryKey]).forEach(pluginKey => {
+    Object.keys(pluginsDefinitions[directoryKey]).forEach((pluginKey) => {
       // Check to see that we have these mixins in our mixins object.
       // If we have different mixins indicated than the ones we have.
       // This is a problem.

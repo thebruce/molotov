@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    version_requirement_updates: increase_versions
+    commit_message:
+      prefix: fix
+      prefix_development: chore
+      include_scope: true

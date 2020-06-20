@@ -77,7 +77,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp>
     if (cocktailsArray.length) {
       // We have cocktail classes. Build up our mixins
       // by calling this for each.
-      cocktailsArray.forEach(cocktail => {
+      cocktailsArray.forEach((cocktail) => {
         if (cocktail instanceof Cocktail && cocktail.getCocktailMixins()) {
           const cocktailMixinClasses: mixins = cocktail.getCocktailMixins();
           // We have mixins in our cocktail class. Let's make sure
@@ -166,7 +166,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp>
   getMixinsFromPluginConfig(pluginsObj: pluginsList): string[] {
     return _.union(
       _.flattenDeep(
-        _.map(_.values(pluginsObj), item => _.flattenDeep(_.values(item)))
+        _.map(_.values(pluginsObj), (item) => _.flattenDeep(_.values(item)))
       )
     ); // eslint-disable-line max-len
   }
@@ -181,7 +181,7 @@ module.exports = class Polttopullo extends molotovProviderBase<targetMp>
   getMixinsFromPluginObject(pluginsObj: {}): string[] {
     return _.union(
       _.flattenDeep(
-        _.map(_.values(pluginsObj), item => _.flattenDeep(_.keys(item)))
+        _.map(_.values(pluginsObj), (item) => _.flattenDeep(_.keys(item)))
       )
     ); // eslint-disable-line max-len
   }

@@ -66,7 +66,7 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns>
     if (cocktailsArray.length) {
       // We have cocktail classes. Build up our supers
       // by calling this for each.
-      cocktailsArray.forEach(cocktail => {
+      cocktailsArray.forEach((cocktail) => {
         if (cocktail instanceof Cocktail && cocktail.getCocktailSupers()) {
           const cocktailSupersClasses: supers = cocktail.getCocktailSupers();
           // We have supers in our cocktail class. Ensure we have
@@ -99,7 +99,7 @@ module.exports = class SuperMixologist extends molotovProviderBase<targetSns>
           // $FlowFixMe
           _.forEach(
             Object.keys(cocktailConfigSupers),
-            value => {
+            (value) => {
               // Attempt to get any overrides or new classes from cocktailSupers.
               // Otherwise use existing.
               const tempClass = _.get(

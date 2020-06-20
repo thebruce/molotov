@@ -1,10 +1,9 @@
 sudo: false
 language: node_js
-cache:
-  directories:
-    - node_modules
 notifications:
   email: false
+install:
+- npm ci
 
 stages:
   - name: test
@@ -18,18 +17,18 @@ jobs:
   include:
     -
       stage: test
-      node_js: 'lts/dubnium'
+      node_js: '10'
       script:
-        - yarn lint
-        - yarn test-ci
+        - npm run lint
+        - npm run test-ci
       after_script:
-        - yarn coveralls
+        - npm run coveralls
 
     -
       stage: deploy
       if: branch = master
       # Semantic release will fail if it's not using node 8.
-      node_js: 'lts/dubnium'
+      node_js: '10'
       before_install:
         - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
       provider: script
