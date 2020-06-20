@@ -1,10 +1,9 @@
 sudo: false
 language: node_js
-cache:
-  directories:
-    - node_modules
 notifications:
   email: false
+install:
+- npm ci
 
 stages:
   - name: test

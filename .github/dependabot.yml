@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    commit-message:
-      # Prefix all commit messages with "npm"
-      prefix: "npm"
+    version_requirement_updates: increase_versions
+    commit_message:
+      prefix: fix
+      prefix_development: chore
+      include_scope: true
