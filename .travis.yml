@@ -20,10 +20,10 @@ jobs:
       stage: test
       node_js: 'lts/dubnium'
       script:
-        - yarn lint
-        - yarn test-ci
+        - npm lint
+        - npm test-ci
       after_script:
-        - yarn coveralls
+        - npm coveralls
 
     -
       stage: deploy
